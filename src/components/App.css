@@ -1,0 +1,28 @@
+body,
+h1 {
+  margin: 0;
+  padding: 0;
+}
+
+.landing-page {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  height: 25vh;
+  background-color: #ffffff;
+}
+
+header {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+h1 {
+  width: 100%;
+  height: 100%;
+  font-size: 100px;
+  color: #545f71;
+  margin-left: 50px;
+  font-family: Junge;
+}

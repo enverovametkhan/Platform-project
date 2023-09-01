@@ -1,0 +1,30 @@
+.image-gallery {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.image-container {
+  position: relative;
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.image {
+  width: 257.44px;
+  height: 395.001px;
+  object-fit: cover;
+}
+
+.image-text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  color: white;
+  padding: 5px;
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 150px;
+  font-family: "Junge", serif;
+}
