@@ -1,19 +1,13 @@
 import React from "react";
-import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import LandingPage from "./LandingPage/LandingPage";
 import BlogButtons from "src/components/BlogButtons/BlogButtons";
 import ImageGallery from "src/components/ImageGallery/ImageGallery";
 import AuthButtons from "src/components/AuthButtons/AuthButtons";
-import { Footer } from "src/components/Footer/Footer";
+import Footer from "src/components/Footer/Footer";
 
-function LandingPage() {
-  return (
-    <div className="landing-page">
-      <header>
-        <h1>the happy blog</h1>
-      </header>
-    </div>
-  );
-}
+const router = createBrowserRouter([{ path: "/", element: <LandingPage /> }]);
 
 class App extends React.Component {
   render() {
