@@ -1,28 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./BlogButtons.css";
 
-class BlogButtons extends React.Component {
-  handleClick = (section) => {
+const BlogButtons = () => {
+  const [section, setSection] = useState("");
+
+  const handleClick = (section) => {
+    setSection(section);
     console.log(`Navigating to ${section} section`);
   };
 
-  render() {
-    return (
-      <div className="button-container">
-        {" "}
-        <button onClick={() => this.handleClick("myblog")}>My blog</button>
-        <button onClick={() => this.handleClick("technology")}>
-          Technology
-        </button>
-        <button
-          className="life-button"
-          onClick={() => this.handleClick("life")}
-        >
-          Life
-        </button>
-      </div>
-    );
-  }
-}
+  useEffect(() => {
+    console.log(`Current section: ${section}`);
+  }, [section]);
+
+  return (
+    <div className="button-container">
+      <button onClick={() => handleClick("myblog")}>My blog</button>
+      <button onClick={() => handleClick("technology")}>Technology</button>
+      <button className="life-button" onClick={() => handleClick("life")}>
+        Life
+      </button>
+    </div>
+  );
+};
 
 export default BlogButtons;
