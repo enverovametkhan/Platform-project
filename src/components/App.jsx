@@ -1,12 +1,8 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import React, { useEffect } from "react";
-import LandingPage from "./LandingPage/LandingPage";
-import BlogButtons from "src/components/BlogButtons/BlogButtons";
-import ImageGallery from "src/components/ImageGallery/ImageGallery";
-import AuthButtons from "src/components/AuthButtons/AuthButtons";
-import Footer from "src/components/Footer/Footer";
+import LandingPage from "src/components/LandingPage/LandingPage";
 
-const router = createBrowserRouter([{ path: "/", element: <LandingPage /> }]);
+import LoginPage from "src/components/LogInPage/LoginPage/LoginPage";
 
 function App() {
   useEffect(() => {
@@ -18,13 +14,14 @@ function App() {
   }, []);
 
   return (
-    <div className="app">
-      <AuthButtons />
-      <LandingPage />
-      <BlogButtons />
-      <ImageGallery />
-      <Footer />
-    </div>
+    <Router>
+      <div className="app">
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
