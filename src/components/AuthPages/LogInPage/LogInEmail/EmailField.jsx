@@ -1,4 +1,5 @@
 import React from "react";
+import "./EmailField.css";
 
 const EmailField = () => {
   return (

@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const ForgotPasswordLink = () => {
-  return (
-    <Link to="resetpass/">
-      <button className="forgot-butt">Forgot Password</button>
-    </Link>
-  );
+  useEffect(() => {
+    console.log("ForgotPasswordLink component mounted");
+
+    return () => {
+      console.log("ForgotPasswordLink component unmounted");
+    };
+  }, []);
+
+  return <Link to="/resetpass">Forgot Password</Link>;
 };
 
 export default ForgotPasswordLink;

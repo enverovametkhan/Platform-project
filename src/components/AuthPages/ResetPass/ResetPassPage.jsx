@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import EmailField from "src/components/AuthPages/LogInPage/LogInEmail/EmailField";
-
+import "./ResetPassPage.css";
 const ResetPassPage = () => {
   useEffect(() => {
     console.log("ResetPassPage component mounted");

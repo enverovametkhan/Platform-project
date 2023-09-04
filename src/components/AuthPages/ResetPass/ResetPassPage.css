@@ -1,4 +1,4 @@
-.login-page {
+.resetpass {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,10 +8,13 @@
   gap: 20px;
 }
 
-.login-page h1 {
+.resetpass h1 {
   font-size: 50px;
+  text-align: center;
 }
 
-.login-page button {
-  font-size: 20px;
+.resetpass p {
+  margin-top: -15px;
+  margin-bottom: 40px;
+  margin-left: 50px;
 }
