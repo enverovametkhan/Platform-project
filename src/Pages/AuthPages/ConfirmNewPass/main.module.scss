@@ -1,0 +1,58 @@
+.confirmPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 200px;
+  padding: 30px;
+  gap: 20px;
+}
+
+.confirmHeader {
+  font-size: 50px;
+  color: #666;
+  font-family: Junge;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.centerText {
+  display: inline-block;
+}
+
+.formGroup {
+  font-size: 20px;
+  color: #666;
+  font-family: Junge;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.myLabel {
+  font-size: 20px;
+  color: #666;
+  font-family: Junge;
+}
+
+input {
+  font-size: 16px;
+  padding: 5px;
+  width: 337px;
+  border-radius: 10px;
+  height: 30px;
+  border-color: #666;
+}
+
+.confirmBut {
+  width: 337px;
+  height: 59px;
+  border-radius: 10px;
+  border: 1px solid #545f71;
+  background: #9ba5b7;
+  margin-top: 50px;
+  margin-left: 10px;
+  color: #fff;
+  font-size: 20px;
+}
