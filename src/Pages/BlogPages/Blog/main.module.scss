@@ -1,0 +1,56 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.yourClass {
+  font-size: 50px;
+  color: #666;
+  font-family: Junge;
+  margin-top: 30px;
+  margin-left: 20px;
+  align-self: flex-start;
+}
+
+.blogButton {
+  width: 200px;
+  height: 59px;
+  border-radius: 50px;
+  background: #eef1f4;
+  margin-top: 50px;
+  margin-left: 50px;
+  color: #666;
+  font-family: Junge;
+  font-size: 25px;
+  position: absolute;
+  top: -1.5%;
+  left: 85%;
+}
+
+.imageContainer {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.image {
+  width: 365px;
+  height: 382px;
+  border-radius: 100px;
+  margin-bottom: 30px;
+}
+
+.blogText {
+  width: 798px;
+  color: #545f71;
+  font-family: Junge;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.6;
+  padding: 20px;
+}
