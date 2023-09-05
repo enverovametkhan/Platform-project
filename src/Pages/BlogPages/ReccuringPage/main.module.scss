@@ -1,0 +1,70 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.yourClass {
+  font-size: 50px;
+  color: #666;
+  font-family: Junge;
+  margin-top: 30px;
+  margin-left: 20px;
+}
+
+.image {
+  width: 120px;
+  height: 120px;
+  border-radius: 90px;
+  position: absolute;
+  top: 3%;
+  left: 90%;
+}
+
+.buttonsPage {
+  display: flex;
+  flex-direction: column;
+}
+
+.pageButton {
+  width: 200px;
+  height: 59px;
+  border-radius: 50px;
+  background: #eef1f4;
+  margin-top: 50px;
+  margin-left: 50px;
+  color: #666;
+  font-family: Junge;
+  font-size: 25px;
+}
+
+.logoutButton {
+  position: absolute;
+  top: 85%;
+}
+
+.myLinks {
+  width: 200px;
+  border: none;
+  background-color: white;
+  margin-top: 50px;
+  margin-left: 50px;
+  font-family: Junge;
+  font-size: 30px;
+  text-decoration: none;
+  transition: color 0.3s, text-decoration 0.3s;
+  display: flex;
+  flex-direction: column;
+
+  a {
+    color: #666;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.myBlogs {
+  margin-bottom: 30px;
+}
