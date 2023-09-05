@@ -7,6 +7,7 @@ import ResetPassPage from "src/Pages/AuthPages/ResetPass/ResetPassPage";
 import ConfirmNewPassPage from "src/Pages/AuthPages/ConfirmNewPass/ConfirmNewPassPage";
 import ReccuringPage from "src/Pages/BlogPages/ReccuringPage/ReccuringPage";
 import Blog from "src/Pages/BlogPages/Blog/Blog";
+import MyBlogs from "src/Pages/BlogPages/MyBlogs/MyBlogs";
 
 function App() {
   useEffect(() => {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/confirmpass" element={<ConfirmNewPassPage />} />
           <Route path="/reccuring" element={<ReccuringPage />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/myblogs" element={<MyBlogs />} />
         </Routes>
       </div>
     </Router>

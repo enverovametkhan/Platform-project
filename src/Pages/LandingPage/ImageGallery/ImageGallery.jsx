@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import styles from "./main.module.scss";
 import image1 from "src/Assets/image1.jpg";
 import image2 from "src/Assets/image2.jpg";
@@ -13,7 +14,9 @@ function ImageGallery() {
   return (
     <div className={styles.imageGallery}>
       <div className={styles.imageContainer}>
-        <img className={styles.image} src={image1} alt="Image 1" />
+        <Link to="/blog">
+          <img className={styles.image} src={image1} alt="Image 1" />
+        </Link>
         <div className={styles.imageText}>the happy blog</div>
       </div>
 
