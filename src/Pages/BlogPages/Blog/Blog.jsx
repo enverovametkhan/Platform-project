@@ -12,7 +12,7 @@ function Blog() {
     <div className={styles.container}>
       <h1 className={styles.yourClass}>the happy blog</h1>
 
-      <Link to="/edit" className={styles.link}>
+      <Link to="/dashboard/editblog" className={styles.link}>
         <button className={styles.blogButton}>Edit</button>
       </Link>
       <div className={styles.imageContainer}>
