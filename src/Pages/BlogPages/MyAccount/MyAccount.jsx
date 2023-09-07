@@ -1,6 +1,4 @@
 import React, { useEffect } from "react";
-import BlogComponents from "src/components/BlogComponents/BlogComponents";
-
 import styles from "./main.module.scss";
 
 function MyAccount() {
