@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styles from "./main.module.scss";
-import { Link } from "react-router-dom";
 import { Outlet } from "react-router";
 
 const BlogComponents = () => {
-  const [section, setSection] = useState("");
+  const [setSection] = useState("");
   const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
@@ -19,13 +18,10 @@ const BlogComponents = () => {
     setIsChecked(!isChecked);
     console.log(`Toggled to ${isChecked ? "Off" : "On"}`);
 
-    // You can perform actions here based on the toggle state
     if (isChecked) {
       console.log("Toggle is Off.");
-      // Add your actions for Toggle Off state here
     } else {
       console.log("Toggle is On.");
-      // Add your actions for Toggle On state here
     }
   };
 
@@ -35,7 +31,6 @@ const BlogComponents = () => {
 
     if (section === "Image Upload") {
       console.log("Handling Image Upload...");
-      // Add your code for handling Image Upload here
     }
   };
 

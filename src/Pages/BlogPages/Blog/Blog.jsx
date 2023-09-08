@@ -18,6 +18,7 @@ function Blog() {
       <div className={styles.imageContainer}>
         <div className={styles.imageWrapper}>
           <img className={styles.image} src={image1} alt="Image 1" />
+          <h1 className={styles.myTitle}>My blog</h1>
           <p className={styles.blogText}>
             Let me introduce myself. My name is Ann. I am twenty. I am a
             student. I study at the university. I am a prospective economist. I
