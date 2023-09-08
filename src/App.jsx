@@ -12,6 +12,7 @@ import BlogComponents from "src/components/BlogComponents/BlogComponents";
 import CreateBlog from "src/Pages/BlogPages/CreateBlog/CreateBlog";
 import EditBlog from "src/Pages/BlogPages/EditBlog/EditBLog";
 import MyAccount from "src/Pages/BlogPages/MyAccount/MyAccount";
+import PageNotFound from "src/components/PageNotFound/PageNotFound";
 
 function App() {
   useEffect(() => {
@@ -32,13 +33,14 @@ function App() {
           <Route path="/resetpass" element={<ResetPassPage />} />
           <Route path="/confirmpass" element={<ConfirmNewPassPage />} />
           <Route path="/blog" element={<Blog />} />
-          <Route path="/blogcomponents" element={<BlogComponents />}></Route>
-          <Route path="/dashboard" element={<NavigationBar />}>
-            <Route path="/dashboard/createblog" element={<CreateBlog />} />
-            <Route path="/dashboard/myblogs" element={<MyBlogs />} />
-            <Route path="/dashboard/editblog" element={<EditBlog />} />
-            <Route path="/dashboard/myaccount" element={<MyAccount />}></Route>
+          <Route path="/blogcomponents" element={<BlogComponents />} />
+          <Route path="/dashboard/*" element={<NavigationBar />}>
+            <Route path="createblog" element={<CreateBlog />} />
+            <Route path="myblogs" element={<MyBlogs />} />
+            <Route path="editblog" element={<EditBlog />} />
+            <Route path="myaccount" element={<MyAccount />} />
           </Route>
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </div>
     </Router>
