@@ -36,6 +36,13 @@ const LoginPage = () => {
         <div className={styles.forgotPass}>
           <Link to="/resetpass">Forgot Password</Link>
         </div>
+
+        <div className={styles.signStyle}>
+          <p className={styles.dontStyle}>Don't have an account?</p>
+          <div className={styles.signLink}>
+            <Link to="/signup">Sign up</Link>
+          </div>
+        </div>
       </form>
     </div>
   );
