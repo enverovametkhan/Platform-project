@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import styles from "./main.module.scss";
 import image1 from "src/Assets/image1.jpg";
@@ -8,6 +9,21 @@ import image4 from "src/Assets/image4.jpg";
 
 function ImageGallery() {
   useEffect(() => {
+    async function getUser() {
+      try {
+        const response = await axios.get(
+          "http://localhost:4000/public/blog/category/UX-UI"
+        );
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    console.log("hi");
+
+    getUser();
+
     document.title = "Image Gallery - The Happy Blog";
   }, []);
 
