@@ -1,46 +1,48 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import styles from "./main.module.scss";
+import axios from "axios";
 import { Link } from "react-router-dom";
-import { getImagesByCategory } from "src/axios/api";
+import styles from "./main.module.scss";
+import { selectCategory } from "src/redux/imageSlice";
 import image1 from "src/Assets/image1.jpg";
 import image2 from "src/Assets/image2.jpg";
 import image3 from "src/Assets/image3.jpg";
 import image4 from "src/Assets/image4.jpg";
-import { selectCategory } from "src/redux/imageSlice";
 
 const ImageGallery = () => {
   const selectedCategory = useSelector(selectCategory);
 
-  const filteredImages = () => {
-    switch (selectedCategory) {
-      case "myblog":
-        return [image1, image3, image4];
-      case "technology":
-        return [image2, image4, image3];
-      case "life":
-        return [image3, image1, image4];
-    }
-  };
+  const [filteredImages, setFilteredImages] = useState([]);
 
   useEffect(() => {
-    async function getUser() {
+    const loadImagesByCategory = async (category) => {
       try {
-        const images = await getImagesByCategory(selectedCategory);
-        console.log(images);
+        const response = await axios.get(`/public/blog/category/${category}`);
+        const images = response.data;
+        setFilteredImages(images);
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching images:", error);
       }
+    };
+
+    switch (selectedCategory) {
+      case "myblog":
+        setFilteredImages([image1, image3, image4]);
+        break;
+      case "technology":
+        setFilteredImages([image2, image4, image3]);
+        break;
+      case "life":
+        setFilteredImages([image3, image1, image4]);
+        break;
+      default:
+        break;
     }
-
-    getUser();
-
-    document.title = "Image Gallery - The Happy Blog";
   }, [selectedCategory]);
 
   return (
     <div className={styles.imageGallery}>
-      {filteredImages().map((image, index) => (
+      {filteredImages.map((image, index) => (
         <div className={styles.imageContainer} key={index}>
           <Link to="/blog">
             <img

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const imageSlice = createSlice({
   name: "image",
+
   initialState: {
     selectedCategory: "myblog",
   },
@@ -13,6 +14,7 @@ const imageSlice = createSlice({
 });
 
 export const { setCategory } = imageSlice.actions;
+
 export const selectCategory = (state) => state.image.selectedCategory;
 
 export default imageSlice.reducer;

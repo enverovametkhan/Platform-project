@@ -1,18 +1,11 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:4000/public/blog/category/UX-UI";
-
 const api = axios.create({
-  baseURL,
+  baseURL: "http://localhost:4000",
+  timeout: 5000,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-export const getImagesByCategory = async (category) => {
-  try {
-    const response = await api.get(category);
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export default getImagesByCategory;
+export default api;

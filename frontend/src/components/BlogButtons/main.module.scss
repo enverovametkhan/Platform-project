@@ -20,12 +20,17 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  transition: background-color 0.3s;
 }
 
 .blogButton.life-button {
   width: 200px;
 }
 
-button:hover {
+.blogButton.activeButton {
+  background-color: #a7b5ca;
+}
+
+.buttonContainer button:hover {
   background-color: #a7b5ca;
 }
