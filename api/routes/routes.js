@@ -29,16 +29,16 @@ const {
 
 module.exports = (app) => {
   // Blog Routes
-  app.get("/public/blog/:id", getBlog);
-  app.get("/public/blog/category/:category", getBlogsInCategory);
+  app.get("/api/blog/:id", getBlog);
+  app.get("/api/blog/category/:category", getBlogsInCategory);
   app.get(
-    "/secure/blog/:userId/:category",
+    "/api/blog/:userId/:category",
     authMiddleware,
     getUserBlogsInCategory
   );
-  app.put("/secure/blog/:id", authMiddleware, updateBlog);
-  app.delete("/secure/blog/:id", authMiddleware, deleteBlog);
-  app.post("/secure/blog", authMiddleware, createBlog);
+  app.put("/api/blog/:id", authMiddleware, updateBlog);
+  app.delete("/api/blog/:id", authMiddleware, deleteBlog);
+  app.post("/api/blog", authMiddleware, createBlog);
 
   // User Routes
   app.post("/api/user/login", loginController);

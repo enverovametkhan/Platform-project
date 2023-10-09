@@ -1,25 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import Axios from "axios";
-import { setCategory } from "src/redux/imageSlice";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getBlogsInCategory } from "src/redux/slice";
 import styles from "./main.module.scss";
 
 const BlogButtons = () => {
   const dispatch = useDispatch();
-  const [blogs, setBlogs] = useState([]);
+  const blogs = useSelector((state) => state.blogs.blogs);
 
   const handleClick = async (category) => {
-    dispatch(setCategory(category));
-    console.log(`Navigating to ${category} section`);
-
-    try {
-      const response = await Axios.get(`/public/blog/category/${category}`);
-      console.log("Response from backend:", response.userData);
-
-      setBlogs(response.dummyBlogs);
-    } catch (error) {
-      console.error("Error sending request to backend:", error);
-    }
+    const state = { ...blogs };
+    state.currentCategory = category;
+    dispatch(getBlogsInCategory(category));
   };
 
   useEffect(() => {

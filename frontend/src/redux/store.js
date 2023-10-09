@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import imageReducer from "./imageSlice";
+import blogsReducer from "src/redux/slice";
 
 const store = configureStore({
   reducer: {
-    image: imageReducer,
+    blogs: blogsReducer,
   },
 });
 

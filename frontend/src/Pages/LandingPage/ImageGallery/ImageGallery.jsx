@@ -1,44 +1,39 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styles from "./main.module.scss";
-import { selectCategory } from "src/redux/imageSlice";
+import { getBlogsInCategory } from "src/redux/slice";
+
 import image1 from "src/Assets/image1.jpg";
 import image2 from "src/Assets/image2.jpg";
 import image3 from "src/Assets/image3.jpg";
 import image4 from "src/Assets/image4.jpg";
 
 const ImageGallery = () => {
-  const selectedCategory = useSelector(selectCategory);
+  const dispatch = useDispatch();
 
   const [filteredImages, setFilteredImages] = useState([]);
+  const [selectedCategory] = useState("myblog");
 
   useEffect(() => {
     const loadImagesByCategory = async (category) => {
       try {
-        const response = await axios.get(`/public/blog/category/${category}`);
-        const images = response.data;
-        setFilteredImages(images);
+        await dispatch(getBlogsInCategory(category));
+
+        const categoryImages = {
+          myblog: [image1, image3, image4],
+          technology: [image2, image4, image3],
+          life: [image3, image1, image4],
+        };
+
+        setFilteredImages(categoryImages[category] || []);
       } catch (error) {
         console.error("Error fetching images:", error);
       }
     };
 
-    switch (selectedCategory) {
-      case "myblog":
-        setFilteredImages([image1, image3, image4]);
-        break;
-      case "technology":
-        setFilteredImages([image2, image4, image3]);
-        break;
-      case "life":
-        setFilteredImages([image3, image1, image4]);
-        break;
-      default:
-        break;
-    }
-  }, [selectedCategory]);
+    loadImagesByCategory(selectedCategory);
+  }, [selectedCategory, dispatch]);
 
   return (
     <div className={styles.imageGallery}>

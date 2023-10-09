@@ -16,18 +16,24 @@ async function getBlogService(id) {
   };
 }
 
-async function getBlogInCategoryService(category) {
-  const blogsInCategory = [];
+function getBlogInCategoryService(category) {
+  const blogsInCategory = dummyBlogs.filter((blog) =>
+    blog.categories.includes(category)
+  );
 
-  for (const blog of dummyBlogs) {
-    if (blog.categories.includes(category)) {
-      blogsInCategory.push(blog);
-    }
+  if (blogsInCategory.length === 0) {
+    return {
+      error: "No blogs found in the specified category.",
+    };
   }
 
+  const sortedBlogs = blogsInCategory.sort((a, b) => b.likes - a.likes);
+
+  const top10Blogs = sortedBlogs.slice(0, 10);
+
   return {
-    message: "Here you go!",
-    blogs: blogsInCategory,
+    message: "Here are the top 10 blogs in the category.",
+    blogs: top10Blogs,
   };
 }
 
