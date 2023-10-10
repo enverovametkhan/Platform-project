@@ -26,7 +26,7 @@ async function login(email, password) {
       message: "Password is required",
     };
   }
-
+  console.log(accessToken);
   const user = dummyUsers.find((user) => user.email === email);
 
   if (!user) {

@@ -32,7 +32,7 @@ module.exports = (app) => {
   app.get("/api/blog/:id", getBlog);
   app.get("/api/blog/category/:category", getBlogsInCategory);
   app.get(
-    "/api/blog/:userId/:category",
+    "/api/blog/user/:userId/:category",
     authMiddleware,
     getUserBlogsInCategory
   );

@@ -18,8 +18,8 @@ const ImageGallery = () => {
   useEffect(() => {
     const loadImagesByCategory = async (category) => {
       try {
-        await dispatch(getBlogsInCategory(category));
-
+        let test = await dispatch(getBlogsInCategory("UX-UI"));
+        console.log(test);
         const categoryImages = {
           myblog: [image1, image3, image4],
           technology: [image2, image4, image3],
