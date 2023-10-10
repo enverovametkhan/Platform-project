@@ -19,7 +19,7 @@ const {
   getUserController,
   deleteUserController,
   updateUserController,
-  refreshAuthTokenController,
+  refreshAccessTokenController,
   resetPasswordController,
   checkResetPasswordTokenController,
   changePasswordController,
@@ -51,7 +51,7 @@ module.exports = (app) => {
   app.get(
     "/api/user/refreshAuthToken",
     authMiddleware,
-    refreshAuthTokenController
+    refreshAccessTokenController
   );
   app.get("/api/user/resetPassword/:email", resetPasswordController);
   app.get(

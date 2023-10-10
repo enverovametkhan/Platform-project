@@ -6,7 +6,7 @@ const {
   getUser,
   deleteUser,
   updateUser,
-  refreshAuthToken,
+  refreshAccessToken,
   resetPassword,
   checkResetPasswordToken,
   changePassword,
@@ -152,15 +152,15 @@ async function updateUserController(req, res, next) {
   }
 }
 
-async function refreshAuthTokenController(req, res, next) {
+async function refreshAccessTokenController(req, res, next) {
   try {
-    const response = await refreshAuthToken();
+    const response = await refreshAccessToken();
     res.send(response);
     next();
   } catch (error) {
     const errorMessage = {
       error: { ...error },
-      function: "refreshAuthTokenController",
+      function: "refreshAccessTokenController",
       errorMessage: error.message || "Internal Server Error",
     };
     next(errorMessage);
@@ -267,7 +267,7 @@ module.exports = {
   getUserController,
   deleteUserController,
   updateUserController,
-  refreshAuthTokenController,
+  refreshAccessTokenController,
   resetPasswordController,
   checkResetPasswordTokenController,
   changePasswordController,
