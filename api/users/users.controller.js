@@ -66,8 +66,8 @@ async function signupController(req, res, next) {
 
 async function verifyEmailController(req, res, next) {
   try {
-    const { hash } = req.params;
-    await verifyEmail(hash);
+    const { token } = req.params;
+    await verifyEmail(token);
 
     res.json({ message: "Email has been verified" });
     next();
@@ -240,9 +240,9 @@ async function changePasswordController(req, res, next) {
 
 async function confirmEmailSwapController(req, res, next) {
   try {
-    const { hash } = req.params;
+    const { token } = req.params;
 
-    await confirmEmailSwap(hash);
+    await confirmEmailSwap(token);
 
     res.json({ message: "Email swapped successfully" });
     next();

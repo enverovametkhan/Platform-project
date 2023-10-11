@@ -10,9 +10,9 @@ async function createToken(payload, expiration) {
   }
 }
 
-async function decryptToken(jwtToken) {
+async function decryptToken(token) {
   try {
-    return await jwt.verify(jwtToken, jwtSecretKey);
+    return await jwt.verify(token, jwtSecretKey);
   } catch (error) {
     throw new Error("Error decrypting JWT token");
   }

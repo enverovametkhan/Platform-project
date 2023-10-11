@@ -43,7 +43,7 @@ module.exports = (app) => {
   // User Routes
   app.post("/api/user/login", loginController);
   app.post("/api/user/signup", signupController);
-  app.get("/api/user/verifyEmail/:hash", verifyEmailController);
+  app.get("/api/user/verifyEmail/:token", verifyEmailController);
   app.get("/api/user/logout", authMiddleware, logoutController);
   app.get("/api/user", authMiddleware, getUserController);
   app.delete("/api/user/delete", authMiddleware, deleteUserController);
@@ -60,5 +60,5 @@ module.exports = (app) => {
   );
   app.put("/api/user/changePassword", changePasswordController);
   // router.post("/api/user/swapEmail/", swapEmailController);
-  app.get("/api/user/confirmEmailSwap/:hash", confirmEmailSwapController);
+  app.get("/api/user/confirmEmailSwap/:token", confirmEmailSwapController);
 };
