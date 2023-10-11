@@ -617,6 +617,11 @@ async function getUser() {
 
 async function deleteUser() {
   const userData = await getAccessToUserData();
+
+  if (!userData || !userData.userId) {
+    throw new Error("Invalid user data");
+  }
+
   const userIndex = userModel.findIndex((user) => user.id === userData.userId);
 
   if (userIndex === -1) {
@@ -624,10 +629,14 @@ async function deleteUser() {
   }
 
   const user = userModel[userIndex];
+
   user.password = "";
   user.username = "";
   user.deletedAt = Date.now();
-  userModel.splice(userIndex, 1);
+
+  console.log("User has been deleted with ID:", userData.userId);
+
+  userModel[userIndex] = user;
 
   return {
     message: "User deleted successfully",
