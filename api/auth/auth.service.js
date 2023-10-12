@@ -1,0 +1,191 @@
+const bcrypt = require("bcrypt");
+const { miniDatabase } = require("@root/database/miniDatabase");
+const { createToken, decryptToken } = require("@root/utilities/jwt");
+const { getAccessToUserData } = require("@root/middleware/getUserData");
+let userModel = miniDatabase.Users;
+const saltRounds = 10;
+
+async function hashPassword(password) {
+  return await bcrypt.hash(password, saltRounds);
+}
+
+async function login(email, password) {
+  if (!email) {
+    return {
+      message: "Email is required",
+    };
+  }
+
+  if (!password) {
+    return {
+      message: "Password is required",
+    };
+  }
+
+  const user = userModel.find((user) => user.email === email);
+
+  if (!user) {
+    return {
+      message: "Incorrect login credentials",
+    };
+  }
+
+  if (user.verifyEmail) {
+    return {
+      message: "Please verify your email address to continue",
+    };
+  }
+
+  const validPassword = await bcrypt.compare(password, user.password);
+
+  if (!validPassword) {
+    return {
+      message: "Incorrect login credentials",
+    };
+  }
+
+  const userData = {
+    userId: user.id,
+    email: user.email,
+    username: user.username,
+  };
+
+  const accessToken = await createToken(userData, "300d");
+  const refreshToken = await createToken(userData, "500h");
+
+  user.accessToken = accessToken;
+  user.refreshToken = refreshToken;
+
+  return {
+    message: "Login successful",
+    accessToken,
+    refreshToken,
+    userData,
+  };
+}
+
+async function signup(username, email, password, confirmedPassword) {
+  const user = userModel.find((user) => user.email === email);
+
+  if (user) {
+    throw new Error("Email already exists.");
+  }
+
+  if (password !== confirmedPassword) {
+    throw new Error("Passwords do not match.");
+  }
+
+  const hashedPassword = await hashPassword(password);
+
+  const token = await createToken({ user_id: "" }, "300d");
+
+  const newUser = {
+    id: "",
+    username: username,
+    email: email,
+    password: hashedPassword,
+    verifyEmail: token,
+    accessToken: "",
+    refreshToken: "",
+    deletedAt: "",
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  };
+
+  userModel.push(newUser);
+
+  console.log(
+    `Sending verification email, please verify your email at localhost:4000/api/user/verifyEmail/${token}`
+  );
+
+  return {
+    message: "Signup successful",
+    newUser,
+  };
+}
+
+async function verifyEmail(token) {
+  let userData = await decryptToken(token);
+  const userIndex = userModel.findIndex((user) => user.id === userData.userId);
+
+  if (userIndex === -1) {
+    throw new Error("User has not been found");
+  }
+  console.log("Email has been verifed");
+
+  userModel[userIndex].verifyEmail = "";
+
+  let response = {
+    message: "Email verified successfully",
+    status: 200,
+  };
+  return response;
+}
+
+async function logout() {
+  try {
+    const userData = await getAccessToUserData();
+
+    if (!userData || !userData.userId) {
+      throw new Error("Invalid user data");
+    }
+
+    const userIndex = userModel.findIndex(
+      (user) => user.id === userData.userId
+    );
+
+    if (userIndex === -1) {
+      throw new Error("User not found");
+    }
+
+    const user = userModel[userIndex];
+
+    user.accessToken = "";
+    user.refreshToken = "";
+
+    userModel[userIndex] = user;
+
+    return { message: "User logged out successfully", userData };
+  } catch (error) {
+    throw error;
+  }
+}
+async function refreshAccessToken() {
+  const userData = await getAccessToUserData();
+  const index = userModel.findIndex((user) => user.id === userData.userId);
+
+  if (index === -1) {
+    throw new Error("User not found");
+  }
+
+  const user = userModel[index];
+
+  let userDataToUpdate = {
+    userId: user.id,
+    email: user.email,
+    username: user.username,
+  };
+
+  const newRefreshToken = await createToken(userDataToUpdate, "100d");
+  const newAccessToken = await createToken(userDataToUpdate, "300h");
+
+  user.accessToken = newAccessToken;
+  user.refreshToken = newRefreshToken;
+
+  userModel[index] = user;
+
+  return {
+    ...userData,
+    accessToken: user.accessToken,
+    refreshToken: user.refreshToken,
+    message: "Token refreshed successfully",
+  };
+}
+
+module.exports = {
+  login,
+  signup,
+  verifyEmail,
+  logout,
+  refreshAccessToken,
+};

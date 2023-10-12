@@ -1,103 +1,10 @@
 const {
-  login,
-  signup,
-  verifyEmail,
-  logout,
   getUser,
   deleteUser,
   updateUser,
-  refreshAccessToken,
-  resetPassword,
-  checkResetPasswordToken,
-  changePassword,
-  swapEmail,
+  // swapEmail,
   confirmEmailSwap,
-} = require("./users.services");
-
-async function loginController(req, res, next) {
-  try {
-    const { email, password } = req.body;
-    const user = await login(email, password);
-
-    if (user) {
-      res.json(user);
-      next();
-    } else {
-      const error = new Error("Authentication failed");
-      error.status = 401;
-      throw error;
-    }
-  } catch (error) {
-    const { id } = req.params;
-    const errorMessage = {
-      error: { ...error },
-      function: "loginController",
-      errorMessage: error.message || "Internal Server Error",
-      id,
-    };
-
-    next(errorMessage);
-  }
-}
-
-async function signupController(req, res, next) {
-  try {
-    const { username, email, password, confirmedPassword } = req.body;
-    if (!username || !email || !password || !confirmedPassword) {
-      const error = new Error(
-        "Username, email, password, and confirmedPassword are required."
-      );
-      error.status = 400;
-      throw error;
-    }
-
-    const newUser = await signup(username, email, password, confirmedPassword);
-    res.status(201).json(newUser);
-    next();
-  } catch (error) {
-    const errorMessage = {
-      function: "signupController",
-      errorMessage: error.message || "Internal Server Error",
-    };
-
-    next(errorMessage);
-  }
-}
-
-async function verifyEmailController(req, res, next) {
-  try {
-    const { token } = req.params;
-    await verifyEmail(token);
-
-    res.json({ message: "Email has been verified" });
-    next();
-  } catch (error) {
-    const errorMessage = {
-      error: { ...error },
-      function: "verifyEmailController",
-      errorMessage: error.message || "Internal Server Error",
-    };
-
-    next(errorMessage);
-  }
-}
-
-async function logoutController(req, res, next) {
-  try {
-    const userId = "";
-    await logout(userId);
-    res.status(200).json({ message: "Logged out successfully" });
-    next();
-  } catch (error) {
-    const errorMessage = {
-      error: { ...error },
-      function: "logoutController",
-      errorMessage: error.message || "Internal Server Error",
-    };
-
-    next(errorMessage);
-  }
-}
+} = require("./users.service");
 
 async function getUserController(req, res, next) {
   try {
@@ -152,79 +59,6 @@ async function updateUserController(req, res, next) {
   }
 }
 
-async function refreshAccessTokenController(req, res, next) {
-  try {
-    const response = await refreshAccessToken();
-    res.send(response);
-    next();
-  } catch (error) {
-    const errorMessage = {
-      error: { ...error },
-      function: "refreshAccessTokenController",
-      errorMessage: error.message || "Internal Server Error",
-    };
-    next(errorMessage);
-  }
-}
-
-async function resetPasswordController(req, res, next) {
-  try {
-    const { email } = req.params;
-
-    const response = await resetPassword(email);
-
-    res.status(response.status).json({ message: response.message });
-    next();
-  } catch (error) {
-    console.error(error);
-
-    const errorMessage = {
-      error: { ...error },
-      function: "resetPasswordController",
-      errorMessage: error.message,
-    };
-    next(errorMessage);
-  }
-}
-
-async function checkResetPasswordTokenController(req, res, next) {
-  try {
-    const { token } = req.params;
-    console.log("Check Reset Password Token:", token);
-    await checkResetPasswordToken(token);
-    res.json({ message: "Token is valid" });
-    next();
-  } catch (error) {
-    console.error(error);
-    const errorMessage = {
-      error: { ...error },
-      function: "checkResetPasswordTokenController",
-      errorMessage: error.message,
-    };
-    next(errorMessage);
-  }
-}
-
-async function changePasswordController(req, res, next) {
-  try {
-    const { token, password, confirmedPassword } = req.body;
-
-    await changePassword(token, password, confirmedPassword);
-
-    res.json({ message: "Password changed successfully" });
-    next();
-  } catch (error) {
-    console.error(error);
-
-    const errorMessage = {
-      error: { ...error },
-      function: "changePasswordController",
-      errorMessage: error.message,
-    };
-    next(errorMessage);
-  }
-}
-
 // async function swapEmailController(req, res) {
 //   try {
 //     const { newEmail } = req.body;
@@ -260,17 +94,10 @@ async function confirmEmailSwapController(req, res, next) {
 }
 
 module.exports = {
-  loginController,
-  signupController,
-  verifyEmailController,
-  logoutController,
   getUserController,
   deleteUserController,
   updateUserController,
-  refreshAccessTokenController,
-  resetPasswordController,
-  checkResetPasswordTokenController,
-  changePasswordController,
+
   // swapEmailController,
   confirmEmailSwapController,
 };

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { authMiddleware } = require("@root/utilities/auth.middleware");
+const { authMiddleware } = require("@root/middleware/auth.middleware");
 
 const {
   getBlog,
@@ -16,16 +16,22 @@ const {
   signupController,
   verifyEmailController,
   logoutController,
+  refreshAccessTokenController,
+  // swapEmailController,
+} = require("@root/auth/auth.controller");
+
+const {
   getUserController,
   deleteUserController,
   updateUserController,
-  refreshAccessTokenController,
+  confirmEmailSwapController,
+} = require("@root/users/users.controller");
+
+const {
   resetPasswordController,
   checkResetPasswordTokenController,
   changePasswordController,
-  // swapEmailController,
-  confirmEmailSwapController,
-} = require("@root/users/users.controller");
+} = require("@root/resetPass/resetPass.controller");
 
 module.exports = (app) => {
   // Blog Routes
