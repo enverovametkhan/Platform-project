@@ -15,7 +15,7 @@ async function loginController(req, res, next) {
   } catch (error) {
     const { id } = req.params;
     const errorMessage = {
-      error: { ...error },
+      error: error.message,
       function: "loginController",
       errorMessage: error.message || "Internal Server Error",
       id,
@@ -32,6 +32,7 @@ async function signupController(req, res, next) {
     next();
   } catch (error) {
     const errorMessage = {
+      error: error.message,
       function: "signupController",
       errorMessage: error.message || "Internal Server Error",
     };
@@ -48,6 +49,7 @@ async function verifyEmailController(req, res, next) {
     next();
   } catch (error) {
     const errorMessage = {
+      error: error.message,
       function: "verifyEmailController",
       errorMessage: error.message || "Internal Server Error",
     };
@@ -63,6 +65,7 @@ async function logoutController(req, res, next) {
     next();
   } catch (error) {
     const errorMessage = {
+      error: error.message,
       function: "logoutController",
       errorMessage: error.message || "Internal Server Error",
     };
@@ -79,6 +82,7 @@ async function refreshAccessTokenController(req, res, next) {
     next();
   } catch (error) {
     const errorMessage = {
+      error: error.message,
       function: "refreshAccessTokenController",
       errorMessage: error.message || "Internal Server Error",
     };

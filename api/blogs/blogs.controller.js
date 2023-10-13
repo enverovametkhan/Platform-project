@@ -9,16 +9,16 @@ const {
 
 async function getBlog(req, res, next) {
   try {
-    let { id } = req.params;
+    const { id } = req.params;
     const response = await getBlogService(id);
 
     res.ourResponse = response;
 
     next();
   } catch (error) {
-    let { id } = req.params;
+    const { id } = req.params;
     const errorMessage = {
-      error: { ...error },
+      error: error.message,
       function: "getBlog",
       errorMessage: `Something went wrong while processing getBlog controller with ID ${id}`,
     };
@@ -37,7 +37,7 @@ async function getBlogsInCategory(req, res, next) {
   } catch (error) {
     const { category } = req.params;
     const errorMessage = {
-      ...error,
+      error: error.message,
       function: "getBlogsInCategory",
       errorMessage: "Internal Server Error",
       category,
@@ -57,11 +57,10 @@ async function getUserBlogsInCategory(req, res, next) {
   } catch (error) {
     const { userId, category } = req.params;
     const errorMessage = {
-      ...error,
+      error: error.message,
       function: "getUserBlogsInCategory",
       errorMessage: "An error occurred while fetching blogs",
-      userId,
-      category,
+      metaData: { userId, category },
     };
 
     next(errorMessage);
@@ -86,6 +85,7 @@ async function updateBlog(req, res, next) {
     next();
   } catch (error) {
     const errorMessage = {
+      error: error.message,
       function: "updateBlog",
       errorMessage: "Internal Server Error",
     };
@@ -102,6 +102,7 @@ async function deleteBlog(req, res, next) {
     next();
   } catch (error) {
     const errorMessage = {
+      error: error.message,
       function: "deleteBlog",
       errorMessage: "Internal Server Error",
     };
@@ -125,6 +126,7 @@ async function createBlog(req, res, next) {
     next();
   } catch (error) {
     const errorMessage = {
+      error: error.message,
       function: "createBlog",
       errorMessage: "Internal Server Error",
     };
