@@ -8,12 +8,12 @@ const {
 
 async function getUserController(req, res, next) {
   try {
-    let response = await getUser();
-    res.send(response);
+    const response = await getUser();
+    res.ourResponse = response;
     next();
   } catch (error) {
     const errorMessage = {
-      error: { ...error },
+      error: error.message,
       function: "getUserController",
       errorMessage: error.message || "Internal Server Error",
     };
@@ -25,12 +25,12 @@ async function getUserController(req, res, next) {
 async function deleteUserController(req, res, next) {
   try {
     const { userId } = req.params;
-    await deleteUser(userId);
-    res.json({ message: "User deleted successfully" });
+    const response = await deleteUser(userId);
+    res.ourResponse = response;
     next();
   } catch (error) {
     const errorMessage = {
-      error: { ...error },
+      error: error.message,
       function: "deleteUserController",
       errorMessage: error.message || "Internal Server Error",
     };
@@ -42,16 +42,11 @@ async function updateUserController(req, res, next) {
   try {
     const updatedUserData = req.body;
     const response = await updateUser(updatedUserData);
-
-    if (!response) {
-      throw new Error("No valid updates provided");
-    } else {
-      res.json(response);
-      next();
-    }
+    res.ourResponse = response;
+    next();
   } catch (error) {
     const errorMessage = {
-      error: { ...error },
+      error: error.message,
       function: "updateUserController",
       errorMessage: error.message,
     };
@@ -75,16 +70,13 @@ async function updateUserController(req, res, next) {
 async function confirmEmailSwapController(req, res, next) {
   try {
     const { token } = req.params;
-
-    await confirmEmailSwap(token);
-
-    res.json({ message: "Email swapped successfully" });
+    const response = await confirmEmailSwap(token);
+    res.ourResponse = response;
     next();
   } catch (error) {
     console.error(error);
-
     const errorMessage = {
-      error: { ...error },
+      error: error.message,
       function: "confirmEmailSwapController",
       errorMessage: error.message,
     };
