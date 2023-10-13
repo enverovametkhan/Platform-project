@@ -8,6 +8,7 @@ const {
 
 async function loginController(req, res, next) {
   try {
+    const { password, email } = req.body;
     const response = await login(email, password);
     res.ourResponse = response;
 
@@ -27,6 +28,7 @@ async function loginController(req, res, next) {
 
 async function signupController(req, res, next) {
   try {
+    const { email, username, password, confirmedPassword } = req.body;
     const response = await signup(username, email, password, confirmedPassword);
     res.ourResponse = response;
     next();

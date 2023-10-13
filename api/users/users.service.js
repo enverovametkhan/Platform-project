@@ -3,8 +3,9 @@ const { miniDatabase } = require("@root/database/miniDatabase");
 const { createToken, decryptToken } = require("@root/utilities/jwt");
 const { getAccessToUserData } = require("@root/utilities/getUserData");
 let userModel = miniDatabase.Users;
-// let resetPasswordHashModel = miniDatabase.ResetPasswordHash;
 let swapEmailHashModel = miniDatabase.SwapEmailHash;
+// let resetPasswordHashModel = miniDatabase.ResetPasswordHash;
+
 const saltRounds = 10;
 
 // async function hashPassword(password) {
@@ -13,45 +14,39 @@ const saltRounds = 10;
 
 async function getUser() {
   const userData = await getAccessToUserData();
+  const userIndex = userModel.findIndex((user) => user.id === userData.userId);
+  const user = userModel[userIndex];
 
-  const user = userModel.find((user) => user.id === userData.userId);
-
-  if (!user) {
-    throw new Error(`User not found for userId: ${userData.userId}`);
+  if (userIndex === -1) {
+    throw new Error("User has not been found");
   }
 
   return {
-    message: "User data retrieved successfully",
-    userData,
+    id: user.id,
+    username: user.username,
+    email: user.email,
   };
 }
 
 async function deleteUser() {
-  const userData = await getAccessToUserData();
-
-  if (!userData || !userData.userId) {
-    throw new Error("Invalid user data");
-  }
-
+  let userData = await getAccessToUserData();
   const userIndex = userModel.findIndex((user) => user.id === userData.userId);
+  const user = userModel[userIndex];
 
   if (userIndex === -1) {
     throw new Error("User not found");
   }
 
-  const user = userModel[userIndex];
-
   user.password = "";
   user.username = "";
+  user.refreshToken = "";
+  user.accessToken = "";
   user.deletedAt = Date.now();
 
-  console.log("User has been deleted with ID:", userData.userId);
-
-  userModel[userIndex] = user;
+  console.log("User has been deleted with ID:", user.userId);
 
   return {
     message: "User deleted successfully",
-    userData,
   };
 }
 

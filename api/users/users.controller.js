@@ -8,8 +8,9 @@ const {
 
 async function getUserController(req, res, next) {
   try {
-    const response = await getUser();
+    let response = await getUser();
     res.ourResponse = response;
+
     next();
   } catch (error) {
     const errorMessage = {
@@ -24,8 +25,7 @@ async function getUserController(req, res, next) {
 
 async function deleteUserController(req, res, next) {
   try {
-    const { userId } = req.params;
-    const response = await deleteUser(userId);
+    const response = await deleteUser();
     res.ourResponse = response;
     next();
   } catch (error) {

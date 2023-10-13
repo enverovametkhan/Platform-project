@@ -7,7 +7,7 @@ async function authMiddleware(req, res, next) {
     let accessToken = req.headers.accesstoken;
 
     //   we decrypt JWT token here and save the result in customData
-    let userData = await decryptToken;
+    let userData = await decryptToken(accessToken);
 
     // then we create a new object inside of the requst object called customData
     // this will ensure that we can have access to it anywhere in the application where req object is present
@@ -21,9 +21,9 @@ async function authMiddleware(req, res, next) {
   } catch (err) {
     console.log(err);
     let errorMessage = {
-      ...err,
+      error: err.message,
       function: "AuthMiddleware",
-      customMessage: "Unauthorized",
+      errorMessage: "Unauthorized",
     };
 
     // if an error occured we passed a modifed error object and its passed down to exception filter

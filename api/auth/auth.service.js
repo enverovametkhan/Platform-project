@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const { miniDatabase } = require("@root/database/miniDatabase");
-const { createToken, decryptToken } = require("@root/utilities/jwt");
 const { getAccessToUserData } = require("@root/utilities/getUserData");
+const { createToken, decryptToken } = require("@root/utilities/jwt");
 let userModel = miniDatabase.Users;
 const saltRounds = 10;
 
@@ -123,33 +123,20 @@ async function verifyEmail(token) {
 }
 
 async function logout() {
-  try {
-    const userData = await getAccessToUserData();
+  const userData = await getAccessToUserData();
 
-    if (!userData || !userData.userId) {
-      throw new Error("Invalid user data");
-    }
+  const userIndex = userModel.findIndex((user) => user.id === userData.userId);
 
-    const userIndex = userModel.findIndex(
-      (user) => user.id === userData.userId
-    );
-
-    if (userIndex === -1) {
-      throw new Error("User not found");
-    }
-
-    const user = userModel[userIndex];
-
-    user.accessToken = "";
-    user.refreshToken = "";
-
-    userModel[userIndex] = user;
-
-    return { message: "User logged out successfully", userData };
-  } catch (error) {
-    throw error;
+  if (userIndex === -1) {
+    throw new Error("User not found");
   }
+
+  userModel[userIndex].accessToken = "";
+  userModel[userIndex].refreshToken = "";
+
+  return { message: "Logged out successfully" };
 }
+
 async function refreshAccessToken() {
   const userData = await getAccessToUserData();
   const index = userModel.findIndex((user) => user.id === userData.userId);
