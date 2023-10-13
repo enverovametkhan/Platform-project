@@ -8,17 +8,10 @@ const {
 
 async function loginController(req, res, next) {
   try {
-    const { email, password } = req.body;
-    const user = await login(email, password);
+    const response = await login(email, password);
+    res.ourResponse = response;
 
-    if (user) {
-      res.json(user);
-      next();
-    } else {
-      const error = new Error("Authentication failed");
-      error.status = 401;
-      throw error;
-    }
+    next();
   } catch (error) {
     const { id } = req.params;
     const errorMessage = {
@@ -34,17 +27,8 @@ async function loginController(req, res, next) {
 
 async function signupController(req, res, next) {
   try {
-    const { username, email, password, confirmedPassword } = req.body;
-    if (!username || !email || !password || !confirmedPassword) {
-      const error = new Error(
-        "Username, email, password, and confirmedPassword are required."
-      );
-      error.status = 400;
-      throw error;
-    }
-
-    const newUser = await signup(username, email, password, confirmedPassword);
-    res.status(201).json(newUser);
+    const response = await signup(username, email, password, confirmedPassword);
+    res.ourResponse = response;
     next();
   } catch (error) {
     const errorMessage = {
@@ -59,13 +43,11 @@ async function signupController(req, res, next) {
 async function verifyEmailController(req, res, next) {
   try {
     const { token } = req.params;
-    await verifyEmail(token);
-
-    res.json({ message: "Email has been verified" });
+    const response = await verifyEmail(token);
+    res.ourResponse = response;
     next();
   } catch (error) {
     const errorMessage = {
-      error: { ...error },
       function: "verifyEmailController",
       errorMessage: error.message || "Internal Server Error",
     };
@@ -76,13 +58,11 @@ async function verifyEmailController(req, res, next) {
 
 async function logoutController(req, res, next) {
   try {
-    const userId = "";
-    await logout(userId);
-    res.status(200).json({ message: "Logged out successfully" });
+    const response = await logout();
+    res.ourResponse = response;
     next();
   } catch (error) {
     const errorMessage = {
-      error: { ...error },
       function: "logoutController",
       errorMessage: error.message || "Internal Server Error",
     };
@@ -93,12 +73,12 @@ async function logoutController(req, res, next) {
 
 async function refreshAccessTokenController(req, res, next) {
   try {
-    const response = await refreshAccessToken();
-    res.send(response);
+    const { token } = req.params;
+    const response = await refreshAccessToken(token);
+    res.ourResponse = response;
     next();
   } catch (error) {
     const errorMessage = {
-      error: { ...error },
       function: "refreshAccessTokenController",
       errorMessage: error.message || "Internal Server Error",
     };
