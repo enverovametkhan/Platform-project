@@ -1,5 +1,5 @@
 const { miniDatabase } = require("@root/database/miniDatabase");
-const { getAccessToUserData } = require("@root/middleware/getUserData");
+const { getAccessToUserData } = require("@root/utilities/getUserData");
 
 const blogsModel = miniDatabase.Blogs;
 const blogsCommentModel = miniDatabase.BlogComments;

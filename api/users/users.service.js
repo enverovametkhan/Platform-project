@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const { miniDatabase } = require("@root/database/miniDatabase");
 const { createToken, decryptToken } = require("@root/utilities/jwt");
-const { getAccessToUserData } = require("@root/middleware/getUserData");
+const { getAccessToUserData } = require("@root/utilities/getUserData");
 let userModel = miniDatabase.Users;
 // let resetPasswordHashModel = miniDatabase.ResetPasswordHash;
 let swapEmailHashModel = miniDatabase.SwapEmailHash;
