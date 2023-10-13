@@ -7,16 +7,14 @@ const {
 async function resetPasswordController(req, res, next) {
   try {
     const { email } = req.params;
-
     const response = await resetPassword(email);
-
-    res.status(response.status).json({ message: response.message });
+    res.ourResponse = response;
     next();
   } catch (error) {
     console.error(error);
 
     const errorMessage = {
-      error: { ...error },
+      error: error.message,
       function: "resetPasswordController",
       errorMessage: error.message,
     };
@@ -27,14 +25,13 @@ async function resetPasswordController(req, res, next) {
 async function checkResetPasswordTokenController(req, res, next) {
   try {
     const { token } = req.params;
-    console.log("Check Reset Password Token:", token);
-    await checkResetPasswordToken(token);
-    res.json({ message: "Token is valid" });
+    const response = await checkResetPasswordToken(token);
+    res.ourResponse = response;
     next();
   } catch (error) {
     console.error(error);
     const errorMessage = {
-      error: { ...error },
+      error: error.message,
       function: "checkResetPasswordTokenController",
       errorMessage: error.message,
     };
@@ -45,16 +42,14 @@ async function checkResetPasswordTokenController(req, res, next) {
 async function changePasswordController(req, res, next) {
   try {
     const { token, password, confirmedPassword } = req.body;
-
-    await changePassword(token, password, confirmedPassword);
-
-    res.json({ message: "Password changed successfully" });
+    const response = await changePassword(token, password, confirmedPassword);
+    res.ourResponse = response;
     next();
   } catch (error) {
     console.error(error);
 
     const errorMessage = {
-      error: { ...error },
+      error: error.message,
       function: "changePasswordController",
       errorMessage: error.message,
     };
