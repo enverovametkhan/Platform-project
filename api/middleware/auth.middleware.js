@@ -4,10 +4,10 @@ const { decryptToken } = require("@root/utilities/jwt");
 async function authMiddleware(req, res, next) {
   try {
     // we accept the token from Headers in the postman but for the sake of this example we use the hardcoded data
-    let accessToken = req.headers.accesstoken;
+    const accessToken = req.headers.accesstoken;
 
     //   we decrypt JWT token here and save the result in customData
-    let userData = await decryptToken(accessToken);
+    constuserData = await decryptToken(accessToken);
 
     // then we create a new object inside of the requst object called customData
     // this will ensure that we can have access to it anywhere in the application where req object is present
@@ -20,7 +20,7 @@ async function authMiddleware(req, res, next) {
     next(); // Continue to the next middleware or route handler
   } catch (err) {
     console.log(err);
-    let errorMessage = {
+    const errorMessage = {
       error: err.message,
       function: "AuthMiddleware",
       errorMessage: "Unauthorized",

@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const { miniDatabase } = require("@root/database/miniDatabase");
 const { getAccessToUserData } = require("@root/utilities/getUserData");
 const { createToken, decryptToken } = require("@root/utilities/jwt");
-let userModel = miniDatabase.Users;
+const userModel = miniDatabase.Users;
 const saltRounds = 10;
 
 async function hashPassword(password) {
@@ -105,7 +105,7 @@ async function signup(username, email, password, confirmedPassword) {
 }
 
 async function verifyEmail(token) {
-  let userData = await decryptToken(token);
+  const userData = await decryptToken(token);
   const userIndex = userModel.findIndex((user) => user.id === userData.userId);
 
   if (userIndex === -1) {
@@ -115,7 +115,7 @@ async function verifyEmail(token) {
 
   userModel[userIndex].verifyEmail = "";
 
-  let response = {
+  const response = {
     message: "Email verified successfully",
     status: 200,
   };
@@ -147,7 +147,7 @@ async function refreshAccessToken() {
 
   const user = userModel[index];
 
-  let userDataToUpdate = {
+  const userDataToUpdate = {
     userId: user.id,
     email: user.email,
     username: user.username,

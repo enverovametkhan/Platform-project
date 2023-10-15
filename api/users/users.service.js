@@ -29,7 +29,7 @@ async function getUser() {
 }
 
 async function deleteUser() {
-  let userData = await getAccessToUserData();
+  const userData = await getAccessToUserData();
   const userIndex = userModel.findIndex((user) => user.id === userData.userId);
   const user = userModel[userIndex];
 
@@ -121,23 +121,23 @@ async function swapEmail(newEmail) {
 }
 
 async function confirmEmailSwap(token) {
-  let userData = await decryptToken(token);
+  const userData = await decryptToken(token);
 
-  let userIndex = userModel.findIndex(
+  const userIndex = userModel.findIndex(
     (eachUser) => eachUser.id === userData.userId
   );
-  let user = userModel[userIndex];
+  const user = userModel[userIndex];
   if (!user) throw new Error("No new user found");
 
-  let checkEmailSwapIndex = swapEmailHashModel.findIndex(
+  const checkEmailSwapIndex = swapEmailHashModel.findIndex(
     (each) => each.userId === user.id
   );
-  let checkEmailSwap = swapEmailHashModel[checkEmailSwapIndex];
+  const checkEmailSwap = swapEmailHashModel[checkEmailSwapIndex];
   console.log(checkEmailSwap);
   if (!checkEmailSwap)
     throw new Error("Something went wrong when trying to swap emails");
 
-  let message = `Swapped email from ${user.email} to ${checkEmailSwap.newEmail}`;
+  const message = `Swapped email from ${user.email} to ${checkEmailSwap.newEmail}`;
   console.log(message);
   user.email = checkEmailSwap.newEmail;
 

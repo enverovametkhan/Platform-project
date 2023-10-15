@@ -1,7 +1,7 @@
 const { miniDatabase } = require("@root/database/miniDatabase");
 
-let userModel = miniDatabase.Users;
-let resetPasswordHashModel = miniDatabase.ResetPasswordHash;
+const userModel = miniDatabase.Users;
+const resetPasswordHashModel = miniDatabase.ResetPasswordHash;
 
 module.exports = {
   userModel,

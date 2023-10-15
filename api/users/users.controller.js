@@ -8,7 +8,7 @@ const {
 
 async function getUserController(req, res, next) {
   try {
-    let response = await getUser();
+    const response = await getUser();
     res.ourResponse = response;
 
     next();

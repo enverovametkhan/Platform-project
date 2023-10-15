@@ -6,9 +6,9 @@ let resetPasswordHashModel = miniDatabase.ResetPasswordHash;
 const saltRounds = 10;
 
 async function resetPassword(email) {
-  let userData = userModel.find((eachUser) => eachUser.email === email);
+  const userData = userModel.find((eachUser) => eachUser.email === email);
 
-  let checkExistingResetPasswordHash = resetPasswordHashModel.find(
+  const checkExistingResetPasswordHash = resetPasswordHashModel.find(
     (each) => each.userId === userData.userId
   );
 
@@ -20,8 +20,8 @@ async function resetPassword(email) {
 
     console.log("Password reset link already used, removing it.");
   }
-  let token = await createToken({ userId: userData.userId }, "7d");
-  let resetPasswordHash = {
+  const token = await createToken({ userId: userData.userId }, "7d");
+  const resetPasswordHash = {
     id: "",
     userId: userData.id,
     token: token,
