@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styles from "./main.module.scss";
 import { getBlogsInCategory } from "src/redux/slice";
@@ -9,17 +9,16 @@ import image2 from "src/Assets/image2.jpg";
 import image3 from "src/Assets/image3.jpg";
 import image4 from "src/Assets/image4.jpg";
 
-const ImageGallery = () => {
+const ImageGallery = ({ selectedCategory }) => {
   const dispatch = useDispatch();
-
   const [filteredImages, setFilteredImages] = useState([]);
-  const [selectedCategory] = useState("myblog");
 
   useEffect(() => {
     const loadImagesByCategory = async (category) => {
       try {
-        let test = await dispatch(getBlogsInCategory("UX-UI"));
+        let test = await dispatch(getBlogsInCategory(category));
         console.log(test);
+
         const categoryImages = {
           myblog: [image1, image3, image4],
           technology: [image2, image4, image3],

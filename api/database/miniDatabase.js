@@ -92,7 +92,7 @@ let miniDatabase = {
       views: 62,
       likes: 33,
       visible: true,
-      category: "Life",
+      category: "life",
       createdAt: 1694855778,
       updatedAt: 1694855778,
     },

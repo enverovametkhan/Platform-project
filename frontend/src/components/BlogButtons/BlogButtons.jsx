@@ -8,8 +8,6 @@ const BlogButtons = () => {
   const blogs = useSelector((state) => state.blogs.blogs);
 
   const handleClick = async (category) => {
-    const state = { ...blogs };
-    state.currentCategory = category;
     dispatch(getBlogsInCategory(category));
   };
 
@@ -21,9 +19,9 @@ const BlogButtons = () => {
     <div className={styles.buttonContainer}>
       <button
         className={styles.blogButton}
-        onClick={() => handleClick("myblog")}
+        onClick={() => handleClick("nature")}
       >
-        My blog
+        Nature
       </button>
       <button
         className={styles.blogButton}
