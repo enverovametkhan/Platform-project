@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getBlogsInCategory } from "src/redux/slice";
+import { getBlogsInCategory } from "src/redux/slices/blogs";
 import styles from "./main.module.scss";
 
 const BlogButtons = () => {
