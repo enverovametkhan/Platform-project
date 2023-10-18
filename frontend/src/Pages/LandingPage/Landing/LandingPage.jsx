@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styles from "./main.module.scss";
-import BlogButtons from "src/components/BlogButtons/BlogButtons";
 import ImageGallery from "src/Pages/LandingPage/ImageGallery/ImageGallery";
 import AuthButtons from "src/components/AuthButtons/AuthButtons";
 import Footer from "src/Pages/LandingPage/Footer/Footer";
@@ -21,20 +20,21 @@ function LandingPage() {
 
   const handleCategoryChange = (selectedCategory) => {
     setCategory(selectedCategory);
+    fetchData(selectedCategory);
+  };
+
+  const fetchData = async (selectedCategory) => {
+    try {
+      let response = await dispatch(getBlogsInCategory(selectedCategory));
+      await dispatch(setCurrentCategory(selectedCategory));
+      setBlogs(response.payload);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let blogs = await dispatch(getBlogsInCategory(category));
-        await dispatch(setCurrentCategory(category));
-        setBlogs(blogs.payload);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    fetchData();
-    console.log(category);
+    fetchData(category);
   }, [category, dispatch]);
 
   useEffect(() => {
@@ -46,21 +46,37 @@ function LandingPage() {
     <div className={styles.landingPage}>
       <AuthButtons />
       <h1 className={styles.yourClass}>the happy blog</h1>
-      <BlogButtons
-        selectedCategory={category}
-        onCategoryChange={handleCategoryChange}
-      />
-      {Array.isArray(blogs) ? (
-        blogs.map((eachBlog) => (
-          <ImageGallery
-            key={eachBlog.id}
-            id={eachBlog.id}
-            title={eachBlog.title}
-            likes={eachBlog.likes}
-          />
-        ))
-      ) }
-
+      <div className={styles.buttonContainer}>
+        <button
+          className={styles.blogButton}
+          onClick={() => handleCategoryChange("nature")}
+        >
+          Nature
+        </button>
+        <button
+          className={styles.blogButton}
+          onClick={() => handleCategoryChange("technology")}
+        >
+          Technology
+        </button>
+        <button
+          className={`${styles.blogButton} ${styles["life-button"]}`}
+          onClick={() => handleCategoryChange("life")}
+        >
+          Life
+        </button>
+      </div>
+      <div className={styles.blogImg}>
+        {Array.isArray(blogs.blogs) &&
+          blogs.blogs.map((eachBlog) => (
+            <ImageGallery
+              id={eachBlog.id}
+              title={eachBlog.title}
+              likes={eachBlog.likes}
+              image={eachBlog.image}
+            />
+          ))}
+      </div>
       <Footer />
     </div>
   );

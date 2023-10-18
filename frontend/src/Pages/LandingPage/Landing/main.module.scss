@@ -1,5 +1,42 @@
 @import "/src/styles/globalstyle.scss";
 
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.blogButton {
+  background-color: #eef1f4;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  justify-content: center;
+  color: #545f71;
+  text-align: center;
+  font-family: Junge;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  transition: background-color 0.3s;
+}
+
+.blogButton.life-button {
+  width: 200px;
+}
+
+.blogButton.activeButton {
+  background-color: #a7b5ca;
+}
+
+.buttonContainer button:hover {
+  background-color: #a7b5ca;
+}
+
 .landingPage {
   display: flex;
   flex-direction: column;
@@ -17,4 +54,10 @@
   margin-left: 50px;
   font-family: Junge;
   margin-top: 100px;
+}
+
+.blogImg {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
