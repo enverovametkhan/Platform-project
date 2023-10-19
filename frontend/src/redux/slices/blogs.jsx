@@ -10,42 +10,78 @@ const initialState = {
 };
 
 export const getBlogsInCategory = createAsyncThunk(
-  "get/blogs",
-  async (category) => {
-    const response = await api.get(`blog/category/${category}`);
-
-    return response.data;
+  "blogs/getByCategory",
+  async (category, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`blog/category/${category}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
-export const getBlog = createAsyncThunk("get/blog", async (id) => {
-  const response = await api.get(`blog/id/${id}`);
 
-  return response.data;
-});
+export const getBlog = createAsyncThunk(
+  "blog/getById",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`blog/id/${id}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 export const getUserBlogsInCategory = createAsyncThunk(
-  "get/blogcategory",
-  async (userId, category) => {
-    const response = await api.get(`blog/user/${(userId, category)}`);
-
-    return response.data;
+  "blogs/getByUserAndCategory",
+  async ({ userId, category }, { rejectWithValue }) => {
+    try {
+      const response = await api.get(
+        `blog/user/${userId}/category/${category}`
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
-export const updateBlog = createAsyncThunk("put/blog", async (id) => {
-  const response = await api.put(`blog/id/${id}`);
 
-  return response.data;
-});
-export const deleteBlog = createAsyncThunk("delete/blog", async (id) => {
-  const response = await api.delete(`blog/id/${id}`);
+export const updateBlog = createAsyncThunk(
+  "blog/update",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await api.put(`blog/id/${id}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
-  return response.data;
-});
-export const createBlog = createAsyncThunk("post/blog", async () => {
-  const response = await api.post(`blog`);
+export const deleteBlog = createAsyncThunk(
+  "blog/delete",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await api.delete(`blog/id/${id}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
-  return response.data;
-});
+export const createBlog = createAsyncThunk(
+  "blog/create",
+  async (blogData, { rejectWithValue }) => {
+    try {
+      const response = await api.post(`blog`, blogData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 const asyncActionHandlers = {
   [getBlogsInCategory.pending.type]: { status: "loading" },

@@ -1,12 +1,35 @@
 import styles from "./main.module.scss";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import React, { useEffect } from "react";
+import { useLocation, useParams } from "react-router";
 import image1 from "src/Assets/image1.jpg";
+import { getBlog, selectCurrentCategory } from "src/redux/slices/blogs";
 
 function Blog() {
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const [blogs, setBlogs] = useState([]);
+  const category = useSelector(selectCurrentCategory);
+
   useEffect(() => {
-    document.title = "My blog";
-  }, []);
+    document.title = "My Blog";
+
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(getBlog(id));
+        setBlogs(response.payload);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    fetchData();
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    console.log(blogs);
+  }, [blogs]);
 
   return (
     <div className={styles.container}>
