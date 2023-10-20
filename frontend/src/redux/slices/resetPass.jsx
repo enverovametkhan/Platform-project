@@ -76,7 +76,7 @@ const asyncActionHandlers = {
   },
 };
 
-export const userSlice = createSlice({
+export const resetPassSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
@@ -106,6 +106,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setCurrentUser } = userSlice.actions;
+export const { setCurrentUser } = resetPassSlice.actions;
 export const selectCurrentUser = (state) => state.user;
-export default userSlice.reducer;
+export default resetPassSlice.reducer;

@@ -3,6 +3,9 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
 import { blogsSlice } from "src/redux/slices/blogs";
+import { authSlice } from "src/redux/slices/auth";
+import { resetPassSlice } from "src/redux/slices/resetPass";
+import { usersSlice } from "src/redux/slices/users";
 
 const blogsRelated = {
   key: "blogs",
@@ -12,6 +15,9 @@ const blogsRelated = {
 
 const rootReducer = {
   blogs: persistReducer(blogsRelated, blogsSlice.reducer),
+  auth: authSlice.reducer,
+  resetPass: resetPassSlice.reducer,
+  users: usersSlice.reducer,
 };
 
 const store = configureStore({

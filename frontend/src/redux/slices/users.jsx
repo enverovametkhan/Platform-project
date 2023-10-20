@@ -99,7 +99,7 @@ const asyncActionHandlers = {
   },
 };
 
-export const userSlice = createSlice({
+export const usersSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
@@ -129,6 +129,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setCurrentUser } = userSlice.actions;
+export const { setCurrentUser } = usersSlice.actions;
 export const selectCurrentUser = (state) => state.user;
-export default userSlice.reducer;
+export default usersSlice.reducer;
