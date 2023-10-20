@@ -2,39 +2,36 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "src/axios/api";
 
 const initialState = {
-  currentCategory: "",
-  blogs: [],
-  currentBlog: {},
   status: "",
   error: "",
 };
 
+export const getBlog = createAsyncThunk(
+  "blogs/getBlog",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`blog/${id}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response);
+    }
+  }
+);
+
 export const getBlogsInCategory = createAsyncThunk(
-  "blogs/getByCategory",
+  "blogs/getBlogsInCategory",
   async (category, { rejectWithValue }) => {
     try {
       const response = await api.get(`blog/category/${category}`);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
-
-export const getBlog = createAsyncThunk(
-  "blog/getById",
-  async (id, { rejectWithValue }) => {
-    try {
-      const response = await api.get(`blog/id/${id}`);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
 
 export const getUserBlogsInCategory = createAsyncThunk(
-  "blogs/getByUserAndCategory",
+  "blogs/getUserBlogsInCategory",
   async ({ userId, category }, { rejectWithValue }) => {
     try {
       const response = await api.get(
@@ -42,54 +39,101 @@ export const getUserBlogsInCategory = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
 
 export const updateBlog = createAsyncThunk(
-  "blog/update",
+  "blogs/updateBlog",
   async (id, { rejectWithValue }) => {
     try {
       const response = await api.put(`blog/id/${id}`);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
 
 export const deleteBlog = createAsyncThunk(
-  "blog/delete",
+  "blogs/deleteBlog",
   async (id, { rejectWithValue }) => {
     try {
       const response = await api.delete(`blog/id/${id}`);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
 
 export const createBlog = createAsyncThunk(
-  "blog/create",
+  "blogs/createBlog",
   async (blogData, { rejectWithValue }) => {
     try {
       const response = await api.post(`blog`, blogData);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
 
 const asyncActionHandlers = {
+  [getBlog.pending.type]: { status: "loading" },
+  [getBlog.fulfilled.type]: (state, action) => {
+    state.blog = action.payload;
+    state.status = "success";
+  },
+  [getBlog.rejected.type]: (state, action) => {
+    state.status = "failed";
+    state.error = action.error.message;
+  },
   [getBlogsInCategory.pending.type]: { status: "loading" },
   [getBlogsInCategory.fulfilled.type]: (state, action) => {
     state.blogs = action.payload;
     state.status = "success";
   },
-  [getBlogsInCategory.rejected.type]: { status: "failed" },
+  [getBlogsInCategory.rejected.type]: (state, action) => {
+    state.status = "failed";
+    state.error = action.error.message;
+  },
+  [getUserBlogsInCategory.pending.type]: { status: "loading" },
+  [getUserBlogsInCategory.fulfilled.type]: (state, action) => {
+    state.userBlogs = action.payload;
+    state.status = "success";
+  },
+  [getUserBlogsInCategory.rejected.type]: (state, action) => {
+    state.status = "failed";
+    state.error = action.error.message;
+  },
+  [updateBlog.pending.type]: { status: "loading" },
+  [updateBlog.fulfilled.type]: (state, action) => {
+    state.blog = action.payload;
+    state.status = "success";
+  },
+  [updateBlog.rejected.type]: (state, action) => {
+    state.status = "failed";
+    state.error = action.error.message;
+  },
+  [deleteBlog.pending.type]: { status: "loading" },
+  [deleteBlog.fulfilled.type]: (state, action) => {
+    state.status = "success";
+  },
+  [deleteBlog.rejected.type]: (state, action) => {
+    state.status = "failed";
+    state.error = action.error.message;
+  },
+  [createBlog.pending.type]: { status: "loading" },
+  [createBlog.fulfilled.type]: (state, action) => {
+    state.blog = action.payload;
+    state.status = "success";
+  },
+  [createBlog.rejected.type]: (state, action) => {
+    state.status = "failed";
+    state.error = action.error.message;
+  },
 };
 
 export const blogsSlice = createSlice({

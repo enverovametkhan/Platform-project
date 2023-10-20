@@ -41,13 +41,21 @@ function getBlogInCategoryService(category) {
   };
 }
 
-async function getUserBlogInCategoryService(category) {
-  const blogsInCategory = blogsModel.filter(
+async function getUserBlogInCategoryService(userId, category) {
+  if (!userId || !category) throw new Error("Missing required fields");
+  const userData = await getAccessToUserData();
+
+  if (userData.userId !== userId) {
+    throw new Error("Unauthorized");
+  }
+
+  let blogs = blogsModel.filter(
     (blog) => blog.category === category && blog.userId === userId
   );
 
-  const userData = await getAccessToUserData();
-
+  if (!blogs) {
+    throw new Error("No blogs found");
+  }
   return {
     message: "List of blogs successfully loaded",
     userData,

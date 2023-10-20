@@ -8,7 +8,6 @@ const blogsRelated = {
   key: "blogs",
   version: 2,
   storage,
-  whitelist: ["currentCategory"],
 };
 
 const rootReducer = {
