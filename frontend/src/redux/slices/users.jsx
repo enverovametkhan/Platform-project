@@ -1,6 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "src/axios/api";
 
+const initialState = {
+  status: "",
+  error: "",
+  currentUser: {},
+};
+
 export const getUserData = createAsyncThunk(
   "user/getUserData",
   async (_, { rejectWithValue }) => {
