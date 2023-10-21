@@ -1,13 +1,12 @@
 import styles from "./main.module.scss";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { useParams } from "react-router";
-import { getBlog } from "src/redux/slices/blogs";
+import { Link, useParams } from "react-router-dom";
+import getBlog from "src/redux/slices/blogs";
 
 function Blog() {
   const { id } = useParams();
-  const [blog, setBlog] = useState();
+  const [blog, setBlog] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -62,17 +61,16 @@ function Blog() {
             depicted in their books. I like making new friends, so if you like,
             you may become my friend as well.
           </p>
-          {blog && blog.comments && blog.comments[0] !== null && (
-            <div className={styles.comments}>
-              <h3>Comments</h3>
-              {blog.comments.map((comment) => (
-                <div key={comment.id}>
-                  <p>{comment.content}</p>
-                  <p>{comment.userId}</p>
-                </div>
-              ))}
-            </div>
-          )}
+          {blog &&
+            blog.comments &&
+            blog.comments[0] !== null &&
+            blog.comments.map((comment) => (
+              <div key={comment.id} className={styles.comments}>
+                <h3>Comments</h3>
+                <p>{comment.content}</p>
+                <p>{comment.userId}</p>
+              </div>
+            ))}
         </div>
       </div>
     </div>
