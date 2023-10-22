@@ -139,11 +139,7 @@ const asyncActionHandlers = {
 export const blogsSlice = createSlice({
   name: "blogs",
   initialState,
-  reducers: {
-    setCurrentCategory(state, action) {
-      state.currentCategory = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     Object.entries(asyncActionHandlers).forEach(([type, handler]) => {
       builder.addCase(type, (state, action) => {
@@ -165,6 +161,6 @@ export const blogsSlice = createSlice({
     });
   },
 });
-export const { setCurrentCategory } = blogsSlice.actions;
+
 export const selectCurrentCategory = (state) => state.currentCategory;
 export default blogsSlice.reducer;

@@ -2,7 +2,7 @@ import styles from "./main.module.scss";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import getBlog from "src/redux/slices/blogs";
+import { getBlog } from "src/redux/slices/blogs";
 
 function Blog() {
   const { id } = useParams();
@@ -10,13 +10,11 @@ function Blog() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    document.title = "My Blog";
-
     const fetchData = async () => {
       try {
         const response = await dispatch(getBlog(id));
+        console.log("Successful response data:", response.payload);
         setBlog(response.payload);
-        console.log(response.payload);
       } catch (e) {
         console.log(e);
       }

@@ -3,44 +3,29 @@ import styles from "./main.module.scss";
 import ImageGallery from "src/Pages/LandingPage/ImageGallery/ImageGallery";
 import AuthButtons from "src/components/AuthButtons/AuthButtons";
 import Footer from "src/Pages/LandingPage/Footer/Footer";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import {
-  getBlogsInCategory,
-  setCurrentCategory,
-  selectCurrentCategory,
-} from "src/redux/slices/blogs";
+import { useDispatch } from "react-redux";
+import { getBlogsInCategory } from "src/redux/slices/blogs";
 
 function LandingPage() {
   const dispatch = useDispatch();
-  const location = useLocation();
-  const globalCategory = useSelector(selectCurrentCategory);
   const [category, setCategory] = useState("nature");
   const [blogs, setBlogs] = useState([]);
 
-  const handleCategoryChange = (selectedCategory) => {
-    setCategory(selectedCategory);
-    fetchData(selectedCategory);
-  };
-
-  const fetchData = async (selectedCategory) => {
-    try {
-      let response = await dispatch(getBlogsInCategory(selectedCategory));
-      await dispatch(setCurrentCategory(selectedCategory));
-      setBlogs(response.payload);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   useEffect(() => {
-    fetchData(category);
-  }, [category, dispatch]);
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(getBlogsInCategory(category));
+        console.log("Successful response data:", response.payload);
+        setBlogs(response.payload);
+      } catch (e) {
+        console.log(e);
+      }
+    };
 
-  useEffect(() => {
-    console.log(blogs);
-    console.log(location);
-  }, [blogs]);
+    fetchData();
+  }, [category]);
+
+  useEffect(() => {}, [blogs]);
 
   return (
     <div className={styles.landingPage}>
@@ -49,19 +34,19 @@ function LandingPage() {
       <div className={styles.buttonContainer}>
         <button
           className={styles.blogButton}
-          onClick={() => handleCategoryChange("nature")}
+          onClick={() => setCategory("nature")}
         >
           Nature
         </button>
         <button
           className={styles.blogButton}
-          onClick={() => handleCategoryChange("technology")}
+          onClick={() => setCategory("technology")}
         >
           Technology
         </button>
         <button
           className={`${styles.blogButton} ${styles["life-button"]}`}
-          onClick={() => handleCategoryChange("life")}
+          onClick={() => setCategory("life")}
         >
           Life
         </button>
@@ -70,6 +55,7 @@ function LandingPage() {
         {Array.isArray(blogs.blogs) &&
           blogs.blogs.map((eachBlog) => (
             <ImageGallery
+              key={eachBlog.id}
               id={eachBlog.id}
               title={eachBlog.title}
               likes={eachBlog.likes}

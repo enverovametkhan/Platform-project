@@ -32,7 +32,7 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/resetpass" element={<ResetPassPage />} />
           <Route path="/confirmpass" element={<ConfirmNewPassPage />} />
-          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:id" element={<Blog />} />
           <Route path="/blogcomponents" element={<BlogComponents />} />
           <Route path="/dashboard/*" element={<NavigationBar />}>
             <Route path="createblog" element={<CreateBlog />} />
