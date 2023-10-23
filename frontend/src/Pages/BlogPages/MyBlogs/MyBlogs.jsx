@@ -1,32 +1,34 @@
 import styles from "./main.module.scss";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useParams } from "react-router";
 import { getUserBlogsInCategory } from "src/redux/slices/blogs";
+import { selectCurrentUser } from "src/redux/slices/auth";
 import ImageGallery from "src/Pages/LandingPage/ImageGallery/ImageGallery";
 import BlogButtons from "src/components/BlogButtons/BlogButtons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function MyBlogs() {
-  const { userId, category } = useParams();
-  const [blogs, setBlog] = useState(null);
+  const { userId } = useSelector(selectCurrentUser);
+  const [blogs, setBlogs] = useState(null);
+  const [category, setCategory] = useState("nature");
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(
+        console.log(userId);
+        const blogs = await dispatch(
           getUserBlogsInCategory({ userId, category })
         );
-        setBlog(response.payload);
-        console.log(response.payload);
+        console.log(userId, category);
+        setBlogs(blogs.payload);
       } catch (e) {
         console.log(e);
       }
     };
 
     fetchData();
-  }, [userId, dispatch]);
+  }, [category]);
 
   return (
     <div>

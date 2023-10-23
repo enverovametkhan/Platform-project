@@ -15,8 +15,7 @@ async function getBlogService(id) {
   }
 
   return {
-    message: "Here is the content for Blog Service",
-    blog,
+    ...blog,
     comments: [comments],
   };
 }

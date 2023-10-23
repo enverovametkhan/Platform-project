@@ -36,7 +36,7 @@ function App() {
           <Route path="/blogcomponents" element={<BlogComponents />} />
           <Route path="/dashboard/*" element={<NavigationBar />}>
             <Route path="createblog" element={<CreateBlog />} />
-            <Route path="myblogs" element={<MyBlogs />} />
+            <Route path="myblogs/:userId" element={<MyBlogs />} />
             <Route path="editblog" element={<EditBlog />} />
             <Route path="myaccount" element={<MyAccount />} />
           </Route>
