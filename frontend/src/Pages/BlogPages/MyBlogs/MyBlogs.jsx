@@ -2,7 +2,7 @@ import styles from "./main.module.scss";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getUserBlogsInCategory } from "src/redux/slices/blogs";
-import { selectCurrentUser } from "src/redux/slices/auth";
+import { selectCurrentUser } from "src/redux/slices/users";
 import ImageGallery from "src/Pages/LandingPage/ImageGallery/ImageGallery";
 import BlogButtons from "src/components/BlogButtons/BlogButtons";
 import { useDispatch, useSelector } from "react-redux";

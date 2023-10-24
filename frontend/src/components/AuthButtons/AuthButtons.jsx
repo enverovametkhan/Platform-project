@@ -5,10 +5,10 @@ import styles from "./main.module.scss";
 const AuthButtons = () => {
   return (
     <div className={styles.authButton}>
-      <Link to="/login">
+      <Link to="/auth/login">
         <button className={styles.authButton}>Log In</button>
       </Link>
-      <Link to="/signup">
+      <Link to="/auth/signup">
         <button className={styles.authButton}>Sign Up</button>
       </Link>
     </div>

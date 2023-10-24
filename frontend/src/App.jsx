@@ -28,8 +28,8 @@ function App() {
       <div className="app">
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/auth/login" element={<LoginPage />} />
+          <Route path="/auth/signup" element={<SignupPage />} />
           <Route path="/resetpass" element={<ResetPassPage />} />
           <Route path="/confirmpass" element={<ConfirmNewPassPage />} />
           <Route path="/blog/:id" element={<Blog />} />

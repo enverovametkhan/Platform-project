@@ -104,7 +104,7 @@ export const usersSlice = createSlice({
   initialState,
   reducers: {
     setCurrentUser(state, action) {
-      state.user = action.payload;
+      state.currentUser = action.payload;
     },
   },
   extraReducers: (builder) => {

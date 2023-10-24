@@ -6,14 +6,13 @@ const initialState = {
   accessToken: "",
   refreshToken: "",
   status: "",
-  error: "",
 };
 
 export const loginUser = createAsyncThunk(
   "auth/login",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await api.post("/api/user/login", userData);
+      const response = await api.post("auth/login", userData);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response);
@@ -25,7 +24,7 @@ export const signupUser = createAsyncThunk(
   "auth/signup",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await api.post("/api/user/signup", userData);
+      const response = await api.post("auth/signup", userData);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response);
@@ -37,7 +36,7 @@ export const verifyEmail = createAsyncThunk(
   "auth/verifyEmail",
   async (token, { rejectWithValue }) => {
     try {
-      const response = await api.get(`/api/user/verifyEmail/${token}`);
+      const response = await api.get(`user/verifyEmail/${token}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response);
@@ -49,7 +48,7 @@ export const logoutUser = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get("/api/user/logout");
+      const response = await api.get("user/logout");
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response);
@@ -61,7 +60,7 @@ export const refreshAuthToken = createAsyncThunk(
   "auth/refreshAuthToken",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get("/api/user/refreshAuthToken");
+      const response = await api.get("/user/refreshAuthToken");
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response);
@@ -76,7 +75,6 @@ const asyncActionHandlers = {
     state.accessToken = action.payload.accessToken;
     state.refreshToken = action.payload.refreshToken;
     state.status = "success";
-    state.user = action.payload.user;
   },
   [loginUser.rejected.type]: (state, action) => {
     state.status = "failed";
@@ -88,7 +86,6 @@ const asyncActionHandlers = {
     state.accessToken = action.payload.accessToken;
     state.refreshToken = action.payload.refreshToken;
     state.status = "success";
-    state.user = action.payload.user;
   },
   [signupUser.rejected.type]: (state, action) => {
     state.status = "failed";
@@ -108,7 +105,6 @@ const asyncActionHandlers = {
     state.accessToken = "";
     state.refreshToken = "";
     state.status = "success";
-    state.user = null;
   },
   [logoutUser.rejected.type]: (state, action) => {
     state.status = "failed";
@@ -127,13 +123,9 @@ const asyncActionHandlers = {
 };
 
 export const authSlice = createSlice({
-  name: "user",
+  name: "auth",
   initialState,
-  reducers: {
-    setCurrentUser(state, action) {
-      state.user = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     Object.entries(asyncActionHandlers).forEach(([type, handler]) => {
       builder.addCase(type, (state, action) => {
@@ -156,6 +148,4 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setCurrentUser } = authSlice.actions;
-export const selectCurrentUser = (state) => state.user;
 export default authSlice.reducer;

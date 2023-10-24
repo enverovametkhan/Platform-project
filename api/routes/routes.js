@@ -47,8 +47,8 @@ module.exports = (app) => {
   app.post("/api/blog", authMiddleware, createBlog);
 
   // User Routes
-  app.post("/api/user/login", loginController);
-  app.post("/api/user/signup", signupController);
+  app.post("/api/auth/login", loginController);
+  app.post("/api/auth/signup", signupController);
   app.get("/api/user/verifyEmail/:token", verifyEmailController);
   app.get("/api/user/logout", authMiddleware, logoutController);
   app.get("/api/user", authMiddleware, getUserController);

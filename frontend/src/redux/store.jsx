@@ -13,9 +13,16 @@ const blogsRelated = {
   storage,
 };
 
+const authRelated = {
+  key: "auth",
+  version: 2,
+  storage,
+  whitelist: ["refreshToken", "accessToken", "isAuthenticated"],
+};
+
 const rootReducer = {
   blogs: persistReducer(blogsRelated, blogsSlice.reducer),
-  auth: authSlice.reducer,
+  auth: persistReducer(authRelated, authSlice.reducer),
   resetPass: resetPassSlice.reducer,
   users: usersSlice.reducer,
 };
