@@ -21,7 +21,8 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const response = await dispatch(loginUser(formData));
-      if (response.payload) {
+      if (response.payload && response.payload.message) {
+        const message = response.payload.message;
         const userData = {
           userId: response.payload.userId,
           email: response.payload.email,

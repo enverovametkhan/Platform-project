@@ -106,6 +106,4 @@ export const resetPassSlice = createSlice({
   },
 });
 
-export const { setCurrentUser } = resetPassSlice.actions;
-export const selectCurrentUser = (state) => state.user;
 export default resetPassSlice.reducer;

@@ -82,9 +82,6 @@ const asyncActionHandlers = {
   },
   [signupUser.pending.type]: { status: "loading" },
   [signupUser.fulfilled.type]: (state, action) => {
-    state.isAuthenticated = true;
-    state.accessToken = action.payload.accessToken;
-    state.refreshToken = action.payload.refreshToken;
     state.status = "success";
   },
   [signupUser.rejected.type]: (state, action) => {
