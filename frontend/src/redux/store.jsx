@@ -7,7 +7,7 @@ import { authSlice } from "src/redux/slices/auth";
 import { resetPassSlice } from "src/redux/slices/resetPass";
 import { usersSlice } from "src/redux/slices/users";
 
-const blogsRelated = {
+const main = {
   key: "blogs",
   version: 2,
   storage,
@@ -20,11 +20,18 @@ const authRelated = {
   whitelist: ["refreshToken", "accessToken", "isAuthenticated"],
 };
 
+const userRelated = {
+  key: "user",
+  version: 2,
+  storage,
+  whitelist: ["currentUser"],
+};
+
 const rootReducer = {
-  blogs: persistReducer(blogsRelated, blogsSlice.reducer),
+  blogs: persistReducer(main, blogsSlice.reducer),
   auth: persistReducer(authRelated, authSlice.reducer),
-  resetPass: resetPassSlice.reducer,
-  users: usersSlice.reducer,
+  resetPass: persistReducer(main, resetPassSlice.reducer),
+  users: persistReducer(userRelated, usersSlice.reducer),
 };
 
 const store = configureStore({

@@ -21,17 +21,11 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const response = await dispatch(loginUser(formData));
-      if (response.payload && response.payload.message) {
-        const message = response.payload.message;
-        const userData = {
-          userId: response.payload.userId,
-          email: response.payload.email,
-          username: response.payload.username,
-        };
-        console.log(response);
-        dispatch(setCurrentUser(userData));
-        navigate("/dashboard/*", { replace: true });
-      }
+
+      console.log(response);
+
+      console.log(response.payload);
+      navigate("/dashboard/*", { replace: true });
     } catch (error) {
       console.error("Login Error:", error);
     }
