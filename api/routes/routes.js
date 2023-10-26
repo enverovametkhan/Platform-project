@@ -28,9 +28,9 @@ const {
 } = require("@root/users/users.controller");
 
 const {
-  resetPasswordController,
+  resetPasswordReqController,
   checkResetPasswordTokenController,
-  changePasswordController,
+  resetPasswordController,
 } = require("@root/resetPass/resetPass.controller");
 
 module.exports = (app) => {
@@ -59,12 +59,12 @@ module.exports = (app) => {
     authMiddleware,
     refreshAccessTokenController
   );
-  app.get("/api/user/resetPassword/:email", resetPasswordController);
+  app.get("/api/user/resetPasswordReq/:email", resetPasswordReqController);
   app.get(
     "/api/user/checkResetPasswordToken/:token",
     checkResetPasswordTokenController
   );
-  app.put("/api/user/changePassword", changePasswordController);
+  app.put("/api/user/resetPassword", resetPasswordController);
   // router.post("/api/user/swapEmail/", swapEmailController);
   app.get("/api/user/confirmEmailSwap/:token", confirmEmailSwapController);
 };

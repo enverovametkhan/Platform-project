@@ -1,62 +1,93 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router";
 import styles from "./main.module.scss";
-import { changePassword } from "src/redux/slices/resetPass";
+import {
+  resetPassword,
+  checkResetPasswordToken,
+} from "src/redux/slices/resetPass";
 
 const ConfirmNewPassPage = () => {
   const dispatch = useDispatch();
-  const [token, setToken] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmedPassword, setConfirmedPassword] = useState("");
+  const { token } = useParams();
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    password: "",
+    confirmedPassword: "",
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-    if (password !== confirmedPassword) {
-      console.error("Passwords do not match");
-      return;
-    }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let response = await dispatch(checkResetPasswordToken(token));
+        if (response.payload.status !== 200) {
+          return;
+        }
+      } catch (e) {
+        console.log("error");
+        console.log(e);
+      }
+    };
+    fetchData();
+  }, []);
 
+  const handleResetPassword = async () => {
     try {
-      const response = await dispatch(
-        changePassword({ token, password, confirmedPassword })
-      );
+      if (formData.password === formData.confirmedPassword) {
+        let payload = {
+          passwordData: formData,
+          token,
+        };
+        let response = await dispatch(resetPassword(payload));
 
-      console.log(response);
+        console.log(response);
+        console.log("Password changed successfully");
+        navigate("/auth/login");
+      } else {
+        console.error("Passwords do not match");
+      }
     } catch (error) {
-      console.error("Password change error:", error);
+      console.error("Error", error);
     }
   };
 
   return (
     <div className={styles.confirmPage}>
-      <form onSubmit={handleSubmit}>
-        <div className={styles.formGroup}>
-          <label htmlFor="password" className={styles.myLabel}>
-            Password
-          </label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+      <div className={styles.formGroup}>
+        <label htmlFor="password" className={styles.myLabel}>
+          Password
+        </label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value={formData.password}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
 
-        <div className={styles.formGroup}>
-          <label htmlFor="confirmPassword" className={styles.myLabel}>
-            Confirm new password
-          </label>
-          <input
-            type="password"
-            value={confirmedPassword}
-            onChange={(e) => setConfirmedPassword(e.target.value)}
-          />
-        </div>
+      <div className={styles.formGroup}>
+        <label htmlFor="confirmedPassword" className={styles.myLabel}>
+          Confirm new password
+        </label>
+        <input
+          type="password"
+          id="confirmedPassword"
+          name="confirmedPassword"
+          value={formData.confirmedPassword}
+          onChange={handleInputChange}
+        />
+      </div>
 
-        <button className={styles.confirmBut} type="submit">
-          Confirm new Password
-        </button>
-      </form>
+      <button className={styles.confirmBut} onClick={handleResetPassword}>
+        Confirm new Password
+      </button>
     </div>
   );
 };

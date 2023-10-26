@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./main.module.scss";
 import { useDispatch } from "react-redux";
-import { resetPassword } from "src/redux/slices/resetPass";
+import { resetPasswordReq } from "src/redux/slices/resetPass";
 
 const ResetPassPage = () => {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const ResetPassPage = () => {
   const [finishedResetPass, setFinishedResetPass] = useState(true);
   const handleResetPassword = async () => {
     try {
-      let response = await dispatch(resetPassword(email));
+      let response = await dispatch(resetPasswordReq(email));
       setFinishedResetPass(false);
       console.log("Password reset request successful. Response:", response);
     } catch (error) {

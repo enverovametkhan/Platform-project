@@ -1,13 +1,13 @@
 const {
-  resetPassword,
+  resetPasswordReq,
   checkResetPasswordToken,
-  changePassword,
+  resetPassword,
 } = require("./resetPass.service");
 
-async function resetPasswordController(req, res, next) {
+async function resetPasswordReqController(req, res, next) {
   try {
     const { email } = req.params;
-    const response = await resetPassword(email);
+    const response = await resetPasswordReq(email);
     res.ourResponse = response;
     next();
   } catch (error) {
@@ -39,10 +39,11 @@ async function checkResetPasswordTokenController(req, res, next) {
   }
 }
 
-async function changePasswordController(req, res, next) {
+async function resetPasswordController(req, res, next) {
   try {
-    const { token, password, confirmedPassword } = req.body;
-    const response = await changePassword(token, password, confirmedPassword);
+    const { token } = req.params;
+    const { password, confirmedPassword } = req.body;
+    const response = await resetPassword(token, password, confirmedPassword);
     res.ourResponse = response;
     next();
   } catch (error) {
@@ -58,7 +59,7 @@ async function changePasswordController(req, res, next) {
 }
 
 module.exports = {
-  resetPasswordController,
+  resetPasswordReqController,
   checkResetPasswordTokenController,
-  changePasswordController,
+  resetPasswordController,
 };

@@ -22,10 +22,18 @@ const LoginPage = () => {
     try {
       const response = await dispatch(loginUser(formData));
 
-      console.log(response);
+      if (response.payload && response.payload.message) {
+        const message = response.payload.message;
+        const userData = {
+          userId: response.payload.userId,
+          email: response.payload.email,
+          username: response.payload.username,
+        };
 
-      console.log(response.payload);
-      navigate("/dashboard/*", { replace: true });
+        console.log(response.payload);
+        dispatch(setCurrentUser(userData));
+        navigate("/dashboard/*", { replace: true });
+      }
     } catch (error) {
       console.error("Login Error:", error);
     }

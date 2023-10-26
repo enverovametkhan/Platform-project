@@ -6,11 +6,11 @@ const initialState = {
   error: "",
 };
 
-export const resetPassword = createAsyncThunk(
-  "user/resetPassword",
+export const resetPasswordReq = createAsyncThunk(
+  "user/resetPasswordReq",
   async (email, { rejectWithValue }) => {
     try {
-      const response = await api.get(`/api/user/resetPassword/${email}`);
+      const response = await api.get(`user/resetPassword/${email}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response);
@@ -22,9 +22,7 @@ export const checkResetPasswordToken = createAsyncThunk(
   "user/checkResetPasswordToken",
   async (token, { rejectWithValue }) => {
     try {
-      const response = await api.get(
-        `/api/user/checkResetPasswordToken/${token}`
-      );
+      const response = await api.get(`user/checkResetPasswordToken/${token}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response);
@@ -32,27 +30,26 @@ export const checkResetPasswordToken = createAsyncThunk(
   }
 );
 
-export const changePassword = createAsyncThunk(
-  "user/changePassword",
-  async (newPasswordData, { rejectWithValue }) => {
+export const resetPassword = createAsyncThunk(
+  "user/resetPassword",
+  async (payload, { rejectWithValue }) => {
     try {
-      const response = await api.put(
-        "/api/user/changePassword",
-        newPasswordData
-      );
+      const response = await api.put(`user/resetPassword/${payload.token}`, {
+        passwordData: payload.passwordData,
+      });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response);
+      return rejectWithValue(error.response.data);
     }
   }
 );
 
 const asyncActionHandlers = {
-  [resetPassword.pending.type]: { status: "loading" },
-  [resetPassword.fulfilled.type]: (state, action) => {
+  [resetPasswordReq.pending.type]: { status: "loading" },
+  [resetPasswordReq.fulfilled.type]: (state, action) => {
     state.status = "success";
   },
-  [resetPassword.rejected.type]: (state, action) => {
+  [resetPasswordReq.rejected.type]: (state, action) => {
     state.status = "failed";
     state.error = action.error.message;
   },
@@ -66,11 +63,11 @@ const asyncActionHandlers = {
     state.error = action.error.message;
   },
 
-  [changePassword.pending.type]: { status: "loading" },
-  [changePassword.fulfilled.type]: (state, action) => {
+  [resetPassword.pending.type]: { status: "loading" },
+  [resetPassword.fulfilled.type]: (state, action) => {
     state.status = "success";
   },
-  [changePassword.rejected.type]: (state, action) => {
+  [resetPassword.rejected.type]: (state, action) => {
     state.status = "failed";
     state.error = action.error.message;
   },
