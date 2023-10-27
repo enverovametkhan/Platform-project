@@ -21,7 +21,7 @@ const authRelated = {
 };
 
 const userRelated = {
-  key: "user",
+  key: "users",
   version: 2,
   storage,
   whitelist: ["currentUser"],

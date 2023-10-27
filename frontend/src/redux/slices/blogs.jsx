@@ -162,5 +162,5 @@ export const blogsSlice = createSlice({
   },
 });
 
-export const selectCurrentCategory = (state) => state.currentCategory;
+export const selectCurrentCategory = (state) => state.blogs.currentCategory;
 export default blogsSlice.reducer;

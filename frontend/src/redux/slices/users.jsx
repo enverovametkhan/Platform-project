@@ -4,14 +4,14 @@ import { api } from "src/axios/api";
 const initialState = {
   status: "",
   error: "",
-  currentUser: {},
+  currentUser: null,
 };
 
 export const getUserData = createAsyncThunk(
   "user/getUserData",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get("/api/user");
+      const response = await api.get("/user");
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response);
@@ -23,7 +23,7 @@ export const deleteUser = createAsyncThunk(
   "user/deleteUser",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.delete("/api/user/delete");
+      const response = await api.delete("/user/delete");
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response);
@@ -35,7 +35,7 @@ export const updateUser = createAsyncThunk(
   "user/updateUser",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await api.put("/api/user/update", userData);
+      const response = await api.put("/user/update", userData);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response);
@@ -130,5 +130,5 @@ export const usersSlice = createSlice({
 });
 
 export const { setCurrentUser } = usersSlice.actions;
-export const selectCurrentUser = (state) => state.user;
+export const selectCurrentUser = (state) => state.user.currentUser;
 export default usersSlice.reducer;

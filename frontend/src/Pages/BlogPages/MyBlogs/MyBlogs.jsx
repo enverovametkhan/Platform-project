@@ -1,45 +1,80 @@
+import React, { useState, useEffect } from "react";
 import styles from "./main.module.scss";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { getUserBlogsInCategory } from "src/redux/slices/blogs";
-import { selectCurrentUser } from "src/redux/slices/users";
 import ImageGallery from "src/Pages/LandingPage/ImageGallery/ImageGallery";
 import BlogButtons from "src/components/BlogButtons/BlogButtons";
 import { useDispatch, useSelector } from "react-redux";
+import { getUserBlogsInCategory } from "src/redux/slices/blogs";
 
 function MyBlogs() {
-  const { userId } = useSelector(selectCurrentUser);
-  const [blogs, setBlogs] = useState(null);
-  const [category, setCategory] = useState("nature");
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const [category, setCategory] = useState("nature");
+  const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log(userId);
-        const blogs = await dispatch(
-          getUserBlogsInCategory({ userId, category })
-        );
-        console.log(userId, category);
-        setBlogs(blogs.payload);
+        if (user && user.currentUser) {
+          const { id } = user.currentUser;
+          const response = await dispatch(
+            getUserBlogsInCategory({ id, category })
+          );
+          console.log("Successful response data:", response.payload);
+          setBlogs(response.payload);
+        }
       } catch (e) {
         console.log(e);
       }
     };
 
     fetchData();
-  }, [category]);
+  }, [category, dispatch, user]);
 
   return (
     <div>
       <div className={styles.myContainer}>
         <h1 className={styles.yourClass}>My blogs</h1>
-        <BlogButtons />
-        <ImageGallery />
-        {blogs && (
+
+        <div className={styles.buttonContainer}>
+          <button
+            className={styles.blogButton}
+            onClick={() => setCategory("nature")}
+          >
+            Nature
+          </button>
+          <button
+            className={styles.blogButton}
+            onClick={() => setCategory("technology")}
+          >
+            Technology
+          </button>
+          <button
+            className={`${styles.blogButton} ${styles["life-button"]}`}
+            onClick={() => setCategory("life")}
+          >
+            Life
+          </button>
+        </div>
+
+        {blogs ? (
+          blogs.map((eachBlog) => (
+            <div key={eachBlog.id}>
+              <ImageGallery
+                key={eachBlog.id}
+                id={eachBlog.id}
+                title={eachBlog.title}
+                likes={eachBlog.likes}
+                image={eachBlog.image}
+              />
+              <div>
+                <h1>{eachBlog.title}</h1>
+                <p>{eachBlog.content}</p>
+              </div>
+            </div>
+          ))
+        ) : (
           <div>
-            <h1>{blogs.title}</h1>
-            <p>{blogs.content}</p>
+            <h1>No blogs found</h1>
           </div>
         )}
       </div>
