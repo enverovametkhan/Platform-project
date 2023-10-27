@@ -47,7 +47,7 @@ export const confirmEmailSwap = createAsyncThunk(
   "user/confirmEmailSwap",
   async (token, { rejectWithValue }) => {
     try {
-      const response = await api.get(`/api/user/confirmEmailSwap/${token}`);
+      const response = await api.get(`/user/confirmEmailSwap/${token}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response);

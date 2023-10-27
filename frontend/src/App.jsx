@@ -5,6 +5,8 @@ import SignupPage from "src/Pages/AuthPages/SignupPage/SignupPage";
 import LoginPage from "src/Pages/AuthPages/LogInPage/LoginPage/LoginPage";
 import ResetPassPage from "src/Pages/AuthPages/ResetPass/ResetPassPage";
 import ConfirmNewPassPage from "src/Pages/AuthPages/ConfirmNewPass/ConfirmNewPassPage";
+import ConfirmEmail from "src/Pages/Email/confirmEmail/confirmEmail";
+import VerifyEmail from "src/Pages/Email/verifyEmail/verifyEmail";
 import NavigationBar from "src/components/NavigationBar/NavigationBar";
 import Blog from "src/Pages/BlogPages/Blog/Blog";
 import MyBlogs from "src/Pages/BlogPages/MyBlogs/MyBlogs";
@@ -32,6 +34,9 @@ function App() {
           <Route path="/auth/signup" element={<SignupPage />} />
           <Route path="/resetpass" element={<ResetPassPage />} />
           <Route path="/confirmpass" element={<ConfirmNewPassPage />} />
+          <Route path="/confirmemail/:token" element={<ConfirmEmail />} />
+
+          <Route path="/verifyemail/:token" element={<VerifyEmail />} />
           <Route path="/blog/:id" element={<Blog />} />
           <Route path="/blogcomponents" element={<BlogComponents />} />
           <Route path="/dashboard/*" element={<NavigationBar />}>
