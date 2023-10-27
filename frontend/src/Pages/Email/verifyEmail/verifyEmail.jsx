@@ -12,8 +12,8 @@ const VerifyEmail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(confirmEmailSwap(token));
-
+        let response = await dispatch(confirmEmailSwap(token));
+        console.log(response.payload);
         if (response.payload.status === 200) {
           setValidToken(true);
         } else {
