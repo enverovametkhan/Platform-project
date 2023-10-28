@@ -15,7 +15,7 @@ import {
   CreateBlog,
   EditBlog,
   MyAccount,
-} from "src/components/LazyLoad";
+} from "src/components/LazyLoad/LazyLoads";
 import PageNotFound from "src/components/PageNotFound/PageNotFound";
 
 function App() {
@@ -31,7 +31,7 @@ function App() {
     <Router>
       <div className="app">
         <ErrorBoundary>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense>
             <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/auth/login" element={<LoginPage />} />

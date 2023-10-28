@@ -1,6 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "src/axios/api";
 
+const initialState = {
+  status: "",
+  error: "",
+  currentUser: null,
+};
+
 export const getUserData = createAsyncThunk(
   "user/getUserData",
   async (_, { rejectWithValue }) => {
@@ -49,66 +55,77 @@ export const confirmEmailSwap = createAsyncThunk(
   }
 );
 
-const usersSlice = createSlice({
-  name: "user",
-  initialState: {
-    status: "",
-    error: "",
-    currentUser: null,
+const asyncActionHandlers = {
+  [getUserData.pending.type]: { status: "loading" },
+  [getUserData.fulfilled.type]: (state, action) => {
+    state.user = action.payload;
+    state.status = "success";
   },
+  [getUserData.rejected.type]: (state, action) => {
+    state.status = "failed";
+    state.error = action.error.message;
+  },
+
+  [deleteUser.pending.type]: { status: "loading" },
+  [deleteUser.fulfilled.type]: (state, action) => {
+    state.isAuthenticated = false;
+    state.accessToken = "";
+    state.refreshToken = "";
+    state.status = "success";
+    state.user = null;
+  },
+  [deleteUser.rejected.type]: (state, action) => {
+    state.status = "failed";
+    state.error = action.error.message;
+  },
+
+  [updateUser.pending.type]: { status: "loading" },
+  [updateUser.fulfilled.type]: (state, action) => {
+    state.user = action.payload;
+    state.status = "success";
+  },
+  [updateUser.rejected.type]: (state, action) => {
+    state.status = "failed";
+    state.error = action.error.message;
+  },
+
+  [confirmEmailSwap.pending.type]: { status: "loading" },
+  [confirmEmailSwap.fulfilled.type]: (state, action) => {
+    state.status = "success";
+  },
+  [confirmEmailSwap.rejected.type]: (state, action) => {
+    state.status = "failed";
+    state.error = action.error.message;
+  },
+};
+
+export const usersSlice = createSlice({
+  name: "user",
+  initialState,
   reducers: {
     setCurrentUser(state, action) {
       state.currentUser = action.payload;
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(getUserData.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(getUserData.fulfilled, (state, action) => {
-        state.currentUser = action.payload;
-        state.status = "success";
-      })
-      .addCase(getUserData.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      })
-      .addCase(deleteUser.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(deleteUser.fulfilled, (state) => {
-        state.isAuthenticated = false;
-        state.accessToken = "";
-        state.refreshToken = "";
-        state.status = "success";
-        state.currentUser = null;
-      })
-      .addCase(deleteUser.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      })
-      .addCase(updateUser.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(updateUser.fulfilled, (state, action) => {
-        state.currentUser = action.payload;
-        state.status = "success";
-      })
-      .addCase(updateUser.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      })
-      .addCase(confirmEmailSwap.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(confirmEmailSwap.fulfilled, (state) => {
-        state.status = "success";
-      })
-      .addCase(confirmEmailSwap.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
+    Object.entries(asyncActionHandlers).forEach(([type, handler]) => {
+      builder.addCase(type, (state, action) => {
+        if (typeof handler === "function") {
+          handler(state, action);
+        } else {
+          const options = handler;
+          state.status = options.status;
+
+          if (options.resultProp) {
+            state[options.resultProp] = action.payload;
+          }
+
+          if (options.errorProp) {
+            state.error = action.error.message || null;
+          }
+        }
       });
+    });
   },
 });
 

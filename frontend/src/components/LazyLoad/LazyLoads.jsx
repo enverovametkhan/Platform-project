@@ -56,7 +56,7 @@ const MyBlogs = lazy(() =>
   }))
 );
 const EditBlog = lazy(() =>
-  import("src/Pages/BlogPages/EditBlog/EditBlog").then((module) => ({
+  import("src/Pages/BlogPages/EditBlog/EditBLog").then((module) => ({
     default: module.EditBlog,
   }))
 );
