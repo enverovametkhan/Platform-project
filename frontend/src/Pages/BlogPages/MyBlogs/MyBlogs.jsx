@@ -8,26 +8,14 @@ import { getUserBlogsInCategory } from "src/redux/slices/blogs";
 function MyBlogs() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const blogs = useSelector((state) => state.blogs.userBlogsInCategory);
   const [category, setCategory] = useState("nature");
-  const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (user && user.currentUser) {
-          const { id } = user.currentUser;
-          const response = await dispatch(
-            getUserBlogsInCategory({ id, category })
-          );
-          console.log("Successful response data:", response.payload);
-          setBlogs(response.payload);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    fetchData();
+    if (user && user.currentUser) {
+      const { id } = user.currentUser;
+      dispatch(getUserBlogsInCategory({ id, category }));
+    }
   }, [category, dispatch, user]);
 
   return (
@@ -56,7 +44,7 @@ function MyBlogs() {
           </button>
         </div>
 
-        {blogs ? (
+        {blogs.length > 0 ? (
           blogs.map((eachBlog) => (
             <div key={eachBlog.id}>
               <ImageGallery
