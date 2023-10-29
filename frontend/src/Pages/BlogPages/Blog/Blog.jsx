@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { getBlog } from "src/redux/slices/blogs";
 
-function Blog() {
+export function Blog() {
   const { id } = useParams();
   const [blog, setBlog] = useState(null);
   const dispatch = useDispatch();

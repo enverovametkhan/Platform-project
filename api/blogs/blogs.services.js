@@ -43,7 +43,7 @@ function getBlogInCategoryService(category) {
 async function getUserBlogInCategoryService(userId, category) {
   if (!userId || !category) throw new Error("Missing required fields");
   const userData = await getAccessToUserData();
-
+  console.log(userData);
   if (userData.userId !== userId) {
     throw new Error("Unauthorized");
   }
@@ -55,36 +55,29 @@ async function getUserBlogInCategoryService(userId, category) {
   if (!blogs) {
     throw new Error("No blogs found");
   }
-  return {
-    message: "List of blogs successfully loaded",
-    userData,
-    blogs: blogsInCategory,
-  };
+  return blogs;
 }
 
-async function updateBlogService({ id, title, content, image, categories }) {
-  const blogIndex = blogsModel.findIndex((blog) => blog.id === id);
+async function updateBlogService(id, updatedBlog) {
+  const index = blogsModel.findIndex((blog) => blog.id === id);
 
-  if (blogIndex === -1) {
-    const error = new Error("No blog found");
-    error.function = "updateBlogService";
-    throw error;
+  if (index === -1) {
+    throw new Error("Blog not found for updating");
   }
 
-  blogsModel[blogIndex] = {
-    ...blogsModel[blogIndex],
-    title,
-    content,
-    image,
-    category: categories,
-  };
+  const blogToUpdate = blogsModel[index];
+
+  if (blogToUpdate.userId !== userData.userId) {
+    throw new Error("Unauthorized");
+  }
+
+  blogsModel[index] = { ...blogsModel[index], ...updatedBlog };
 
   const userData = await getAccessToUserData();
 
   return {
-    message: "Blog post updated successfully",
     userData,
-    blog: blogsModel[blogIndex],
+    blog: blogsModel[index],
   };
 }
 
@@ -105,12 +98,24 @@ async function deleteBlogService(id) {
   };
 }
 
-async function createBlogService({ title, content, image, categories }) {
-  const newBlog = {
-    title,
-    content,
-    image,
-    categories,
+async function createBlogService(newBlog) {
+  if (
+    !newBlog.title ||
+    !newBlog.content ||
+    !newBlog.category ||
+    newBlog.visible === undefined ||
+    newBlog.visible === ""
+  ) {
+    throw new Error("Missing required fields");
+  }
+
+  const createdBlog = {
+    id: Date.now().toString(),
+    title: newBlog.title,
+    content: newBlog.content,
+    image: newBlog.image,
+    userId: userData.userId,
+    category: newBlog.category,
     views: 0,
     likes: 0,
     createdAt: Date.now(),
@@ -118,13 +123,12 @@ async function createBlogService({ title, content, image, categories }) {
     deletedAt: "",
   };
 
-  blogsModel.push(newBlog);
+  blogsModel.push(createdBlog);
   const userData = await getAccessToUserData();
 
   return {
-    message: "Blog created successfully",
     userData,
-    blog: newBlog,
+    createdBlog,
   };
 }
 

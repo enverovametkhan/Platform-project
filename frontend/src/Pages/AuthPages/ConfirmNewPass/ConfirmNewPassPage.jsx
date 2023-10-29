@@ -7,7 +7,7 @@ import {
   checkResetPasswordToken,
 } from "src/redux/slices/resetPass";
 
-const ConfirmNewPassPage = () => {
+export const ConfirmNewPassPage = () => {
   const dispatch = useDispatch();
   const { token } = useParams();
   const navigate = useNavigate();

@@ -6,7 +6,7 @@ import Footer from "src/Pages/LandingPage/Footer/Footer";
 import { useDispatch } from "react-redux";
 import { getBlogsInCategory } from "src/redux/slices/blogs";
 
-function LandingPage() {
+export function LandingPage() {
   const dispatch = useDispatch();
   const [category, setCategory] = useState("nature");
   const [blogs, setBlogs] = useState([]);

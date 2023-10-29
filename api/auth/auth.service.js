@@ -60,7 +60,9 @@ async function login(email, password) {
     message: "Login successful",
     accessToken,
     refreshToken,
-    userData,
+    userId: user.id,
+    email: user.email,
+    username: user.username,
   };
 }
 

@@ -7,12 +7,6 @@ import { authSlice } from "src/redux/slices/auth";
 import { resetPassSlice } from "src/redux/slices/resetPass";
 import { usersSlice } from "src/redux/slices/users";
 
-const main = {
-  key: "blogs",
-  version: 2,
-  storage,
-};
-
 const authRelated = {
   key: "auth",
   version: 2,
@@ -28,9 +22,9 @@ const userRelated = {
 };
 
 const rootReducer = {
-  blogs: persistReducer(main, blogsSlice.reducer),
+  blogs: blogsSlice.reducer,
   auth: persistReducer(authRelated, authSlice.reducer),
-  resetPass: persistReducer(main, resetPassSlice.reducer),
+  resetPass: resetPassSlice.reducer,
   users: persistReducer(userRelated, usersSlice.reducer),
 };
 

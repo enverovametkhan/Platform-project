@@ -70,16 +70,16 @@ async function getUserBlogsInCategory(req, res, next) {
 async function updateBlog(req, res, next) {
   try {
     const { id } = req.params;
-    const { title, content, image, user_id, categories } = req.body;
+    const { title, content, img, visible, category } = req.body;
 
-    const response = await updateBlogService({
-      id,
+    let updatedBlogObject = {
       title,
       content,
-      image,
-      user_id,
-      categories,
-    });
+      img,
+      visible,
+      category,
+    };
+    const response = await updateBlogService(id, updatedBlogObject);
 
     res.ourResponse = response;
     next();
@@ -112,15 +112,16 @@ async function deleteBlog(req, res, next) {
 
 async function createBlog(req, res, next) {
   try {
-    const { title, content, image, user_id, categories } = req.body;
+    const { title, content, image, category, visible } = req.body;
 
-    const response = await createBlogService({
+    let newBlog = {
       title,
       content,
       image,
-      user_id,
-      categories,
-    });
+      category,
+      visible,
+    };
+    const response = await createBlogService(newBlog);
 
     res.ourResponse = response;
     next();

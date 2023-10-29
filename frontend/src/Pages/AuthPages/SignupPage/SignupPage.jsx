@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { signupUser } from "src/redux/slices/auth";
 import { useDispatch } from "react-redux";
 
-const SignupPage = () => {
+export const SignupPage = () => {
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({

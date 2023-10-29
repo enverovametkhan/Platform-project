@@ -3,7 +3,7 @@ import styles from "./main.module.scss";
 import { useDispatch } from "react-redux";
 import { resetPasswordReq } from "src/redux/slices/resetPass";
 
-const ResetPassPage = () => {
+export const ResetPassPage = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
 

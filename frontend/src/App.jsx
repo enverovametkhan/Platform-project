@@ -31,7 +31,7 @@ function App() {
     <Router>
       <div className="app">
         <ErrorBoundary>
-          <Suspense>
+          <Suspense fallback={<div>Loading...</div>}>
             <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/auth/login" element={<LoginPage />} />
@@ -41,9 +41,9 @@ function App() {
               <Route path="/confirmemail/:token" element={<ConfirmEmail />} />
               <Route path="/verifyemail/:token" element={<VerifyEmail />} />
               <Route path="/blog/:id" element={<Blog />} />
-              <Route path="/dashboard/*" element={<NavigationBar />}>
+              <Route path="/dashboard/" element={<NavigationBar />}>
+                <Route index element={<MyBlogs />} />
                 <Route path="createblog" element={<CreateBlog />} />
-                <Route path="myblogs/:userId" element={<MyBlogs />} />
                 <Route path="editblog" element={<EditBlog />} />
                 <Route path="myaccount" element={<MyAccount />} />
               </Route>

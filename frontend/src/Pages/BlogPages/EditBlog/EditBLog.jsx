@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import BlogComponents from "src/components/BlogComponents/BlogComponents";
 import styles from "./main.module.scss";
 
-function EditBlog() {
+export function EditBlog() {
   useEffect(() => {
     document.title = "EditBlog";
   }, []);

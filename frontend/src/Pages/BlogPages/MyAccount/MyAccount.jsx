@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styles from "./main.module.scss";
 
-function MyAccount() {
+export function MyAccount() {
   useEffect(() => {
     document.title = "My Account";
   }, []);

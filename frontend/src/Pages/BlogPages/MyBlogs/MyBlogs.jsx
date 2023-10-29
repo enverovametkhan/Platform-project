@@ -1,22 +1,35 @@
 import React, { useState, useEffect } from "react";
 import styles from "./main.module.scss";
 import ImageGallery from "src/Pages/LandingPage/ImageGallery/ImageGallery";
-import BlogButtons from "src/components/BlogButtons/BlogButtons";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserBlogsInCategory } from "src/redux/slices/blogs";
+import { selectCurrentUser } from "src/redux/slices/users";
 
-function MyBlogs() {
+export function MyBlogs() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  const blogs = useSelector((state) => state.blogs.userBlogsInCategory);
+  const { id } = useSelector(selectCurrentUser);
+  const [blogs, setBlogs] = useState([]);
   const [category, setCategory] = useState("nature");
 
   useEffect(() => {
-    if (user && user.currentUser) {
-      const { id } = user.currentUser;
-      dispatch(getUserBlogsInCategory({ id, category }));
-    }
-  }, [category, dispatch, user]);
+    const fetchData = async () => {
+      try {
+        console.log(id);
+
+        const blogs = await dispatch(
+          getUserBlogsInCategory({ userId: id, category })
+        );
+        console.log(blogs.payload);
+        if (Array.isArray(blogs.payload)) {
+          setBlogs(blogs.payload);
+        }
+      } catch (error) {
+        console.error("Error fetching user blogs:", error);
+      }
+    };
+
+    fetchData();
+  }, [category]);
 
   return (
     <div>
@@ -44,23 +57,23 @@ function MyBlogs() {
           </button>
         </div>
 
-        {blogs.length > 0 ? (
-          blogs.map((eachBlog) => (
-            <div key={eachBlog.id}>
-              <ImageGallery
-                key={eachBlog.id}
-                id={eachBlog.id}
-                title={eachBlog.title}
-                likes={eachBlog.likes}
-                image={eachBlog.image}
-              />
-              <div>
-                <h1>{eachBlog.title}</h1>
-                <p>{eachBlog.content}</p>
-              </div>
+        {blogs.map((eachBlog) => (
+          <div key={eachBlog.id}>
+            <ImageGallery
+              key={eachBlog.id}
+              id={eachBlog.id}
+              title={eachBlog.title}
+              likes={eachBlog.likes}
+              image={eachBlog.image}
+            />
+            <div>
+              <h1>{eachBlog.title}</h1>
+              <p>{eachBlog.content}</p>
             </div>
-          ))
-        ) : (
+          </div>
+        ))}
+
+        {blogs.length === 0 && (
           <div>
             <h1>No blogs found</h1>
           </div>

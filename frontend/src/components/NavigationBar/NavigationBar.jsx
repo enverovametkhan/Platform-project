@@ -4,7 +4,7 @@ import { Outlet } from "react-router";
 import styles from "./main.module.scss";
 import max from "src/Assets/max.jpeg";
 
-function NavigationBar() {
+export function NavigationBar() {
   useEffect(() => {
     document.title = "My blogs";
   }, []);

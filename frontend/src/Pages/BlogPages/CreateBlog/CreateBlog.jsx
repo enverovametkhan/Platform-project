@@ -3,7 +3,7 @@ import BlogComponents from "src/components/BlogComponents/BlogComponents";
 
 import styles from "./main.module.scss";
 
-function CreateBlog() {
+export function CreateBlog() {
   useEffect(() => {
     document.title = "CreateBlog";
   }, []);

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { confirmEmailSwap } from "src/redux/slices/users";
 import { useParams } from "react-router";
 
-const VerifyEmail = () => {
+export const VerifyEmail = () => {
   const { token } = useParams();
   const dispatch = useDispatch();
   const [validToken, setValidToken] = useState(true);

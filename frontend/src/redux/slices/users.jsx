@@ -4,7 +4,7 @@ import { api } from "src/axios/api";
 const initialState = {
   status: "",
   error: "",
-  currentUser: null,
+  currentUser: "",
 };
 
 export const getUserData = createAsyncThunk(
@@ -130,5 +130,5 @@ export const usersSlice = createSlice({
 });
 
 export const { setCurrentUser } = usersSlice.actions;
-export const selectCurrentUser = (state) => state.user.currentUser;
+export const selectCurrentUser = (state) => state.users.currentUser;
 export default usersSlice.reducer;

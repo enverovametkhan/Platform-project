@@ -7,7 +7,9 @@ const LandingPage = lazy(() =>
 );
 const LoginPage = lazy(() =>
   import("src/Pages/AuthPages/LogInPage/LoginPage/LoginPage").then(
-    (module) => ({ default: module.LoginPage })
+    (module) => ({
+      default: module.LoginPage,
+    })
   )
 );
 const SignupPage = lazy(() =>
@@ -60,6 +62,7 @@ const EditBlog = lazy(() =>
     default: module.EditBlog,
   }))
 );
+
 const MyAccount = lazy(() =>
   import("src/Pages/BlogPages/MyAccount/MyAccount").then((module) => ({
     default: module.MyAccount,

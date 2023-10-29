@@ -3,11 +3,10 @@ import { setCurrentUser } from "src/redux/slices/users";
 import React, { useState } from "react";
 import styles from "./main.module.scss";
 import { Link } from "react-router-dom";
-
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const LoginPage = () => {
+export const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -22,17 +21,19 @@ const LoginPage = () => {
     try {
       const response = await dispatch(loginUser(formData));
 
-      if (response.payload && response.payload.message) {
-        const message = response.payload.message;
+      if (response.payload) {
         const userData = {
-          userId: response.payload.userId,
+          id: response.payload.userId,
           email: response.payload.email,
           username: response.payload.username,
         };
 
         console.log(response.payload);
-        dispatch(setCurrentUser(userData));
-        navigate("/dashboard/*", { replace: true });
+
+        let test = await dispatch(setCurrentUser(userData));
+        console.log(test);
+        console.log(userData);
+        navigate("/dashboard/", { replace: true });
       }
     } catch (error) {
       console.error("Login Error:", error);
