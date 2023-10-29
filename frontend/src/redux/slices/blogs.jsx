@@ -46,12 +46,12 @@ export const getUserBlogsInCategory = createAsyncThunk(
 
 export const updateBlog = createAsyncThunk(
   "blogs/updateBlog",
-  async (id, { rejectWithValue }) => {
+  async ({ id, updatedBlog }, { rejectWithValue }) => {
     try {
-      const response = await api.put(`blog/id/${id}`);
+      const response = await api.put(`blog/id/${id}`, updatedBlog);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -70,9 +70,9 @@ export const deleteBlog = createAsyncThunk(
 
 export const createBlog = createAsyncThunk(
   "blogs/createBlog",
-  async (blogData, { rejectWithValue }) => {
+  async (newBlog, { rejectWithValue }) => {
     try {
-      const response = await api.post(`blog`, blogData);
+      const response = await api.post(`blog`, newBlog);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response);

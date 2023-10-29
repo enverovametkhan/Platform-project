@@ -1,18 +1,98 @@
-import React, { useEffect } from "react";
-import BlogComponents from "src/components/BlogComponents/BlogComponents";
-
-import styles from "./main.module.scss";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createBlog } from "src/redux/slices/blogs";
 
 export function CreateBlog() {
-  useEffect(() => {
-    document.title = "CreateBlog";
-  }, []);
+  const dispatch = useDispatch();
+  const [newBlog, setNewBlog] = useState({
+    title: "",
+    content: "",
+    image: "",
+    category: "nature",
+    visible: false,
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewBlog({ ...newBlog, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await dispatch(createBlog(newBlog));
+
+      if (createBlog.fulfilled.match(response)) {
+        const createdBlog = response.payload;
+
+        console.log("Blog created:", createdBlog);
+      } else if (createBlog.rejected.match(response)) {
+        const error = response.payload;
+        console.error("Blog creation error:", error);
+      }
+    } catch (error) {
+      console.error("Create Blog Error:", error);
+    }
+  };
 
   return (
-    <div className={styles.createBlog}>
-      <h1 className={styles.yourClass}>Create blog</h1>
+    <div className="create-blog">
+      <h1>Create Blog</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="title">Title</label>
+          <input
+            type="text"
+            name="title"
+            value={newBlog.title}
+            onChange={handleInputChange}
+          />
+        </div>
 
-      <BlogComponents />
+        <div>
+          <label htmlFor="content">Content</label>
+          <textarea
+            name="content"
+            value={newBlog.content}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="image">Image URL</label>
+          <input
+            type="text"
+            name="image"
+            value={newBlog.image}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="visible">Visible</label>
+          <input
+            type="checkbox"
+            name="visible"
+            checked={newBlog.visible}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="category">Category</label>
+          <select
+            name="category"
+            value={newBlog.category}
+            onChange={handleInputChange}
+          >
+            <option value="nature">Nature</option>
+            <option value="technology">Technology</option>
+            <option value="life">Life</option>
+          </select>
+        </div>
+
+        <button type="submit">Create Blog</button>
+      </form>
     </div>
   );
 }

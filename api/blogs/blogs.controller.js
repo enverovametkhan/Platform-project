@@ -70,22 +70,22 @@ async function getUserBlogsInCategory(req, res, next) {
 async function updateBlog(req, res, next) {
   try {
     const { id } = req.params;
-    const { title, content, img, visible, category } = req.body;
+    const { title, content, image, user_id, categories } = req.body;
 
-    let updatedBlogObject = {
+    const updatedBlog = {
       title,
       content,
-      img,
-      visible,
-      category,
+      image,
+      user_id,
+      categories,
     };
-    const response = await updateBlogService(id, updatedBlogObject);
+
+    const response = await updateBlogService(id, updatedBlog);
 
     res.ourResponse = response;
     next();
   } catch (error) {
     const errorMessage = {
-      error: error.message,
       function: "updateBlog",
       errorMessage: "Internal Server Error",
     };
@@ -114,13 +114,14 @@ async function createBlog(req, res, next) {
   try {
     const { title, content, image, category, visible } = req.body;
 
-    let newBlog = {
+    const newBlog = {
       title,
       content,
       image,
       category,
       visible,
     };
+
     const response = await createBlogService(newBlog);
 
     res.ourResponse = response;

@@ -59,25 +59,26 @@ async function getUserBlogInCategoryService(userId, category) {
 }
 
 async function updateBlogService(id, updatedBlog) {
-  const index = blogsModel.findIndex((blog) => blog.id === id);
+  const blogIndex = blogsModel.findIndex((blog) => blog.id === id);
 
-  if (index === -1) {
-    throw new Error("Blog not found for updating");
+  if (blogIndex === -1) {
+    const error = new Error("No blog found");
+    error.function = "updateBlogService";
+    throw error;
   }
 
-  const blogToUpdate = blogsModel[index];
-
-  if (blogToUpdate.userId !== userData.userId) {
-    throw new Error("Unauthorized");
-  }
-
-  blogsModel[index] = { ...blogsModel[index], ...updatedBlog };
+  blogsModel[blogIndex] = {
+    ...blogsModel[blogIndex],
+    ...updatedBlog,
+  };
 
   const userData = await getAccessToUserData();
+  console.log(userData);
 
   return {
-    userData,
-    blog: blogsModel[index],
+    message: "Blog post updated successfully",
+
+    blog: blogsModel[blogIndex],
   };
 }
 
@@ -108,14 +109,8 @@ async function createBlogService(newBlog) {
   ) {
     throw new Error("Missing required fields");
   }
-
-  const createdBlog = {
-    id: Date.now().toString(),
-    title: newBlog.title,
-    content: newBlog.content,
-    image: newBlog.image,
-    userId: userData.userId,
-    category: newBlog.category,
+  const blog = {
+    ...newBlog,
     views: 0,
     likes: 0,
     createdAt: Date.now(),
@@ -123,12 +118,12 @@ async function createBlogService(newBlog) {
     deletedAt: "",
   };
 
-  blogsModel.push(createdBlog);
+  blogsModel.push(blog);
   const userData = await getAccessToUserData();
+  console.log(userData);
 
   return {
-    userData,
-    createdBlog,
+    blog,
   };
 }
 
