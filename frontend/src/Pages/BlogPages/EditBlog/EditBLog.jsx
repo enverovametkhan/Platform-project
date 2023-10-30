@@ -26,8 +26,6 @@ export function EditBlog() {
       const response = await dispatch(updateBlog({ id, updatedBlog }));
 
       if (updateBlog.fulfilled.match(response)) {
-        const updatedBlog = response.payload;
-
         console.log("Blog updated:", response);
       } else if (updateBlog.rejected.match(response)) {
         const error = response.payload;

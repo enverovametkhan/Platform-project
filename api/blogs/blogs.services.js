@@ -109,8 +109,15 @@ async function createBlogService(newBlog) {
   ) {
     throw new Error("Missing required fields");
   }
-  const blog = {
-    ...newBlog,
+  const userData = await getAccessToUserData();
+
+  const createdBlog = {
+    id: Date.now().toString(),
+    title: newBlog.title,
+    content: newBlog.content,
+    image: newBlog.image,
+    userId: userData.userId,
+    category: newBlog.category,
     views: 0,
     likes: 0,
     createdAt: Date.now(),
@@ -118,13 +125,9 @@ async function createBlogService(newBlog) {
     deletedAt: "",
   };
 
-  blogsModel.push(blog);
-  const userData = await getAccessToUserData();
-  console.log(userData);
+  blogsModel.push(createdBlog);
 
-  return {
-    blog,
-  };
+  return createdBlog;
 }
 
 module.exports = {

@@ -70,13 +70,13 @@ async function getUserBlogsInCategory(req, res, next) {
 async function updateBlog(req, res, next) {
   try {
     const { id } = req.params;
-    const { title, content, image, user_id, categories } = req.body;
+    const { title, content, image, visible, categories } = req.body;
 
     const updatedBlog = {
       title,
       content,
       image,
-      user_id,
+      visible,
       categories,
     };
 

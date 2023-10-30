@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createBlog } from "src/redux/slices/blogs";
+import { useNavigate } from "react-router-dom";
 
 export function CreateBlog() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [newBlog, setNewBlog] = useState({
     title: "",
@@ -22,14 +24,8 @@ export function CreateBlog() {
     try {
       const response = await dispatch(createBlog(newBlog));
 
-      if (createBlog.fulfilled.match(response)) {
-        const createdBlog = response.payload;
-
-        console.log("Blog created:", createdBlog);
-      } else if (createBlog.rejected.match(response)) {
-        const error = response.payload;
-        console.error("Blog creation error:", error);
-      }
+      console.log("Blog created:", response);
+      navigate(`/blog/${response.payload.id}`);
     } catch (error) {
       console.error("Create Blog Error:", error);
     }
