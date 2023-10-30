@@ -3,11 +3,19 @@ import { Link } from "react-router-dom";
 import { Outlet } from "react-router";
 import styles from "./main.module.scss";
 import max from "src/Assets/max.jpeg";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "src/redux/slices/auth";
 
 export function NavigationBar() {
+  const dispatch = useDispatch();
+
   useEffect(() => {
     document.title = "My blogs";
   }, []);
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
 
   return (
     <div className={styles.container}>
@@ -15,19 +23,11 @@ export function NavigationBar() {
       <img className={styles.image} src={max} alt="Image" />
 
       <div className={styles.buttonsPage}>
-        <Link to="/dashboard/createblog" className={styles.link}>
-          <button className={styles.pageButton}>Create blog</button>
-        </Link>
-        <div className={styles.myLinks}>
-          <div className={styles.myBlogs}>
-            <Link to="/dashboard/myblogs">Blogs</Link>
-          </div>
-          <div className={styles.myAccount}>
-            <Link to="/dashboard/myaccount">Account</Link>
-          </div>
-        </div>
-        <Link to="/login" className={styles.link}>
-          <button className={`${styles.pageButton} ${styles.logoutButton}`}>
+        <Link to="/auth/login" className={styles.link}>
+          <button
+            className={`${styles.pageButton} ${styles.logoutButton}`}
+            onClick={handleLogout}
+          >
             Logout
           </button>
         </Link>
@@ -39,5 +39,3 @@ export function NavigationBar() {
     </div>
   );
 }
-
-export default NavigationBar;

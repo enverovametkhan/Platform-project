@@ -1,36 +1,67 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateBlog } from "src/redux/slices/blogs";
-
+import { useNavigate } from "react-router";
+import { updateBlog, getBlog } from "src/redux/slices/blogs";
 import { selectCurrentUser } from "src/redux/slices/users";
+import { useParams } from "react-router";
 
 export function EditBlog() {
   const { id } = useSelector(selectCurrentUser);
+  const [blog, setBlog] = useState(null);
+  const currentUser = useSelector(selectCurrentUser);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [updatedBlog, setUpdatedBlog] = useState({
     title: "",
     content: "",
     image: "",
     visible: false,
-    categories: "",
+    categories: "nature",
   });
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(getBlog(id));
+
+        if (response.payload.userId !== currentUser.id) {
+          navigate("/");
+          return;
+        }
+
+        setBlog(response.payload);
+
+        setUpdatedBlog({
+          title: response.payload.title || "",
+          content: response.payload.content || "",
+          category: response.payload.category || "nature",
+          image: response.payload.image || "",
+          visible: response.payload.visible || false,
+        });
+
+        console.log(response.payload);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    fetchData();
+  }, [dispatch, id]);
+
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUpdatedBlog({ ...updatedBlog, [name]: value });
+    const { name, value, type, checked } = e.target;
+
+    setUpdatedBlog({
+      ...updatedBlog,
+      [name]: type === "checkbox" ? checked : value,
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await dispatch(updateBlog({ id, updatedBlog }));
-
-      if (updateBlog.fulfilled.match(response)) {
-        console.log("Blog updated:", response);
-      } else if (updateBlog.rejected.match(response)) {
-        const error = response.payload;
-        console.error("Blog update error:", error);
-      }
+      console.log(response);
     } catch (error) {
       console.error("Update Blog Error:", error);
     }

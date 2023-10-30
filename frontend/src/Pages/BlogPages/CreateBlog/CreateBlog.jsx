@@ -15,8 +15,14 @@ export function CreateBlog() {
   });
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewBlog({ ...newBlog, [name]: value });
+    const { name, value, type } = e.target;
+
+    if (type === "file") {
+      const file = e.target.files[0];
+      setNewBlog({ ...newBlog, [name]: file });
+    } else {
+      setNewBlog({ ...newBlog, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -55,11 +61,11 @@ export function CreateBlog() {
         </div>
 
         <div>
-          <label htmlFor="image">Image URL</label>
+          <label htmlFor="image">Image Upload</label>
           <input
-            type="text"
+            type="file"
             name="image"
-            value={newBlog.image}
+            accept="image/*"
             onChange={handleInputChange}
           />
         </div>
