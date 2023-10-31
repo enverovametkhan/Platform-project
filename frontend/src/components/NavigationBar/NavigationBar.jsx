@@ -1,20 +1,34 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Outlet } from "react-router";
 import styles from "./main.module.scss";
 import max from "src/Assets/max.jpeg";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "src/redux/slices/auth";
+import { getUser } from "src/redux/slices/users";
 
 export function NavigationBar() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    document.title = "My blogs";
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(getUser());
+        console.log(response);
+      } catch (e) {
+        console.error("Error");
+      }
+    };
+    fetchData();
   }, []);
 
-  const handleLogout = () => {
-    dispatch(logoutUser());
+  const handleLogout = async () => {
+    try {
+      const response = await dispatch(logoutUser());
+      console.log(response);
+    } catch (e) {
+      console.error("Error");
+    }
   };
 
   return (

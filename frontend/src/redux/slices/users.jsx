@@ -7,8 +7,8 @@ const initialState = {
   currentUser: "",
 };
 
-export const getUserData = createAsyncThunk(
-  "user/getUserData",
+export const getUser = createAsyncThunk(
+  "user/getUser",
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get("/user");
@@ -56,12 +56,12 @@ export const confirmEmailSwap = createAsyncThunk(
 );
 
 const asyncActionHandlers = {
-  [getUserData.pending.type]: { status: "loading" },
-  [getUserData.fulfilled.type]: (state, action) => {
+  [getUser.pending.type]: { status: "loading" },
+  [getUser.fulfilled.type]: (state, action) => {
     state.user = action.payload;
     state.status = "success";
   },
-  [getUserData.rejected.type]: (state, action) => {
+  [getUser.rejected.type]: (state, action) => {
     state.status = "failed";
     state.error = action.error.message;
   },

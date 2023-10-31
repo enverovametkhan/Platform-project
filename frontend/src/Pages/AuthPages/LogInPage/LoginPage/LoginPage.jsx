@@ -30,8 +30,6 @@ export const LoginPage = () => {
 
         console.log(response.payload);
 
-        let test = await dispatch(setCurrentUser(userData));
-        console.log(test);
         console.log(userData);
         navigate("/dashboard/", { replace: true });
       }
