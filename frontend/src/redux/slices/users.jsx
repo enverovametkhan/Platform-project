@@ -100,7 +100,7 @@ const asyncActionHandlers = {
 };
 
 export const usersSlice = createSlice({
-  name: "user",
+  name: "users",
   initialState,
   reducers: {
     setCurrentUser(state, action) {

@@ -6,7 +6,7 @@ import { selectCurrentUser } from "src/redux/slices/users";
 import { useParams } from "react-router";
 
 export function EditBlog() {
-  const { id } = useSelector();
+  const { id } = useParams();
   const [blog, setBlog] = useState(null);
   const currentUser = useSelector(selectCurrentUser);
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ export function EditBlog() {
     const fetchData = async () => {
       try {
         const response = await dispatch(getBlog(id));
-
+        console.log(response);
         if (response.payload.userId !== currentUser.id) {
           navigate("/");
           return;

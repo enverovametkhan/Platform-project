@@ -8,8 +8,8 @@ const ImageGallery = ({ id, title, likes, image }) => {
       <div className={styles.imageContainer}>
         <Link to={`/blog/${id}`}>
           <img className={styles.image} src={image} alt={`Image ${id}`} />
+          <h1>{title}</h1>
 
-          <p>{title}</p>
           <p>{likes}</p>
         </Link>
         <div className={styles.imageText}>the happy blog</div>

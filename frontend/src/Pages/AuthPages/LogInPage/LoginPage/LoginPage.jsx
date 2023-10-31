@@ -27,7 +27,7 @@ export const LoginPage = () => {
           email: response.payload.email,
           username: response.payload.username,
         };
-
+        await dispatch(setCurrentUser(userData));
         console.log(response.payload);
 
         console.log(userData);

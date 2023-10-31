@@ -8,6 +8,9 @@ import {
   updateUser,
 } from "src/redux/slices/users";
 import { useDispatch, useSelector } from "react-redux";
+import { resetPasswordReq } from "src/redux/slices/resetPass";
+import { logoutUser } from "src/redux/slices/auth";
+import { setCurrentUser } from "src/redux/slices/users";
 
 export function MyAccount() {
   const dispatch = useDispatch();
@@ -40,10 +43,9 @@ export function MyAccount() {
     try {
       const response = await dispatch(deleteUser());
       console.log(response);
-
-      if (response.status === "success") {
-        navigate("/");
-      }
+      await dispatch(logoutUser());
+      await dispatch(setCurrentUser(""));
+      navigate("/");
     } catch (e) {
       console.error("Error", e);
     }
@@ -62,8 +64,14 @@ export function MyAccount() {
     }
   };
 
-  const handleSendLink = () => {
-    navigate("/resetpass");
+  const handleSendLink = async () => {
+    try {
+      let response = await dispatch(resetPasswordReq(email));
+
+      console.log("Password reset request successful. Response:", response);
+    } catch (error) {
+      console.error("Error occurred during password reset:", error);
+    }
   };
 
   return (

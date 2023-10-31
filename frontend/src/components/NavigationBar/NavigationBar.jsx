@@ -5,7 +5,6 @@ import styles from "./main.module.scss";
 import max from "src/Assets/max.jpeg";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "src/redux/slices/auth";
-import { getUser } from "src/redux/slices/users";
 
 export function NavigationBar() {
   const dispatch = useDispatch();

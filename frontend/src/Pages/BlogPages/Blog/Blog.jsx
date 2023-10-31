@@ -25,7 +25,7 @@ export function Blog() {
   return (
     <div>
       <h1 className={styles.yourClass}>the happy blog</h1>
-      <Link to="/dashboard/editblog" className={styles.link}>
+      <Link to={`/dashboard/editblog/${id}`} className={styles.link}>
         <button className={styles.blogButton}>Edit</button>
       </Link>
       {blog && (

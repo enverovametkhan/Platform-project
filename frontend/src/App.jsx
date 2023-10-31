@@ -44,7 +44,7 @@ function App() {
               <Route path="/dashboard/" element={<NavigationBar />}>
                 <Route index element={<MyBlogs />} />
                 <Route path="createblog" element={<CreateBlog />} />
-                <Route path="editblog" element={<EditBlog />} />
+                <Route path="editblog/:id" element={<EditBlog />} />
                 <Route path="myaccount" element={<MyAccount />} />
               </Route>
               <Route path="*" element={<PageNotFound />} />

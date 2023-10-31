@@ -66,10 +66,6 @@ export function MyBlogs() {
               likes={eachBlog.likes}
               image={eachBlog.image}
             />
-            <div>
-              <h1>{eachBlog.title}</h1>
-              <p>{eachBlog.content}</p>
-            </div>
           </div>
         ))}
 
