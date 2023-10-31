@@ -20,6 +20,7 @@ async function resetPasswordReq(email) {
 
     console.log("Password reset link already used, removing it.");
   }
+
   const token = await createToken({ userId: userData.userId }, "7d");
   const resetPasswordHash = {
     id: "",
@@ -102,6 +103,7 @@ async function checkResetPasswordToken(token) {
 // }
 async function resetPassword(token, password, confirmedPassword) {
   let userData = await decryptToken(token);
+
   let checkExistingResetPasswordHashIndex = resetPasswordHashModel.findIndex(
     (each) => each.userId === userData.userId
   );
@@ -118,11 +120,13 @@ async function resetPassword(token, password, confirmedPassword) {
     (eachUser) => eachUser.id === checkExistingResetPasswordHash.userId
   );
   let user = userModel[userIndex];
+
   let salt = await bcrypt.genSalt();
   let newPassword = await bcrypt.hash(password, salt);
   user.password = newPassword;
 
   resetPasswordHashModel.splice(checkExistingResetPasswordHashIndex, 1)[0];
+
   return {
     status: 200,
     message: "Have successfuly changed your password",

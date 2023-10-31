@@ -1,6 +1,6 @@
 import styles from "./main.module.scss";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { getBlog } from "src/redux/slices/blogs";
 
@@ -8,6 +8,7 @@ export function Blog() {
   const { id } = useParams();
   const [blog, setBlog] = useState(null);
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,12 +23,15 @@ export function Blog() {
 
     fetchData();
   }, [id, dispatch]);
+
   return (
     <div>
       <h1 className={styles.yourClass}>the happy blog</h1>
-      <Link to={`/dashboard/editblog/${id}`} className={styles.link}>
-        <button className={styles.blogButton}>Edit</button>
-      </Link>
+      {isAuthenticated && (
+        <Link to={`/dashboard/editblog/${id}`} className={styles.link}>
+          <button className={styles.blogButton}>Edit</button>
+        </Link>
+      )}
       {blog && (
         <div className={styles.imageContainer}>
           <div className={styles.imageWrapper}>

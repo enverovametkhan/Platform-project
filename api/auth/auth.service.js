@@ -97,7 +97,7 @@ async function signup(username, email, password, confirmedPassword) {
   userModel.push(newUser);
 
   console.log(
-    `Sending verification email, please verify your email at localhost:4000/api/user/verifyEmail/${token}`
+    `Sending verification email, please verify your email at localhost:3000/swapemail/${token}`
   );
 
   return {

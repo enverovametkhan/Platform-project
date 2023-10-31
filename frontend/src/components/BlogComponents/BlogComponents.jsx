@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./main.module.scss";
 import { Outlet } from "react-router";
 
-const BlogComponents = () => {
+export const BlogComponents = () => {
   const [setSection] = useState("");
   const [isChecked, setIsChecked] = useState(false);
 

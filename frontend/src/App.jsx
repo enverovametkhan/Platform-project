@@ -8,7 +8,7 @@ import {
   ResetPassPage,
   ConfirmNewPassPage,
   ConfirmEmail,
-  VerifyEmail,
+  EmailSwap,
   NavigationBar,
   Blog,
   MyBlogs,
@@ -16,6 +16,7 @@ import {
   EditBlog,
   MyAccount,
 } from "src/components/LazyLoad/LazyLoads";
+
 import PageNotFound from "src/components/PageNotFound/PageNotFound";
 
 function App() {
@@ -39,11 +40,12 @@ function App() {
               <Route path="/resetpass" element={<ResetPassPage />} />
               <Route path="/confirmpass" element={<ConfirmNewPassPage />} />
               <Route path="/confirmemail/:token" element={<ConfirmEmail />} />
-              <Route path="/verifyemail/:token" element={<VerifyEmail />} />
+              <Route path="/swapemail/:token" element={<EmailSwap />} />
               <Route path="/blog/:id" element={<Blog />} />
               <Route path="/dashboard/" element={<NavigationBar />}>
                 <Route index element={<MyBlogs />} />
                 <Route path="createblog" element={<CreateBlog />} />
+
                 <Route path="editblog/:id" element={<EditBlog />} />
                 <Route path="myaccount" element={<MyAccount />} />
               </Route>

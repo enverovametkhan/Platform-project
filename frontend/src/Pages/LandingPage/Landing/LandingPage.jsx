@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import max from "src/Assets/max.jpeg";
 import styles from "./main.module.scss";
 import ImageGallery from "src/Pages/LandingPage/ImageGallery/ImageGallery";
 import AuthButtons from "src/components/AuthButtons/AuthButtons";
 import Footer from "src/Pages/LandingPage/Footer/Footer";
-import { useDispatch } from "react-redux";
 import { getBlogsInCategory } from "src/redux/slices/blogs";
 
 export function LandingPage() {
   const dispatch = useDispatch();
   const [category, setCategory] = useState("nature");
   const [blogs, setBlogs] = useState([]);
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +33,7 @@ export function LandingPage() {
 
   return (
     <div className={styles.landingPage}>
-      <AuthButtons />
+      {!isAuthenticated && <AuthButtons />}{" "}
       <h1 className={styles.yourClass}>the happy blog</h1>
       <div className={styles.buttonContainer}>
         <button
@@ -63,9 +67,12 @@ export function LandingPage() {
             />
           ))}
       </div>
+      {isAuthenticated && (
+        <Link to="/dashboard/myaccount">
+          <img src={max} alt="Image" />
+        </Link>
+      )}
       <Footer />
     </div>
   );
 }
-
-export default LandingPage;

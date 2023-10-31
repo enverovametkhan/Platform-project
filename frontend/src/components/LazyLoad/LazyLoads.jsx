@@ -32,9 +32,9 @@ const ConfirmEmail = lazy(() =>
     default: module.ConfirmEmail,
   }))
 );
-const VerifyEmail = lazy(() =>
-  import("src/Pages/Email/verifyEmail/verifyEmail").then((module) => ({
-    default: module.VerifyEmail,
+const EmailSwap = lazy(() =>
+  import("src/Pages/Email/emailSwap/emailSwap").then((module) => ({
+    default: module.EmailSwap,
   }))
 );
 const Blog = lazy(() =>
@@ -76,7 +76,7 @@ export {
   ResetPassPage,
   ConfirmNewPassPage,
   ConfirmEmail,
-  VerifyEmail,
+  EmailSwap,
   Blog,
   NavigationBar,
   CreateBlog,

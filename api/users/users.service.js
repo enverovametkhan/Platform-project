@@ -74,6 +74,7 @@ async function updateUser(updatedUserData) {
 
   user.updatedAt = Date.now();
   userModel[userIndex] = user;
+  console.log("Hellio");
 
   return {
     message: "User updated successfully",
