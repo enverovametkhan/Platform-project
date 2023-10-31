@@ -10,18 +10,6 @@ import { getUser } from "src/redux/slices/users";
 export function NavigationBar() {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await dispatch(getUser());
-        console.log(response);
-      } catch (e) {
-        console.error("Error");
-      }
-    };
-    fetchData();
-  }, []);
-
   const handleLogout = async () => {
     try {
       const response = await dispatch(logoutUser());
