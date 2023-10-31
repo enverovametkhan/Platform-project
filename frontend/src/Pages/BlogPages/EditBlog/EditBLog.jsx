@@ -6,7 +6,7 @@ import { selectCurrentUser } from "src/redux/slices/users";
 import { useParams } from "react-router";
 
 export function EditBlog() {
-  const { id } = useSelector(selectCurrentUser);
+  const { id } = useSelector();
   const [blog, setBlog] = useState(null);
   const currentUser = useSelector(selectCurrentUser);
   const navigate = useNavigate();
@@ -57,8 +57,7 @@ export function EditBlog() {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleUpdate = async () => {
     try {
       const response = await dispatch(updateBlog({ id, updatedBlog }));
       console.log(response);
@@ -70,61 +69,61 @@ export function EditBlog() {
   return (
     <div className="edit-blog">
       <h1>Edit Blog</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">Title</label>
-          <input
-            type="text"
-            name="title"
-            value={updatedBlog.title}
-            onChange={handleInputChange}
-          />
-        </div>
+      <div>
+        <label htmlFor="title">Title</label>
+        <input
+          type="text"
+          name="title"
+          value={updatedBlog.title}
+          onChange={handleInputChange}
+        />
+      </div>
 
-        <div>
-          <label htmlFor="content">Content</label>
-          <textarea
-            name="content"
-            value={updatedBlog.content}
-            onChange={handleInputChange}
-          />
-        </div>
+      <div>
+        <label htmlFor="content">Content</label>
+        <textarea
+          name="content"
+          value={updatedBlog.content}
+          onChange={handleInputChange}
+        />
+      </div>
 
-        <div>
-          <label htmlFor="image">Image URL</label>
-          <input
-            type="text"
-            name="image"
-            value={updatedBlog.image}
-            onChange={handleInputChange}
-          />
-        </div>
+      <div>
+        <label htmlFor="image">Image URL</label>
+        <input
+          type="text"
+          name="image"
+          value={updatedBlog.image}
+          onChange={handleInputChange}
+        />
+      </div>
 
-        <div>
-          <label htmlFor="visible">Visible</label>
-          <input
-            type="checkbox"
-            name="visible"
-            checked={updatedBlog.visible}
-            onChange={handleInputChange}
-          />
-        </div>
+      <div>
+        <label htmlFor="visible">Visible</label>
+        <input
+          type="checkbox"
+          name="visible"
+          checked={updatedBlog.visible}
+          onChange={handleInputChange}
+        />
+      </div>
 
-        <div>
-          <label htmlFor="categories">Categories</label>
-          <select
-            name="categories"
-            value={updatedBlog.categories}
-            onChange={handleInputChange}
-          >
-            <option value="nature">Nature</option>
-            <option value="technology">Technology</option>
-            <option value="life">Life</option>
-          </select>
-        </div>
+      <div>
+        <label htmlFor="categories">Categories</label>
+        <select
+          name="categories"
+          value={updatedBlog.categories}
+          onChange={handleInputChange}
+        >
+          <option value="nature">Nature</option>
+          <option value="technology">Technology</option>
+          <option value="life">Life</option>
+        </select>
+      </div>
 
-        <button type="submit">Update Blog</button>
-      </form>
+      <button type="button" onClick={handleUpdate}>
+        Update Blog
+      </button>
     </div>
   );
 }
