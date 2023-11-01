@@ -46,7 +46,7 @@ export const ConfirmNewPassPage = () => {
         let response = await dispatch(resetPassword(payload));
 
         console.log(response);
-        console.log("Password changed successfully");
+
         navigate("/auth/login");
       } else {
         console.error("Passwords do not match");

@@ -10,7 +10,7 @@ export const resetPasswordReq = createAsyncThunk(
   "user/resetPasswordReq",
   async (email, { rejectWithValue }) => {
     try {
-      const response = await api.get(`user/resetPassword/${email}`);
+      const response = await api.get(`user/resetPasswordReq/${email}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response);

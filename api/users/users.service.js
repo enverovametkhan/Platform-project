@@ -52,6 +52,7 @@ async function deleteUser() {
 
 async function updateUser(updatedUserData) {
   const userData = await getAccessToUserData();
+  let response;
   const userIndex = userModel.findIndex((user) => user.id === userData.userId);
 
   if (userIndex === -1) {
@@ -65,7 +66,11 @@ async function updateUser(updatedUserData) {
   }
 
   if (updatedUserData.email && updatedUserData.email !== user.email) {
-    user.email = updatedUserData.email;
+    await swapEmail(updatedUserData.email);
+
+    response = {
+      email: "Check your email",
+    };
   }
 
   if (updatedUserData.username) {
@@ -74,11 +79,14 @@ async function updateUser(updatedUserData) {
 
   user.updatedAt = Date.now();
   userModel[userIndex] = user;
-  console.log("Hellio");
-
+  const token = await createToken({ userId: userData.userId }, "7d");
+  console.log(
+    `Sending verification email, please verify your email at localhost:3000/swapemail/${token}`
+  );
   return {
-    message: "User updated successfully",
+    username: "Updated username",
     userData: user,
+    ...response,
   };
 }
 

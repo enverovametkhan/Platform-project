@@ -38,7 +38,10 @@ function App() {
               <Route path="/auth/login" element={<LoginPage />} />
               <Route path="/auth/signup" element={<SignupPage />} />
               <Route path="/resetpass" element={<ResetPassPage />} />
-              <Route path="/confirmpass" element={<ConfirmNewPassPage />} />
+              <Route
+                path="/confirmpass/:token"
+                element={<ConfirmNewPassPage />}
+              />
               <Route path="/confirmemail/:token" element={<ConfirmEmail />} />
               <Route path="/swapemail/:token" element={<EmailSwap />} />
               <Route path="/blog/:id" element={<Blog />} />

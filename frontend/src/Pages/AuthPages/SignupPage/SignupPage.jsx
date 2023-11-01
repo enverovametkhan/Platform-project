@@ -56,6 +56,7 @@ export const SignupPage = () => {
                 name="username"
                 value={formData.username}
                 onChange={handleInputChange}
+                required
               />
             </div>
             <div className={styles.formGroup}>
@@ -68,6 +69,7 @@ export const SignupPage = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
+                required
               />
             </div>
             <div className={styles.formGroup}>
@@ -80,6 +82,7 @@ export const SignupPage = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
+                required
               />
             </div>
             <div className={styles.formGroup}>
@@ -92,6 +95,7 @@ export const SignupPage = () => {
                 name="confirmedPassword"
                 value={formData.confirmedPassword}
                 onChange={handleInputChange}
+                required
               />
             </div>
             <button className={styles.signBut} type="submit">

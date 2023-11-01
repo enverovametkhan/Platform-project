@@ -6,7 +6,7 @@ const {
 
 async function resetPasswordReqController(req, res, next) {
   try {
-    const { email } = req.params;
+    const { email } = req.body;
     const response = await resetPasswordReq(email);
     res.ourResponse = response;
     next();
@@ -15,7 +15,7 @@ async function resetPasswordReqController(req, res, next) {
 
     const errorMessage = {
       error: error.message,
-      function: "resetPasswordController",
+      function: "resetPasswordReqController",
       errorMessage: error.message,
     };
     next(errorMessage);
@@ -51,7 +51,7 @@ async function resetPasswordController(req, res, next) {
 
     const errorMessage = {
       error: error.message,
-      function: "changePasswordController",
+      function: "resetPasswordController",
       errorMessage: error.message,
     };
     next(errorMessage);

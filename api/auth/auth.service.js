@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const { miniDatabase } = require("@root/database/miniDatabase");
 const { getAccessToUserData } = require("@root/utilities/getUserData");
 const { createToken, decryptToken } = require("@root/utilities/jwt");
+const { v4: uuidv4 } = require("uuid");
 const userModel = miniDatabase.Users;
 const saltRounds = 10;
 
@@ -79,10 +80,10 @@ async function signup(username, email, password, confirmedPassword) {
 
   const hashedPassword = await hashPassword(password);
 
-  const token = await createToken({ user_id: "" }, "300d");
+  const token = await createToken({ useremail: email }, "300d");
 
   const newUser = {
-    id: "",
+    id: uuidv4(),
     username: username,
     email: email,
     password: hashedPassword,
@@ -97,7 +98,7 @@ async function signup(username, email, password, confirmedPassword) {
   userModel.push(newUser);
 
   console.log(
-    `Sending verification email, please verify your email at localhost:3000/swapemail/${token}`
+    `Sending verification email, please verify your email at localhost:3000/confirmemail/${token}`
   );
 
   return {
@@ -108,7 +109,10 @@ async function signup(username, email, password, confirmedPassword) {
 
 async function verifyEmail(token) {
   const userData = await decryptToken(token);
-  const userIndex = userModel.findIndex((user) => user.id === userData.userId);
+  console.log(userData);
+  const userIndex = userModel.findIndex(
+    (user) => user.email === userData.useremail
+  );
 
   if (userIndex === -1) {
     throw new Error("User has not been found");

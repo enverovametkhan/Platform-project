@@ -59,12 +59,12 @@ module.exports = (app) => {
     authMiddleware,
     refreshAccessTokenController
   );
-  app.get("/api/user/resetPasswordReq/:email", resetPasswordReqController);
+  app.get("/api/user/resetPasswordReq", resetPasswordReqController);
   app.get(
     "/api/user/checkResetPasswordToken/:token",
     checkResetPasswordTokenController
   );
-  app.put("/api/user/resetPassword", resetPasswordController);
+  app.put("/api/user/resetPassword/:token", resetPasswordController);
   // router.post("/api/user/swapEmail/", swapEmailController);
   app.get("/api/user/confirmEmailSwap/:token", confirmEmailSwapController);
 };

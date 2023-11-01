@@ -67,7 +67,6 @@ export function MyAccount() {
   const handleSendLink = async () => {
     try {
       let response = await dispatch(resetPasswordReq(email));
-
       console.log("Password reset request successful. Response:", response);
     } catch (error) {
       console.error("Error occurred during password reset:", error);
