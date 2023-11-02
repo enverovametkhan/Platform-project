@@ -34,13 +34,16 @@ export const ConfirmNewPassPage = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [dispatch, token]);
 
   const handleResetPassword = async () => {
     try {
       if (formData.password === formData.confirmedPassword) {
         let payload = {
-          passwordData: formData,
+          passwordData: {
+            password: formData.password,
+            confirmedPassword: formData.confirmedPassword,
+          },
           token,
         };
         let response = await dispatch(resetPassword(payload));
@@ -91,5 +94,3 @@ export const ConfirmNewPassPage = () => {
     </div>
   );
 };
-
-export default ConfirmNewPassPage;

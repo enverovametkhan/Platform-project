@@ -109,7 +109,7 @@ async function swapEmail(newEmail) {
     swapEmailHashModel.splice(index, 1);
   }
 
-  const token = await createToken({ user_id: user.id }, "1d");
+  const token = await createToken({ userId: user.id }, "1d");
 
   const swapEmailData = {
     id: "",

@@ -76,11 +76,7 @@ const asyncActionHandlers = {
 export const resetPassSlice = createSlice({
   name: "resetPass",
   initialState,
-  reducers: {
-    setCurrentUser(state, action) {
-      state.user = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     Object.entries(asyncActionHandlers).forEach(([type, handler]) => {
       builder.addCase(type, (state, action) => {

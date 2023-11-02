@@ -6,7 +6,8 @@ const {
 
 async function resetPasswordReqController(req, res, next) {
   try {
-    const { email } = req.body;
+    const { email } = req.params;
+    console.log("world");
     const response = await resetPasswordReq(email);
     res.ourResponse = response;
     next();
@@ -42,8 +43,12 @@ async function checkResetPasswordTokenController(req, res, next) {
 async function resetPasswordController(req, res, next) {
   try {
     const { token } = req.params;
-    const { password, confirmedPassword } = req.body;
-    const response = await resetPassword(token, password, confirmedPassword);
+    const { passwordData } = req.body;
+    const response = await resetPassword(
+      token,
+      passwordData.password,
+      passwordData.confirmedPassword
+    );
     res.ourResponse = response;
     next();
   } catch (error) {

@@ -118,6 +118,7 @@ async function verifyEmail(token) {
     throw new Error("User has not been found");
   }
   console.log("Email has been verifed");
+  console.log("Changing email on ");
 
   userModel[userIndex].verifyEmail = "";
 

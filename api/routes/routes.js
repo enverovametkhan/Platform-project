@@ -59,7 +59,7 @@ module.exports = (app) => {
     authMiddleware,
     refreshAccessTokenController
   );
-  app.get("/api/user/resetPasswordReq", resetPasswordReqController);
+  app.get("/api/user/resetPasswordReq/:email", resetPasswordReqController);
   app.get(
     "/api/user/checkResetPasswordToken/:token",
     checkResetPasswordTokenController
