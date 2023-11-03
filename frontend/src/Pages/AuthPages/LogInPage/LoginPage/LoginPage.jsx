@@ -1,14 +1,10 @@
-import { loginUser } from "src/redux/slices/auth";
-import { setCurrentUser } from "src/redux/slices/users";
 import React, { useState } from "react";
 import styles from "./main.module.scss";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "src/authContext/authContext";
 
 export const LoginPage = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { handleLogin } = useAuth();
   const [formData, setFormData] = useState({ email: "", password: "" });
 
   const handleInputChange = (e) => {
@@ -19,20 +15,7 @@ export const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await dispatch(loginUser(formData));
-
-      if (response.payload) {
-        const userData = {
-          id: response.payload.userId,
-          email: response.payload.email,
-          username: response.payload.username,
-        };
-        await dispatch(setCurrentUser(userData));
-        console.log(response.payload);
-
-        console.log(userData);
-        navigate("/dashboard/", { replace: true });
-      }
+      await handleLogin(formData, setFormData);
     } catch (error) {
       console.error("Login Error:", error);
     }
@@ -78,12 +61,10 @@ export const LoginPage = () => {
         <div className={styles.signStyle}>
           <p className={styles.dontStyle}>Don't have an account?</p>
           <div className={styles.signLink}>
-            <Link to="/signup">Sign up</Link>
+            <Link to="/auth/signup">Sign up</Link>
           </div>
         </div>
       </form>
     </div>
   );
 };
-
-export default LoginPage;

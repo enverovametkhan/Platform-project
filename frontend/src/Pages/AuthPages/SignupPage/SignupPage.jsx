@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import styles from "./main.module.scss";
 import { Link } from "react-router-dom";
-import { signupUser } from "src/redux/slices/auth";
-import { useDispatch } from "react-redux";
+import { useAuth } from "src/authContext/authContext";
 
 export const SignupPage = () => {
-  const dispatch = useDispatch();
+  const { handleSignUp } = useAuth();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -24,12 +23,8 @@ export const SignupPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (formData.password !== formData.confirmedPassword) {
-        console.log("Password and Confirm Password do not match");
-        return;
-      }
+      const response = await handleSignUp(formData);
 
-      const response = await dispatch(signupUser(formData));
       setFinishedSignUp(false);
       console.log(response.payload);
     } catch (error) {
@@ -104,7 +99,7 @@ export const SignupPage = () => {
           </form>
         </div>
       ) : (
-        <h1>Thanx for sign up</h1>
+        <h1>Thanks for signing up</h1>
       )}
     </div>
   );

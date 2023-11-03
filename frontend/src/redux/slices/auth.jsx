@@ -56,11 +56,11 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
-export const refreshAuthToken = createAsyncThunk(
-  "auth/refreshAuthToken",
+export const refreshAccessToken = createAsyncThunk(
+  "auth/refreshAccessToken",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get("/user/refreshAuthToken");
+      const response = await api.get("/user/refreshAccessToken");
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response);
@@ -107,13 +107,13 @@ const asyncActionHandlers = {
     state.status = "failed";
     state.error = action.error.message;
   },
-  [refreshAuthToken.pending.type]: { status: "loading" },
-  [refreshAuthToken.fulfilled.type]: (state, action) => {
+  [refreshAccessToken.pending.type]: { status: "loading" },
+  [refreshAccessToken.fulfilled.type]: (state, action) => {
     state.accessToken = action.payload.accessToken;
     state.refreshToken = action.payload.refreshToken;
     state.status = "success";
   },
-  [refreshAuthToken.rejected.type]: (state, action) => {
+  [refreshAccessToken.rejected.type]: (state, action) => {
     state.status = "failed";
     state.error = action.error.message;
   },

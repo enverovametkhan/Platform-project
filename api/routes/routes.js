@@ -55,7 +55,7 @@ module.exports = (app) => {
   app.delete("/api/user/delete", authMiddleware, deleteUserController);
   app.put("/api/user/update", authMiddleware, updateUserController);
   app.get(
-    "/api/user/refreshAuthToken",
+    "/api/user/refreshAccessToken",
     authMiddleware,
     refreshAccessTokenController
   );
