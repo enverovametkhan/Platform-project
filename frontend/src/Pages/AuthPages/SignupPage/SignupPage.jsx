@@ -23,10 +23,8 @@ export const SignupPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await handleSignUp(formData);
-
+      await handleSignUp(formData, setFormData);
       setFinishedSignUp(false);
-      console.log(response.payload);
     } catch (error) {
       console.error("Signup Error:", error);
     }

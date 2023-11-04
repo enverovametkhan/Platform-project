@@ -39,7 +39,7 @@ function App() {
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/auth/login" element={<LoginPage />} />
                 <Route path="/auth/signup" element={<SignupPage />} />
-                <Route path="/resetpass" element={<ResetPassPage />} />
+                <Route path="/auth/resetpass" element={<ResetPassPage />} />
                 <Route
                   path="/resetpassword/:token"
                   element={<ConfirmNewPassPage />}

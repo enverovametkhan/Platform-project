@@ -55,7 +55,7 @@ export const LoginPage = () => {
         </button>
 
         <div className={styles.forgotPass}>
-          <Link to="/resetpass">Forgot Password</Link>
+          <Link to="/auth/resetpass">Forgot Password</Link>
         </div>
 
         <div className={styles.signStyle}>
