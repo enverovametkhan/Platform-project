@@ -71,6 +71,46 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const routeProtection = {
+    notAllowedWhenAuth: ["/auth/login", "/auth/signup", "/auth/resetpass"],
+    onlyAllowedWhenAuth: ["/dashboard"],
+  };
+
+  useEffect(() => {
+    const isNonAuthRoute = routeProtection.notAllowedWhenAuth.some((route) => {
+      console.log(route);
+      console.log(location.pathname);
+      if (typeof route === "string") {
+        return route === location.pathname;
+      } else if (route instanceof RegExp) {
+        return route.test(location.pathname);
+      } else {
+        return false;
+      }
+    });
+
+    const isAuthRoute = routeProtection.onlyAllowedWhenAuth.some((route) =>
+      location.pathname.startsWith(route)
+    );
+    const isNoMatchRoute = !isNonAuthRoute && !isAuthRoute;
+
+    if (
+      !isAuthenticated &&
+      !isNonAuthRoute &&
+      !isNoMatchRoute &&
+      location.pathname !== "/"
+    ) {
+      navigate("/auth/login");
+    } else if (
+      isAuthenticated &&
+      !isAuthRoute &&
+      !isNoMatchRoute &&
+      location.pathname !== "/"
+    ) {
+      navigate("/dashboard");
+    }
+  }, [location.pathname]);
+
   return (
     <AuthContext.Provider
       value={{ handleLogin, handleSignUp, handleLogout, isAuthenticated }}
