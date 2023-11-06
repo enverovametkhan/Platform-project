@@ -23,14 +23,18 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await dispatch(loginUser(formData));
 
-      const userData = {
-        id: response.payload.userId,
-        email: response.payload.email,
-        username: response.payload.username,
-      };
-      console.log(userData);
-      await dispatch(setCurrentUser(userData));
-      navigate("/dashboard", { replace: true });
+      if (response.payload) {
+        const userData = {
+          id: response.payload.userId,
+          email: response.payload.email,
+          username: response.payload.username,
+        };
+        console.log(response.payload);
+        await dispatch(setCurrentUser(userData));
+        navigate("/dashboard", { replace: true });
+      } else {
+        console.error("Login Error: Invalid response data");
+      }
     } catch (error) {
       console.error("Login Error:", error);
     }
