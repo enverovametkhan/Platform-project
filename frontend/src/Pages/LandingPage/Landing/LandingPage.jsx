@@ -11,7 +11,7 @@ import { getBlogsInCategory } from "src/redux/slices/blogs";
 export function LandingPage() {
   const dispatch = useDispatch();
   const [category, setCategory] = useState("nature");
-  const [blogs, setBlogs] = useState([]);
+  const [blogs, setBlogs] = useState({ blogs: [] });
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 

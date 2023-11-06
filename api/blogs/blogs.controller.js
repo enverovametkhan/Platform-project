@@ -12,7 +12,7 @@ async function getBlog(req, res, next) {
     const { id } = req.params;
     const response = await getBlogService(id);
 
-    res.ourResponse = response;
+    res.apiResponse = response;
 
     next();
   } catch (error) {
@@ -32,7 +32,7 @@ async function getBlogsInCategory(req, res, next) {
     const { category } = req.params;
     const response = await getBlogInCategoryService(category);
 
-    res.ourResponse = response;
+    res.apiResponse = response;
     next();
   } catch (error) {
     const { category } = req.params;
@@ -52,7 +52,7 @@ async function getUserBlogsInCategory(req, res, next) {
     const { userId, category } = req.params;
     const response = await getUserBlogInCategoryService(userId, category);
 
-    res.ourResponse = response;
+    res.apiResponse = response;
     next();
   } catch (error) {
     const { userId, category } = req.params;
@@ -82,7 +82,7 @@ async function updateBlog(req, res, next) {
 
     const response = await updateBlogService(id, updatedBlog);
 
-    res.ourResponse = response;
+    res.apiResponse = response;
     next();
   } catch (error) {
     const errorMessage = {
@@ -98,7 +98,7 @@ async function deleteBlog(req, res, next) {
     const { id } = req.params;
     const response = await deleteBlogService(id);
 
-    res.ourResponse = response;
+    res.apiResponse = response;
     next();
   } catch (error) {
     const errorMessage = {
@@ -124,7 +124,7 @@ async function createBlog(req, res, next) {
 
     const response = await createBlogService(newBlog);
 
-    res.ourResponse = response;
+    res.apiResponse = response;
     next();
   } catch (error) {
     const errorMessage = {

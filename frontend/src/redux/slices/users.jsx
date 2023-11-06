@@ -12,7 +12,7 @@ export const getUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get("/user");
-      return response.data;
+      return response.data.proccessedResponse;
     } catch (error) {
       return rejectWithValue(error.response);
     }
@@ -24,7 +24,7 @@ export const deleteUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.delete("/user/delete");
-      return response.data;
+      return response.data.proccessedResponse;
     } catch (error) {
       return rejectWithValue(error.response);
     }
@@ -36,7 +36,7 @@ export const updateUser = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const response = await api.put("/user/update", userData);
-      return response.data;
+      return response.data.proccessedResponse;
     } catch (error) {
       return rejectWithValue(error.response);
     }
@@ -48,7 +48,7 @@ export const confirmEmailSwap = createAsyncThunk(
   async (token, { rejectWithValue }) => {
     try {
       const response = await api.get(`/user/confirmEmailSwap/${token}`);
-      return response.data;
+      return response.data.proccessedResponse;
     } catch (error) {
       return rejectWithValue(error.response);
     }

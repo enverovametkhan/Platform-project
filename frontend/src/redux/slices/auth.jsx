@@ -6,6 +6,8 @@ const initialState = {
   accessToken: "",
   refreshToken: "",
   status: "",
+  error: "",
+  forcedLogout: false,
 };
 
 export const loginUser = createAsyncThunk(
@@ -13,7 +15,7 @@ export const loginUser = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const response = await api.post("auth/login", userData);
-      return response.data;
+      return response.data.proccessedResponse;
     } catch (error) {
       return rejectWithValue(error.response);
     }
@@ -25,7 +27,7 @@ export const signupUser = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const response = await api.post("auth/signup", userData);
-      return response.data;
+      return response.data.proccessedResponse;
     } catch (error) {
       return rejectWithValue(error.response);
     }
@@ -37,7 +39,7 @@ export const verifyEmail = createAsyncThunk(
   async (token, { rejectWithValue }) => {
     try {
       const response = await api.get(`user/verifyEmail/${token}`);
-      return response.data;
+      return response.data.proccessedResponse;
     } catch (error) {
       return rejectWithValue(error.response);
     }
@@ -49,7 +51,7 @@ export const logoutUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get("user/logout");
-      return response.data;
+      return response.data.proccessedResponse;
     } catch (error) {
       return rejectWithValue(error.response);
     }
@@ -61,7 +63,7 @@ export const refreshAccessToken = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get("/user/refreshAccessToken");
-      return response.data;
+      return response.data.proccessedResponse;
     } catch (error) {
       return rejectWithValue(error.response);
     }
@@ -107,22 +109,23 @@ const asyncActionHandlers = {
     state.status = "failed";
     state.error = action.error.message;
   },
-  [refreshAccessToken.pending.type]: { status: "loading" },
-  [refreshAccessToken.fulfilled.type]: (state, action) => {
-    state.accessToken = action.payload.accessToken;
-    state.refreshToken = action.payload.refreshToken;
-    state.status = "success";
-  },
-  [refreshAccessToken.rejected.type]: (state, action) => {
-    state.status = "failed";
-    state.error = action.error.message;
-  },
 };
 
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    selectIsAuthenticated(state, action) {
+      state.isAuthenticated = action.payload;
+    },
+    setForcedLogout(state, action) {
+      state.forcedLogout = action.payload;
+    },
+    updateTokens(state, action) {
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+    },
+  },
   extraReducers: (builder) => {
     Object.entries(asyncActionHandlers).forEach(([type, handler]) => {
       builder.addCase(type, (state, action) => {
@@ -145,4 +148,6 @@ export const authSlice = createSlice({
   },
 });
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
+export const setForcedLogout = (state) => state.auth.isAuthenticated;
+export const updateTokens = (state) => state.auth.isAuthenticated;
 export default authSlice.reducer;

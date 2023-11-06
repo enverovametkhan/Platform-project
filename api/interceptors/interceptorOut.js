@@ -5,6 +5,11 @@ module.exports = (app) => {
     console.log(
       `Time taken to process the request on ${req.originalUrl} is ${timeTaken} seconds`
     );
-    res.send(res.ourResponse);
+
+    let response = {
+      proccessedResponse: res.apiResponse,
+      refreshData: res.refreshData,
+    };
+    res.send(response);
   });
 };

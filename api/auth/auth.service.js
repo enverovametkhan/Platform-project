@@ -45,22 +45,22 @@ async function login(email, password) {
     };
   }
 
-  const userData = {
+  const userDataJwt = {
     userId: user.id,
     email: user.email,
     username: user.username,
   };
 
-  const accessToken = await createToken(userData, "300d");
-  const refreshToken = await createToken(userData, "500h");
+  const accessJwtToken = await createToken(userDataJwt, "300d");
+  const refreshJwtToken = await createToken(userDataJwt, "500h");
 
-  user.accessToken = accessToken;
-  user.refreshToken = refreshToken;
+  user.accessToken = accessJwtToken;
+  user.refreshToken = refreshJwtToken;
 
   return {
     message: "Login successful",
-    accessToken,
-    refreshToken,
+    accessToken: accessJwtToken,
+    refreshToken: refreshJwtToken,
     userId: user.id,
     email: user.email,
     username: user.username,
@@ -145,7 +145,7 @@ async function logout() {
 }
 
 async function refreshAccessToken() {
-  const userData = await getAccessToUserData();
+  const userData = await decryptToken(token);
   const index = userModel.findIndex((user) => user.id === userData.userId);
 
   if (index === -1) {
@@ -154,17 +154,17 @@ async function refreshAccessToken() {
 
   const user = userModel[index];
 
-  const userDataToUpdate = {
+  const userDataJwt = {
     userId: user.id,
     email: user.email,
     username: user.username,
   };
 
-  const newRefreshToken = await createToken(userDataToUpdate, "100d");
-  const newAccessToken = await createToken(userDataToUpdate, "300h");
+  const refreshToken = await createToken(userDataJwt, "100d");
+  const accessToken = await createToken(userDataJwt, "300h");
 
-  user.accessToken = newAccessToken;
-  user.refreshToken = newRefreshToken;
+  user.accessToken = accessToken;
+  user.refreshToken = refreshToken;
 
   userModel[index] = user;
 

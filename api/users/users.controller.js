@@ -9,7 +9,7 @@ const {
 async function getUserController(req, res, next) {
   try {
     const response = await getUser();
-    res.ourResponse = response;
+    res.apiResponse = response;
 
     next();
   } catch (error) {
@@ -26,7 +26,7 @@ async function getUserController(req, res, next) {
 async function deleteUserController(req, res, next) {
   try {
     const response = await deleteUser();
-    res.ourResponse = response;
+    res.apiResponse = response;
     next();
   } catch (error) {
     const errorMessage = {
@@ -42,7 +42,7 @@ async function updateUserController(req, res, next) {
   try {
     const updatedUserData = req.body;
     const response = await updateUser(updatedUserData);
-    res.ourResponse = response;
+    res.apiResponse = response;
     next();
   } catch (error) {
     const errorMessage = {
@@ -71,7 +71,7 @@ async function confirmEmailSwapController(req, res, next) {
   try {
     const { token } = req.params;
     const response = await confirmEmailSwap(token);
-    res.ourResponse = response;
+    res.apiResponse = response;
     next();
   } catch (error) {
     console.error(error);

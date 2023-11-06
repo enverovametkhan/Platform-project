@@ -10,7 +10,7 @@ async function loginController(req, res, next) {
   try {
     const { password, email } = req.body;
     const response = await login(email, password);
-    res.ourResponse = response;
+    res.apiResponse = response;
 
     next();
   } catch (error) {
@@ -30,7 +30,7 @@ async function signupController(req, res, next) {
   try {
     const { email, username, password, confirmedPassword } = req.body;
     const response = await signup(username, email, password, confirmedPassword);
-    res.ourResponse = response;
+    res.apiResponse = response;
     next();
   } catch (error) {
     const errorMessage = {
@@ -47,7 +47,7 @@ async function verifyEmailController(req, res, next) {
   try {
     const { token } = req.params;
     const response = await verifyEmail(token);
-    res.ourResponse = response;
+    res.apiResponse = response;
     next();
   } catch (error) {
     const errorMessage = {
@@ -63,7 +63,7 @@ async function verifyEmailController(req, res, next) {
 async function logoutController(req, res, next) {
   try {
     const response = await logout();
-    res.ourResponse = response;
+    res.apiResponse = response;
     next();
   } catch (error) {
     const errorMessage = {
@@ -80,7 +80,7 @@ async function refreshAccessTokenController(req, res, next) {
   try {
     const { token } = req.params;
     const response = await refreshAccessToken(token);
-    res.ourResponse = response;
+    res.apiResponse = response;
     next();
   } catch (error) {
     const errorMessage = {

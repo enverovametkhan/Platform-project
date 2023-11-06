@@ -72,41 +72,31 @@ export const AuthProvider = ({ children }) => {
   };
 
   const routeProtection = {
-    notAllowedWhenAuth: ["/auth/login", "/auth/signup", "/auth/resetpass"],
-    onlyAllowedWhenAuth: ["/dashboard"],
+    restrictedWhenAuth: ["/auth/login", "/auth/signup", "/auth/resetpass"],
+    requiresAuthentication: ["/dashboard"],
   };
 
   useEffect(() => {
-    const isNonAuthRoute = routeProtection.notAllowedWhenAuth.some((route) => {
-      console.log(route);
-      console.log(location.pathname);
-      if (typeof route === "string") {
-        return route === location.pathname;
-      } else if (route instanceof RegExp) {
-        return route.test(location.pathname);
-      } else {
-        return false;
+    const isAllowedWhenAuth = routeProtection.restrictedWhenAuth.some(
+      (route) => {
+        if (typeof route === "string") {
+          return route === location.pathname;
+        } else if (route instanceof RegExp) {
+          return route.test(location.pathname);
+        } else {
+          return false;
+        }
       }
-    });
-
-    const isAuthRoute = routeProtection.onlyAllowedWhenAuth.some((route) =>
-      location.pathname.startsWith(route)
     );
-    const isNoMatchRoute = !isNonAuthRoute && !isAuthRoute;
 
-    if (
-      !isAuthenticated &&
-      !isNonAuthRoute &&
-      !isNoMatchRoute &&
-      location.pathname !== "/"
-    ) {
+    const isRequiringAuthRoute = routeProtection.requiresAuthentication.some(
+      (route) => location.pathname.startsWith(route)
+    );
+    const isNoMatchRoute = !isAllowedWhenAuth && !isRequiringAuthRoute;
+
+    if (!isAuthenticated && !isAllowedWhenAuth && !isNoMatchRoute) {
       navigate("/auth/login");
-    } else if (
-      isAuthenticated &&
-      !isAuthRoute &&
-      !isNoMatchRoute &&
-      location.pathname !== "/"
-    ) {
+    } else if (isAuthenticated && !isRequiringAuthRoute && !isNoMatchRoute) {
       navigate("/dashboard");
     }
   }, [location.pathname]);

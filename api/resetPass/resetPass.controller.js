@@ -9,7 +9,7 @@ async function resetPasswordReqController(req, res, next) {
     const { email } = req.params;
     console.log("world");
     const response = await resetPasswordReq(email);
-    res.ourResponse = response;
+    res.apiResponse = response;
     next();
   } catch (error) {
     console.error(error);
@@ -27,7 +27,7 @@ async function checkResetPasswordTokenController(req, res, next) {
   try {
     const { token } = req.params;
     const response = await checkResetPasswordToken(token);
-    res.ourResponse = response;
+    res.apiResponse = response;
     next();
   } catch (error) {
     console.error(error);
@@ -49,7 +49,7 @@ async function resetPasswordController(req, res, next) {
       passwordData.password,
       passwordData.confirmedPassword
     );
-    res.ourResponse = response;
+    res.apiResponse = response;
     next();
   } catch (error) {
     console.error(error);
