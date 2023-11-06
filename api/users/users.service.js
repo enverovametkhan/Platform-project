@@ -1,7 +1,9 @@
 const bcrypt = require("bcrypt");
+const { deleteUsersBlogs } = require("@root/blogs/blogs.services");
 const { miniDatabase } = require("@root/database/miniDatabase");
 const { createToken, decryptToken } = require("@root/utilities/jwt");
 const { getAccessToUserData } = require("@root/utilities/getUserData");
+
 let userModel = miniDatabase.Users;
 let swapEmailHashModel = miniDatabase.SwapEmailHash;
 // let resetPasswordHashModel = miniDatabase.ResetPasswordHash;
@@ -37,6 +39,8 @@ async function deleteUser() {
     throw new Error("User not found");
   }
 
+  const { deletedBlogs, deletedComments } = await deleteUsersBlogs(user.id);
+
   user.password = "";
   user.username = "";
   user.refreshToken = "";
@@ -44,6 +48,7 @@ async function deleteUser() {
   user.deletedAt = Date.now();
 
   console.log("User has been deleted with ID:", user.userId);
+  console.log(`Deleted ${deletedBlogs} blogs and ${deletedComments} comments`);
 
   return {
     message: "User deleted successfully",

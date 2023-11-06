@@ -130,6 +130,43 @@ async function createBlogService(newBlog) {
   return createdBlog;
 }
 
+async function deleteUsersBlogs(userId) {
+  const deleteIdBlogs = blogsModel.filter((blog) => blog.userId === userId);
+
+  if (deleteIdBlogs.length === 0) {
+    return { message: "No blogs to delete" };
+  }
+
+  let deletedBlogsNumber = 0;
+  let deletedCommentsNumber = 0;
+
+  deleteIdBlogs.forEach((deleteIdBlog) => {
+    const index = blogsModel.indexOf(deleteIdBlog);
+
+    if (index !== -1) {
+      blogsModel.splice(index, 1);
+      deletedBlogsNumber++;
+
+      const deleteIdComments = blogsCommentModel.filter(
+        (comment) => comment.blogId === deleteIdBlog.id
+      );
+      deleteIdComments.forEach((deleteIdComment) => {
+        const commentIndex = blogsCommentModel.indexOf(deleteIdComment);
+
+        if (commentIndex !== -1) {
+          blogsCommentModel.splice(commentIndex, 1);
+          deletedCommentsNumber++;
+        }
+      });
+    }
+  });
+
+  return {
+    deletedBlogs: deletedBlogsNumber,
+    deletedComments: deletedCommentsNumber,
+  };
+}
+
 module.exports = {
   getBlogService,
   getBlogInCategoryService,
@@ -137,4 +174,5 @@ module.exports = {
   updateBlogService,
   deleteBlogService,
   createBlogService,
+  deleteUsersBlogs,
 };
