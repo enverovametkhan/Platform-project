@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router";
 import { loginUser, logoutUser, signupUser } from "src/redux/slices/auth";
 import { setCurrentUser } from "src/redux/slices/users";
 import { selectIsAuthenticated } from "src/redux/slices/auth";
+import { setForcedLogout } from "src/redux/slices/auth";
 
 const AuthContext = createContext();
 
@@ -16,6 +17,7 @@ export const AuthProvider = ({ children }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const forcedLogout = useSelector(setForcedLogout);
 
   const handleLogin = async (formData, setFormData) => {
     try {
@@ -100,6 +102,12 @@ export const AuthProvider = ({ children }) => {
       navigate("/dashboard");
     }
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (forcedLogout) {
+      handleLogout();
+    }
+  }, [forcedLogout]);
 
   return (
     <AuthContext.Provider

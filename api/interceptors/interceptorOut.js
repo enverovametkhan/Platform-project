@@ -7,7 +7,7 @@ module.exports = (app) => {
     );
 
     let response = {
-      proccessedResponse: res.apiResponse,
+      processedResponse: res.apiResponse,
       refreshData: res.refreshData,
     };
     res.send(response);

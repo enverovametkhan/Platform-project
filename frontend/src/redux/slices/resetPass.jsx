@@ -11,7 +11,7 @@ export const resetPasswordReq = createAsyncThunk(
   async (email, { rejectWithValue }) => {
     try {
       const response = await api.get(`user/resetPasswordReq/${email}`);
-      return response.data.proccessedResponse;
+      return response.data.processedResponse;
     } catch (error) {
       return rejectWithValue(error.response);
     }
@@ -23,7 +23,7 @@ export const checkResetPasswordToken = createAsyncThunk(
   async (token, { rejectWithValue }) => {
     try {
       const response = await api.get(`user/checkResetPasswordToken/${token}`);
-      return response.data.proccessedResponse;
+      return response.data.processedResponse;
     } catch (error) {
       return rejectWithValue(error.response);
     }
@@ -37,7 +37,7 @@ export const resetPassword = createAsyncThunk(
       const response = await api.put(`user/resetPassword/${payload.token}`, {
         passwordData: payload.passwordData,
       });
-      return response.data.proccessedResponse;
+      return response.data.processedResponse;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }

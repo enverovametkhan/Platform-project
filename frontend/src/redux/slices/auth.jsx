@@ -15,7 +15,7 @@ export const loginUser = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const response = await api.post("auth/login", userData);
-      return response.data.proccessedResponse;
+      return response.data.processedResponse;
     } catch (error) {
       return rejectWithValue(error.response);
     }
@@ -27,7 +27,7 @@ export const signupUser = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const response = await api.post("auth/signup", userData);
-      return response.data.proccessedResponse;
+      return response.data.processedResponse;
     } catch (error) {
       return rejectWithValue(error.response);
     }
@@ -39,7 +39,7 @@ export const verifyEmail = createAsyncThunk(
   async (token, { rejectWithValue }) => {
     try {
       const response = await api.get(`user/verifyEmail/${token}`);
-      return response.data.proccessedResponse;
+      return response.data.processedResponse;
     } catch (error) {
       return rejectWithValue(error.response);
     }
@@ -51,7 +51,7 @@ export const logoutUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get("user/logout");
-      return response.data.proccessedResponse;
+      return response.data.processedResponse;
     } catch (error) {
       return rejectWithValue(error.response);
     }
@@ -63,7 +63,7 @@ export const refreshAccessToken = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get("/user/refreshAccessToken");
-      return response.data.proccessedResponse;
+      return response.data.processedResponse;
     } catch (error) {
       return rejectWithValue(error.response);
     }
@@ -147,7 +147,8 @@ export const authSlice = createSlice({
     });
   },
 });
+
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
-export const setForcedLogout = (state) => state.auth.isAuthenticated;
-export const updateTokens = (state) => state.auth.isAuthenticated;
+export const setForcedLogout = (state) => state.auth.forcedLogout;
+export const updateTokens = (state) => state.auth.refreshToken;
 export default authSlice.reducer;
