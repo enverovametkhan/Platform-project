@@ -7,7 +7,7 @@ const {
 async function resetPasswordReqController(req, res, next) {
   try {
     const { email } = req.params;
-    console.log("world");
+
     const response = await resetPasswordReq(email);
     res.apiResponse = response;
     next();

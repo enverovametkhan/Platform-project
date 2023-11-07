@@ -60,9 +60,9 @@ export const logoutUser = createAsyncThunk(
 
 export const refreshAccessToken = createAsyncThunk(
   "auth/refreshAccessToken",
-  async (_, { rejectWithValue }) => {
+  async (token, { rejectWithValue }) => {
     try {
-      const response = await api.get("/user/refreshAccessToken");
+      const response = await api.get(`/user/refreshAccessToken/${token}`);
       return response.data.processedResponse;
     } catch (error) {
       return rejectWithValue(error.response);
@@ -98,6 +98,7 @@ const asyncActionHandlers = {
     state.status = "failed";
     state.error = action.error.message;
   },
+
   [logoutUser.pending.type]: { status: "loading" },
   [logoutUser.fulfilled.type]: (state, action) => {
     state.isAuthenticated = false;
@@ -108,6 +109,18 @@ const asyncActionHandlers = {
   },
 
   [logoutUser.rejected.type]: (state, action) => {
+    state.status = "failed";
+    state.error = action.error.message;
+  },
+  [refreshAccessToken.pending.type]: { status: "loading" },
+  [refreshAccessToken.fulfilled.type]: (state, action) => {
+    state.accessToken = action.payload.accessToken;
+    state.refreshToken = action.payload.refreshToken;
+    state.isAuthenticated = true;
+    state.status = "success";
+  },
+
+  [refreshAccessToken.rejected.type]: (state, action) => {
     state.status = "failed";
     state.error = action.error.message;
   },

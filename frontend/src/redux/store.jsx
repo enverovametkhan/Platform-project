@@ -33,6 +33,4 @@ export const store = configureStore({
   middleware: [thunk],
 });
 
-const persistor = persistStore(store);
-
-export default store;
+export const persistor = persistStore(store);

@@ -7,13 +7,14 @@ import ImageGallery from "src/Pages/LandingPage/ImageGallery/ImageGallery";
 import AuthButtons from "src/components/AuthButtons/AuthButtons";
 import Footer from "src/Pages/LandingPage/Footer/Footer";
 import { getBlogsInCategory } from "src/redux/slices/blogs";
+import { selectIsAuthenticated } from "src/redux/slices/auth";
 
 export function LandingPage() {
   const dispatch = useDispatch();
   const [category, setCategory] = useState("nature");
   const [blogs, setBlogs] = useState({ blogs: [] });
 
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
 
   useEffect(() => {
     const fetchData = async () => {

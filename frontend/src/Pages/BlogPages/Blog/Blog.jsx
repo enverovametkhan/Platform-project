@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { getBlog } from "src/redux/slices/blogs";
+import { selectIsAuthenticated } from "src/redux/slices/auth";
 
 export function Blog() {
   const { id } = useParams();
   const [blog, setBlog] = useState(null);
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
 
   useEffect(() => {
     const fetchData = async () => {
