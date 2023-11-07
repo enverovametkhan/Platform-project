@@ -28,7 +28,6 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => {
     if (response.data && response.data.refreshData) {
-      console.log("REFRESH TOKEN");
       console.log(response.data.refreshData);
       store.dispatch(updateTokens(response.data.refreshData));
     }
@@ -37,7 +36,6 @@ api.interceptors.response.use(
   (error) => {
     console.log(error);
     if (error.response.data.message === "Unauthorized") {
-      console.log("INSIDE");
       store.dispatch(setForcedLogout(true));
     }
     return Promise.reject(error);

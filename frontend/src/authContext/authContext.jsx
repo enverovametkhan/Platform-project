@@ -71,10 +71,10 @@ export const AuthProvider = ({ children }) => {
 
       console.log(response.payload);
       await dispatch(setCurrentUser(""));
-      navigate("/", { replace: true });
     } catch (error) {
       console.error("Logout Error:", error);
     }
+    navigate("/", { replace: true });
   };
 
   const routeProtection = {
@@ -114,9 +114,7 @@ export const AuthProvider = ({ children }) => {
   }, [forcedLogout]);
 
   return (
-    <AuthContext.Provider
-      value={{ handleLogin, handleSignUp, handleLogout, isAuthenticated }}
-    >
+    <AuthContext.Provider value={{ handleLogin, handleSignUp, handleLogout }}>
       {children}
     </AuthContext.Provider>
   );

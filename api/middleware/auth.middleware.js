@@ -18,12 +18,10 @@ async function authMiddleware(req, res, next) {
       if (!refreshToken) {
         throw new Error("Unauthorized");
       }
-      console.log("err.name");
-      console.log(err.name);
+
       if (err.name === "TokenExpiredError") {
-        console.log("WORLD");
         const updatedTokens = await refreshAccessToken(refreshToken);
-        console.log("123WORLD");
+
         res.refreshData = {
           accessToken: updatedTokens.accessToken,
           refreshToken: updatedTokens.refreshToken,
@@ -38,8 +36,7 @@ async function authMiddleware(req, res, next) {
     } catch (errorHandlers) {
       console.log("error In Token Expired");
     }
-    console.log(err);
-    console.log("UNHERE");
+
     const errorMessage = {
       error: err.message,
       function: "AuthMiddleware",

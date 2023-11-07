@@ -18,6 +18,7 @@ function contextMiddleware(req, res, next) {
 app.use(contextMiddleware);
 app.use(bodyParser.json());
 app.use(cors());
+app.use(express.json({ limit: "5mb" }));
 
 require("./interceptors/interceptorIn")(app);
 require("./routes/routes")(app);

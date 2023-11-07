@@ -51,7 +51,7 @@ async function login(email, password) {
     username: user.username,
   };
 
-  const accessJwtToken = await createToken(userDataJwt, "10s");
+  const accessJwtToken = await createToken(userDataJwt, "300d");
   const refreshJwtToken = await createToken(userDataJwt, "500h");
 
   user.accessToken = accessJwtToken;
@@ -161,7 +161,7 @@ async function refreshAccessToken(token) {
   };
 
   const refreshToken = await createToken(userDataJwt, "100d");
-  const accessToken = await createToken(userDataJwt, "10s");
+  const accessToken = await createToken(userDataJwt, "300h");
 
   user.accessToken = accessToken;
   user.refreshToken = refreshToken;
