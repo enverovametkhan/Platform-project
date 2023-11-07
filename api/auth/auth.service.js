@@ -51,7 +51,7 @@ async function login(email, password) {
     username: user.username,
   };
 
-  const accessJwtToken = await createToken(userDataJwt, "300d");
+  const accessJwtToken = await createToken(userDataJwt, "10s");
   const refreshJwtToken = await createToken(userDataJwt, "500h");
 
   user.accessToken = accessJwtToken;
@@ -144,7 +144,7 @@ async function logout() {
   return { message: "Logged out successfully" };
 }
 
-async function refreshAccessToken() {
+async function refreshAccessToken(token) {
   const userData = await decryptToken(token);
   const index = userModel.findIndex((user) => user.id === userData.userId);
 
@@ -161,13 +161,13 @@ async function refreshAccessToken() {
   };
 
   const refreshToken = await createToken(userDataJwt, "100d");
-  const accessToken = await createToken(userDataJwt, "300h");
+  const accessToken = await createToken(userDataJwt, "10s");
 
   user.accessToken = accessToken;
   user.refreshToken = refreshToken;
 
   userModel[index] = user;
-
+  console.log("Success refresh");
   return {
     ...userData,
     accessToken: user.accessToken,

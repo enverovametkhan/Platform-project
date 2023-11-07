@@ -103,8 +103,10 @@ const asyncActionHandlers = {
     state.isAuthenticated = false;
     state.accessToken = "";
     state.refreshToken = "";
+    state.forcedLogout = false;
     state.status = "success";
   },
+
   [logoutUser.rejected.type]: (state, action) => {
     state.status = "failed";
     state.error = action.error.message;
@@ -115,7 +117,7 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    selectIsAuthenticated(state, action) {
+    setIsAuthenticated(state, action) {
       state.isAuthenticated = action.payload;
     },
     setForcedLogout(state, action) {
@@ -148,7 +150,11 @@ export const authSlice = createSlice({
   },
 });
 
+export const { setIsAuthenticated, setForcedLogout, updateTokens } =
+  authSlice.actions;
+
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
-export const setForcedLogout = (state) => state.auth.forcedLogout;
-export const updateTokens = (state) => state.auth.refreshToken;
+export const selectForcedLogout = (state) => state.auth.forcedLogout;
+export const selectRefreshToken = (state) => state.auth.refreshToken;
+export const selectAccessToken = (state) => state.auth.accessToken;
 export default authSlice.reducer;

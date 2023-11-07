@@ -28,7 +28,7 @@ const rootReducer = {
   users: persistReducer(userRelated, usersSlice.reducer),
 };
 
-const store = configureStore({
+export const store = configureStore({
   reducer: rootReducer,
   middleware: [thunk],
 });

@@ -14,7 +14,7 @@ async function decryptToken(token) {
   try {
     return await jwt.verify(token, jwtSecretKey);
   } catch (error) {
-    throw new Error("Error decrypting JWT token");
+    throw error;
   }
 }
 

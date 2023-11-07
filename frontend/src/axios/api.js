@@ -1,5 +1,5 @@
 import axios from "axios";
-import store from "src/redux/store";
+import { store } from "src/redux/store";
 import { updateTokens, setForcedLogout } from "src/redux/slices/auth";
 
 export const api = axios.create({
@@ -28,6 +28,8 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => {
     if (response.data && response.data.refreshData) {
+      console.log("REFRESH TOKEN");
+      console.log(response.data.refreshData);
       store.dispatch(updateTokens(response.data.refreshData));
     }
     return response;
@@ -35,6 +37,7 @@ api.interceptors.response.use(
   (error) => {
     console.log(error);
     if (error.response.data.message === "Unauthorized") {
+      console.log("INSIDE");
       store.dispatch(setForcedLogout(true));
     }
     return Promise.reject(error);

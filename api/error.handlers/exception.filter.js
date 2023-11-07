@@ -7,6 +7,8 @@ module.exports = (app) => {
     const timeTaken = (Date.now() - req.timeStarted) / 1000;
     console.log(`Time taken to process the request: ${timeTaken} seconds`);
 
-    res.status(500).send({ message: err.message || "Internal Server Error" });
+    res
+      .status(500)
+      .send({ message: err.errorMessage || "Internal Server Error" });
   });
 };
