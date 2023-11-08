@@ -6,6 +6,7 @@ import {
   resetPassword,
   checkResetPasswordToken,
 } from "src/redux/slices/resetPass";
+import { logoutUser } from "src/redux/slices/auth";
 
 export const ConfirmNewPassPage = () => {
   const dispatch = useDispatch();
@@ -24,38 +25,56 @@ export const ConfirmNewPassPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await dispatch(checkResetPasswordToken(token));
+        const response = await dispatch(checkResetPasswordToken(token));
         if (response.payload.status !== 200) {
-          return;
+          console.error("Invalid or expired token. Please request a new one.");
+
+          await dispatch(logoutUser());
+          navigate("/");
         }
       } catch (e) {
-        console.log("error");
-        console.log(e);
+        console.error(
+          "An error occurred while checking the token. Please try again."
+        );
       }
     };
     fetchData();
-  }, [dispatch, token]);
+  }, [dispatch, token, navigate]);
 
   const handleResetPassword = async () => {
     try {
+      if (formData.password.length < 6) {
+        console.error("Password must be at least 6 characters long.");
+        return;
+      }
+
+      if (formData.confirmedPassword.length < 6) {
+        console.error("Confirmed password must be at least 6 characters long.");
+        return;
+      }
+
       if (formData.password === formData.confirmedPassword) {
-        let payload = {
+        const payload = {
           passwordData: {
             password: formData.password,
             confirmedPassword: formData.confirmedPassword,
           },
           token,
         };
-        let response = await dispatch(resetPassword(payload));
+        const response = await dispatch(resetPassword(payload));
 
-        console.log(response);
-
-        navigate("/auth/login");
+        if (response.payload.status === 200) {
+          navigate("/auth/login");
+        } else {
+          console.error(
+            "An error occurred while resetting the password. Please try again."
+          );
+        }
       } else {
-        console.error("Passwords do not match");
+        console.error("Passwords do not match.");
       }
     } catch (error) {
-      console.error("Error", error);
+      console.error("An error occurred. Please try again.");
     }
   };
 
@@ -71,6 +90,7 @@ export const ConfirmNewPassPage = () => {
           name="password"
           value={formData.password}
           onChange={handleInputChange}
+          minLength="6"
           required
         />
       </div>
@@ -84,6 +104,7 @@ export const ConfirmNewPassPage = () => {
           id="confirmedPassword"
           name="confirmedPassword"
           value={formData.confirmedPassword}
+          minLength="6"
           onChange={handleInputChange}
         />
       </div>

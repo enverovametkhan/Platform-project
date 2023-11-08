@@ -116,9 +116,7 @@ export const AuthProvider = ({ children }) => {
   }, [location.pathname]);
 
   useEffect(() => {
-    console.log("Outside");
     if (forcedLogout) {
-      console.log("Inside");
       handleLogout();
     }
   }, [forcedLogout]);
