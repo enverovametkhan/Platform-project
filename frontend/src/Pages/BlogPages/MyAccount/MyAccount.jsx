@@ -14,25 +14,13 @@ import { setCurrentUser } from "src/redux/slices/users";
 
 export function MyAccount() {
   const dispatch = useDispatch();
-  const { email, username } = useSelector(selectCurrentUser);
-  const [formData, setFormData] = useState({ email: "", username: "" });
+  const { email: currentUserEmail, username: currentUserUsername } =
+    useSelector(selectCurrentUser);
+  const [formData, setFormData] = useState({
+    email: currentUserEmail,
+    username: currentUserUsername,
+  });
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await dispatch(getUser());
-        console.log(response);
-        setFormData({
-          email: response.payload.email || "",
-          username: response.payload.username || "",
-        });
-      } catch (e) {
-        console.error("Error", e);
-      }
-    };
-    fetchData();
-  }, [dispatch]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -52,7 +40,16 @@ export function MyAccount() {
   };
 
   const handleUpdateUser = async () => {
-    if (email === formData.email && username === formData.username) {
+    if (formData.email.length < 6) {
+      setFormData({ ...formData, email: "" });
+      console.error("Email must be at least 6 characters long.");
+      return;
+    }
+
+    if (
+      currentUserEmail === formData.email &&
+      currentUserUsername === formData.username
+    ) {
       console.log("No changes to save.");
     } else {
       try {
@@ -66,7 +63,7 @@ export function MyAccount() {
 
   const handleSendLink = async () => {
     try {
-      let response = await dispatch(resetPasswordReq(email));
+      let response = await dispatch(resetPasswordReq(formData.email));
       console.log("Password reset request successful. Response:", response);
     } catch (error) {
       console.error("Error occurred during password reset:", error);
@@ -89,6 +86,7 @@ export function MyAccount() {
               <input
                 type="email"
                 name="email"
+                minLength="6"
                 value={formData.email}
                 onChange={handleInputChange}
               />
