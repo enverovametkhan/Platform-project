@@ -5,6 +5,8 @@ import { loginUser, logoutUser, signupUser } from "src/redux/slices/auth";
 import { setCurrentUser } from "src/redux/slices/users";
 import { selectIsAuthenticated } from "src/redux/slices/auth";
 import { selectForcedLogout } from "src/redux/slices/auth";
+import { setClearState } from "src/redux/slices/auth";
+import { persistor } from "src/redux/store";
 
 const AuthContext = createContext();
 
@@ -68,11 +70,17 @@ export const AuthProvider = ({ children }) => {
   const handleLogout = async () => {
     try {
       const response = await dispatch(logoutUser());
-
+      if (response.error) {
+        const customError = new Error("Error trying to logout");
+        customError.response = response;
+        throw customError;
+      }
       console.log(response.payload);
       await dispatch(setCurrentUser(""));
     } catch (error) {
       console.error("Logout Error:", error);
+      await dispatch(setClearState());
+      await dispatch(setCurrentUser(""));
     }
     navigate("/", { replace: true });
   };
@@ -108,7 +116,9 @@ export const AuthProvider = ({ children }) => {
   }, [location.pathname]);
 
   useEffect(() => {
+    console.log("Outside");
     if (forcedLogout) {
+      console.log("Inside");
       handleLogout();
     }
   }, [forcedLogout]);

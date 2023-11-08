@@ -11,7 +11,13 @@ const authRelated = {
   key: "auth",
   version: 2,
   storage,
-  whitelist: ["refreshToken", "accessToken", "isAuthenticated", "forcedLogout"],
+  whitelist: [
+    "refreshToken",
+    "accessToken",
+    "isAuthenticated",
+    "forcedLogout",
+    "cleatState",
+  ],
 };
 
 const userRelated = {

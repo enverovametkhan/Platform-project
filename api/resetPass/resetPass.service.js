@@ -65,7 +65,7 @@ async function checkResetPasswordToken(token) {
 async function resetPassword(token, password, confirmedPassword) {
   let userData = await decryptToken(token);
   console.log(password, confirmedPassword);
-  console.log("userData");
+
   if (!userData || !userData.id) {
     throw new Error("Invalid token");
   }

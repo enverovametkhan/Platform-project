@@ -8,6 +8,7 @@ const initialState = {
   status: "",
   error: "",
   forcedLogout: false,
+  clearState: false,
 };
 
 export const loginUser = createAsyncThunk(
@@ -106,6 +107,7 @@ const asyncActionHandlers = {
     state.refreshToken = "";
     state.forcedLogout = false;
     state.status = "success";
+    state.clearState = "true";
   },
 
   [logoutUser.rejected.type]: (state, action) => {
@@ -140,6 +142,12 @@ export const authSlice = createSlice({
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
     },
+    setClearState(state, action) {
+      state.accessToken = "";
+      state.refreshToken = "";
+      state.isAuthenticated = false;
+      state.forcedLogout = false;
+    },
   },
   extraReducers: (builder) => {
     Object.entries(asyncActionHandlers).forEach(([type, handler]) => {
@@ -163,10 +171,15 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setIsAuthenticated, setForcedLogout, updateTokens } =
-  authSlice.actions;
+export const {
+  setIsAuthenticated,
+  setForcedLogout,
+  updateTokens,
+  setClearState,
+} = authSlice.actions;
 
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
+export const selectClearState = (state) => state.auth.clearState;
 export const selectForcedLogout = (state) => state.auth.forcedLogout;
 export const selectRefreshToken = (state) => state.auth.refreshToken;
 export const selectAccessToken = (state) => state.auth.accessToken;
