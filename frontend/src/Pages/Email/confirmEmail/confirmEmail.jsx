@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import styles from "./main.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { verifyEmail } from "src/redux/slices/auth";
-import { useParams, useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { selectIsAuthenticated } from "src/redux/slices/auth";
 
 export const ConfirmEmail = () => {
   const { token } = useParams();
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const navigate = useNavigate();
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   const [validToken, setValidToken] = useState(true);
 
   useEffect(() => {
@@ -28,19 +27,21 @@ export const ConfirmEmail = () => {
       }
 
       if (!isAuthenticated) {
-        navigate("/auth/login");
+        setTimeout(() => {
+          window.location.href = "/auth/login";
+        }, 5000);
       }
     };
 
     fetchData();
-  }, [dispatch, token, isAuthenticated, navigate]);
+  }, [dispatch, token, isAuthenticated]);
 
   return (
     <div>
       {validToken ? (
         <h1 className={styles.Style}>Thank You for Confirming Email</h1>
       ) : (
-        <p>The provided token is invalid. Please check and try again.</p>
+        <p>Oops could not verify email</p>
       )}
 
       {validToken && (
