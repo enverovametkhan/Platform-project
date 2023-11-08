@@ -14,7 +14,6 @@ export const SignupPage = () => {
   });
 
   const [finishedSignUp, setFinishedSignUp] = useState(true);
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -22,11 +21,25 @@ export const SignupPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (formData.email.length < 6) {
+      setFormData({ ...formData, email: "" });
+      console.error("Email must be at least 6 characters long.");
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setFormData({ ...formData, password: "" });
+      console.error("Password must be at least 6 characters long.");
+      return;
+    }
+
     try {
       await handleSignUp(formData, setFormData);
       setFinishedSignUp(false);
     } catch (error) {
       console.error("Signup Error:", error);
+      setFormData({ email: "", password: "" });
     }
   };
 
@@ -62,6 +75,7 @@ export const SignupPage = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
+                minLength="6"
                 required
               />
             </div>
@@ -75,6 +89,7 @@ export const SignupPage = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
+                minLength="6"
                 required
               />
             </div>
@@ -88,6 +103,7 @@ export const SignupPage = () => {
                 name="confirmedPassword"
                 value={formData.confirmedPassword}
                 onChange={handleInputChange}
+                minLength="6"
                 required
               />
             </div>
