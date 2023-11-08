@@ -14,10 +14,25 @@ export const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (formData.email.length < 6) {
+      setFormData({ ...formData, email: "" });
+      console.error("Email must be at least 6 characters long.");
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setFormData({ ...formData, password: "" });
+      console.error("Password must be at least 6 characters long.");
+      return;
+    }
+
     try {
       await handleLogin(formData, setFormData);
     } catch (error) {
       console.error("Login Error:", error);
+      console.error("Invalid email or password. Please check your input.");
+      setFormData({ email: "", password: "" });
     }
   };
 
@@ -30,11 +45,12 @@ export const LoginPage = () => {
             Email
           </label>
           <input
-            type="email"
+            type="text"
             name="email"
             id="email"
             value={formData.email}
             onChange={handleInputChange}
+            minLength="6"
           />
         </div>
 
@@ -47,6 +63,7 @@ export const LoginPage = () => {
             name="password"
             value={formData.password}
             onChange={handleInputChange}
+            minLength="6"
           />
         </div>
 
