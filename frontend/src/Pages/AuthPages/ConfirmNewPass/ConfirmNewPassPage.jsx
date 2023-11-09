@@ -26,6 +26,7 @@ export const ConfirmNewPassPage = () => {
     const fetchData = async () => {
       try {
         const response = await dispatch(checkResetPasswordToken(token));
+        console.log(response);
         if (response.payload.status !== 200) {
           console.error("Invalid or expired token. Please request a new one.");
 
@@ -62,7 +63,7 @@ export const ConfirmNewPassPage = () => {
           token,
         };
         const response = await dispatch(resetPassword(payload));
-
+        console.log(response.payload);
         if (response.payload.status === 200) {
           navigate("/auth/login");
         } else {
