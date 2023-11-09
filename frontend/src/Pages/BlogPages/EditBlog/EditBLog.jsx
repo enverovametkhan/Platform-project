@@ -70,6 +70,7 @@ export function EditBlog() {
     try {
       const response = await dispatch(deleteBlog(id));
       console.log(response);
+      navigate("/dashboard");
     } catch (error) {
       console.error("Delete Blog Error:", error);
     }

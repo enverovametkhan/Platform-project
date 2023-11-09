@@ -37,6 +37,10 @@ export function CreateBlog() {
     }
   };
 
+  const handleDisregard = () => {
+    navigate("/dashboard");
+  };
+
   return (
     <div className="create-blog">
       <h1>Create Blog</h1>
@@ -94,6 +98,9 @@ export function CreateBlog() {
         </div>
 
         <button type="submit">Create Blog</button>
+        <button type="button" onClick={handleDisregard}>
+          Disregard
+        </button>
       </form>
     </div>
   );
