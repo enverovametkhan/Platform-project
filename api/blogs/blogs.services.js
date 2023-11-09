@@ -126,6 +126,7 @@ async function createBlogService(newBlog) {
   };
 
   blogsModel.push(createdBlog);
+  console.log("HELLO");
 
   return createdBlog;
 }

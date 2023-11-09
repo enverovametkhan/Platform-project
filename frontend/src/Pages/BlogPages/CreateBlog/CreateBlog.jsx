@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createBlog } from "src/redux/slices/blogs";
 import { useNavigate } from "react-router-dom";
+import styles from "./main.module.scss";
+import { ImageUploader } from "src/components/ImageUploader/ImageUploader";
 
 export function CreateBlog() {
   const navigate = useNavigate();
@@ -9,11 +11,13 @@ export function CreateBlog() {
   const [newBlog, setNewBlog] = useState({
     title: "",
     content: "",
-    image: "",
     category: "nature",
     visible: false,
+    image: "",
   });
-
+  const [formData, setFormData] = useState({
+    image: "",
+  });
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
 
@@ -42,7 +46,7 @@ export function CreateBlog() {
   };
 
   return (
-    <div className="create-blog">
+    <div className={styles.createBlog}>
       <h1>Create Blog</h1>
       <form onSubmit={handleSubmit}>
         <div>
@@ -64,7 +68,7 @@ export function CreateBlog() {
           />
         </div>
 
-        <div>
+        {/* <div>
           <label htmlFor="image">Image Upload</label>
           <input
             type="file"
@@ -72,7 +76,12 @@ export function CreateBlog() {
             accept="image/*"
             onChange={handleInputChange}
           />
-        </div>
+        </div> */}
+        <ImageUploader
+          formData={formData}
+          value={formData.image}
+          setFormData={setFormData}
+        />
 
         <div>
           <label htmlFor="visible">Visible</label>

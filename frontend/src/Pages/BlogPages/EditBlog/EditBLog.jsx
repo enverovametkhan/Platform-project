@@ -20,9 +20,6 @@ export function EditBlog() {
     visible: false,
     categories: "nature",
   });
-  const [formData, setFormData] = useState({
-    image: "",
-  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,7 +62,8 @@ export function EditBlog() {
   const handleUpdate = async () => {
     try {
       const response = await dispatch(updateBlog({ id, updatedBlog }));
-      console.log(response);
+      console.log(response.payload);
+      navigate("/dashboard");
     } catch (error) {
       console.error("Update Blog Error:", error);
     }
@@ -103,16 +101,7 @@ export function EditBlog() {
         />
       </div>
 
-      {/* <div>
-        <label htmlFor="image">Image URL</label>
-        <input
-          type="text"
-          name="image"
-          value={updatedBlog.image}
-          onChange={handleInputChange}
-        />
-      </div> */}
-      <ImageUploader formData={formData} setFormData={setFormData} />
+      <ImageUploader formData={updatedBlog} setFormData={setUpdatedBlog} />
 
       <div>
         <label htmlFor="visible">Visible</label>
