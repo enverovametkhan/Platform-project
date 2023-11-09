@@ -68,20 +68,7 @@ export function CreateBlog() {
           />
         </div>
 
-        {/* <div>
-          <label htmlFor="image">Image Upload</label>
-          <input
-            type="file"
-            name="image"
-            accept="image/*"
-            onChange={handleInputChange}
-          />
-        </div> */}
-        <ImageUploader
-          formData={formData}
-          value={formData.image}
-          setFormData={setFormData}
-        />
+        <ImageUploader formData={newBlog} setFormData={setNewBlog} />
 
         <div>
           <label htmlFor="visible">Visible</label>
