@@ -1,12 +1,10 @@
-.yourClass {
-  font-size: 50px;
-  color: #666;
-  font-family: Junge;
-  top: 20%;
-  position: absolute;
-  left: 45%;
+.editBlog {
   display: flex;
   flex-direction: column;
-  text-align: center;
-  margin-bottom: 20px;
+  align-items: center;
+  color: #666;
+  font-family: Junge;
+  position: absolute;
+  top: 30%;
+  left: 25%;
 }

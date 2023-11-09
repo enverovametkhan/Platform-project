@@ -4,6 +4,8 @@ import { useNavigate } from "react-router";
 import { updateBlog, getBlog, deleteBlog } from "src/redux/slices/blogs";
 import { selectCurrentUser } from "src/redux/slices/users";
 import { useParams } from "react-router";
+import { ImageUploader } from "src/components/ImageUploader/ImageUploader";
+import styles from "./main.module.scss";
 
 export function EditBlog() {
   const { id } = useParams();
@@ -17,6 +19,9 @@ export function EditBlog() {
     image: "",
     visible: false,
     categories: "nature",
+  });
+  const [formData, setFormData] = useState({
+    image: "",
   });
 
   useEffect(() => {
@@ -77,7 +82,7 @@ export function EditBlog() {
   };
 
   return (
-    <div className="edit-blog">
+    <div className={styles.editBlog}>
       <h1>Edit Blog</h1>
       <div>
         <label htmlFor="title">Title</label>
@@ -98,7 +103,7 @@ export function EditBlog() {
         />
       </div>
 
-      <div>
+      {/* <div>
         <label htmlFor="image">Image URL</label>
         <input
           type="text"
@@ -106,7 +111,8 @@ export function EditBlog() {
           value={updatedBlog.image}
           onChange={handleInputChange}
         />
-      </div>
+      </div> */}
+      <ImageUploader formData={formData} setFormData={setFormData} />
 
       <div>
         <label htmlFor="visible">Visible</label>
