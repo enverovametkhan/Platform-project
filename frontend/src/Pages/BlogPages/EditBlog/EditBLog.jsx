@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { updateBlog, getBlog } from "src/redux/slices/blogs";
+import { updateBlog, getBlog, deleteBlog } from "src/redux/slices/blogs";
 import { selectCurrentUser } from "src/redux/slices/users";
 import { useParams } from "react-router";
 
@@ -66,6 +66,15 @@ export function EditBlog() {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      const response = await dispatch(deleteBlog(id));
+      console.log(response);
+    } catch (error) {
+      console.error("Delete Blog Error:", error);
+    }
+  };
+
   return (
     <div className="edit-blog">
       <h1>Edit Blog</h1>
@@ -123,6 +132,9 @@ export function EditBlog() {
 
       <button type="button" onClick={handleUpdate}>
         Update Blog
+      </button>
+      <button type="button" onClick={handleDelete}>
+        Delete Blog
       </button>
     </div>
   );
