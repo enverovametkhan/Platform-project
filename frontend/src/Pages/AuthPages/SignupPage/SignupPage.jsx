@@ -49,7 +49,8 @@ export const SignupPage = () => {
         <div>
           <h1 className={styles.signHeader}>Sign Up</h1>
           <p className={styles.signText}>
-            Enter your account details below or <Link to="/login">log in</Link>
+            Enter your account details below or{" "}
+            <Link to="/auth/login">log in</Link>
           </p>
           <form onSubmit={handleSubmit}>
             <div className={styles.formGroup}>

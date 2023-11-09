@@ -14,13 +14,25 @@ import { setCurrentUser } from "src/redux/slices/users";
 
 export function MyAccount() {
   const dispatch = useDispatch();
-  const { email: currentUserEmail, username: currentUserUsername } =
-    useSelector(selectCurrentUser);
-  const [formData, setFormData] = useState({
-    email: currentUserEmail,
-    username: currentUserUsername,
-  });
+  const { email, username } = useSelector(selectCurrentUser);
+  const [formData, setFormData] = useState({ email: "", username: "" });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(getUser());
+        console.log(response);
+        setFormData({
+          email: response.payload.email || "",
+          username: response.payload.username || "",
+        });
+      } catch (e) {
+        console.error("Error", e);
+      }
+    };
+    fetchData();
+  }, [dispatch]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -41,29 +53,26 @@ export function MyAccount() {
 
   const handleUpdateUser = async () => {
     if (formData.email.length < 6) {
-      setFormData({ ...formData, email: "" });
       console.error("Email must be at least 6 characters long.");
       return;
     }
 
-    if (
-      currentUserEmail === formData.email &&
-      currentUserUsername === formData.username
-    ) {
+    if (email === formData.email && username === formData.username) {
       console.log("No changes to save.");
-    } else {
-      try {
-        const response = await dispatch(updateUser(formData));
-        console.log(response);
-      } catch (e) {
-        console.error("Error", e);
-      }
+      return;
+    }
+
+    try {
+      const response = await dispatch(updateUser(formData));
+      console.log(response);
+    } catch (e) {
+      console.error("Error", e);
     }
   };
 
   const handleSendLink = async () => {
     try {
-      let response = await dispatch(resetPasswordReq(formData.email));
+      let response = await dispatch(resetPasswordReq(email));
       console.log("Password reset request successful. Response:", response);
     } catch (error) {
       console.error("Error occurred during password reset:", error);
