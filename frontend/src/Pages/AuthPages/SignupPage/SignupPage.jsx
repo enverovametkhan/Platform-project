@@ -13,7 +13,9 @@ export const SignupPage = () => {
     confirmedPassword: "",
   });
 
+  const [passwordMatchError, setPasswordMatchError] = useState(false);
   const [finishedSignUp, setFinishedSignUp] = useState(true);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -34,6 +36,12 @@ export const SignupPage = () => {
       return;
     }
 
+    if (formData.password !== formData.confirmedPassword) {
+      console.error("Password and Confirm Password do not match.");
+      setPasswordMatchError(true);
+      return;
+    }
+
     try {
       await handleSignUp(formData, setFormData);
       setFinishedSignUp(false);
@@ -47,6 +55,11 @@ export const SignupPage = () => {
     <div className={styles.SignUpPage}>
       {finishedSignUp ? (
         <div>
+          {passwordMatchError && (
+            <p className={styles.errorText}>
+              Password and Confirm Password do not match.
+            </p>
+          )}
           <h1 className={styles.signHeader}>Sign Up</h1>
           <p className={styles.signText}>
             Enter your account details below or{" "}
@@ -91,6 +104,7 @@ export const SignupPage = () => {
                 value={formData.password}
                 onChange={handleInputChange}
                 minLength="6"
+                autoComplete="password"
                 required
               />
             </div>
@@ -105,6 +119,7 @@ export const SignupPage = () => {
                 value={formData.confirmedPassword}
                 onChange={handleInputChange}
                 minLength="6"
+                autoComplete="confirmedPassword"
                 required
               />
             </div>

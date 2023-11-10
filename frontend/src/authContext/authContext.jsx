@@ -48,11 +48,6 @@ export const AuthProvider = ({ children }) => {
 
   const handleSignUp = async (formData, setFormData) => {
     try {
-      if (formData.password !== formData.confirmedPassword) {
-        console.log("Password and Confirm Password do not match");
-        return;
-      }
-
       const response = await dispatch(signupUser(formData, setFormData));
 
       console.log(response.payload);

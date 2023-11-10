@@ -51,6 +51,7 @@ export const LoginPage = () => {
             value={formData.email}
             onChange={handleInputChange}
             minLength="6"
+            autoComplete="email"
           />
         </div>
 
@@ -64,6 +65,7 @@ export const LoginPage = () => {
             value={formData.password}
             onChange={handleInputChange}
             minLength="6"
+            autoComplete="current-password"
           />
         </div>
 
