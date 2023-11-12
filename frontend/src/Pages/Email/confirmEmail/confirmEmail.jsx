@@ -41,7 +41,7 @@ export const ConfirmEmail = () => {
       {validToken ? (
         <h1 className={styles.style}>Thank You for Confirming Email</h1>
       ) : (
-        <p>Oops could not verify email</p>
+        <p className={styles.notification}>Oops could not verify email</p>
       )}
 
       {validToken && (

@@ -40,18 +40,20 @@ export const EmailSwap = () => {
   return (
     <div>
       {validToken ? (
-        <h1 className={styles.Style}>Thank You for Confirming Email</h1>
+        <h1 className={styles.style}>Thank You for Confirming Email</h1>
       ) : (
-        <p>The provided token is invalid. Please check and try again.</p>
+        <p className={styles.notification}>
+          The provided token is invalid. Please check and try again.
+        </p>
       )}
 
       {isAuthenticated ? (
         <Link to="/dashboard">
-          <button>Go to Dashboard</button>
+          <button className={styles.butt}>Go to Dashboard</button>
         </Link>
       ) : (
         <Link to="/">
-          <button>Go to Home</button>
+          <button className={styles.buttT}>Go to Home</button>
         </Link>
       )}
     </div>
