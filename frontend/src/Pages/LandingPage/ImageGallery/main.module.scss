@@ -1,11 +1,10 @@
 .imageGallery {
   display: flex;
-  justify-content: center;
+  overflow-x: auto;
   margin-top: 20px;
 }
 
 .imageContainer {
-  display: inline-block;
   margin: 0 10px;
 }
 

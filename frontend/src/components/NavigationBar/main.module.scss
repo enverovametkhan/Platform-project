@@ -24,9 +24,10 @@
   width: 200px;
   height: 59px;
   border-radius: 50px;
+  // border: none;
   background: #eef1f4;
-  margin-top: 50px;
-  margin-left: 50px;
+  margin-top: 20px;
+  margin-left: 20px;
   color: #666;
   font-family: Junge;
   font-size: 25px;
@@ -34,14 +35,21 @@
 
 .logoutButton {
   position: absolute;
-  top: 85%;
+  top: 87%;
+}
+
+.buttonsPage {
+  display: flex;
+  flex-direction: column;
+  margin-top: 80px;
+  margin-left: 20px;
 }
 
 .myLinks {
   border: none;
   background-color: white;
-  margin-top: 50px;
-  margin-left: 50px;
+  margin-top: 80px;
+  margin-left: 80px;
   font-family: Junge;
   font-size: 30px;
   text-decoration: none;

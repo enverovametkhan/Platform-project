@@ -56,13 +56,13 @@
   width: 200px;
   height: 59px;
   border-radius: 50px;
-  margin-top: 50px;
+  position: absolute;
+  top: 82%;
   border: none;
   color: #666;
   font-family: Junge;
   font-size: 25px;
   background: #ff9d9d;
-  margin-top: 20px;
 }
 
 .delPage {
@@ -75,5 +75,6 @@
   margin-top: 30px;
 }
 .wouldA {
-  margin-top: 70px;
+  margin-top: 30px;
+  margin-left: 170px;
 }
