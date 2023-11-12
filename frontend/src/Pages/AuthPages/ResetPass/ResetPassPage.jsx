@@ -43,7 +43,9 @@ export const ResetPassPage = () => {
           </button>
         </div>
       ) : (
-        <h1>A link has been sent to your email to reset your password.</h1>
+        <h1 className={styles.notification}>
+          A link has been sent to your email to reset your password.
+        </h1>
       )}
     </div>
   );

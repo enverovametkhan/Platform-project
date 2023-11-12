@@ -55,11 +55,6 @@ export const SignupPage = () => {
     <div className={styles.SignUpPage}>
       {finishedSignUp ? (
         <div>
-          {passwordMatchError && (
-            <p className={styles.errorText}>
-              Password and Confirm Password do not match.
-            </p>
-          )}
           <h1 className={styles.signHeader}>Sign Up</h1>
           <p className={styles.signText}>
             Enter your account details below or{" "}
@@ -123,13 +118,18 @@ export const SignupPage = () => {
                 required
               />
             </div>
+            {passwordMatchError && (
+              <p className={styles.errorText}>
+                Password and Confirm Password do not match.
+              </p>
+            )}
             <button className={styles.signBut} type="submit">
               Sign Up
             </button>
           </form>
         </div>
       ) : (
-        <h1>Thanks for signing up</h1>
+        <h1 className={styles.notification}>Thanks for signing up</h1>
       )}
     </div>
   );

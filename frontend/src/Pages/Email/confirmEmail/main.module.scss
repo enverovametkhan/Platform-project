@@ -1,0 +1,31 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.style {
+  color: #666;
+  font-family: Junge;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.butt {
+  width: 337px;
+  height: 59px;
+  border-radius: 10px;
+  border: 1px solid #545f71;
+  background: #9ba5b7;
+
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 20px;
+}

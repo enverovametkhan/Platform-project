@@ -39,14 +39,14 @@ export const ConfirmEmail = () => {
   return (
     <div>
       {validToken ? (
-        <h1 className={styles.Style}>Thank You for Confirming Email</h1>
+        <h1 className={styles.style}>Thank You for Confirming Email</h1>
       ) : (
         <p>Oops could not verify email</p>
       )}
 
       {validToken && (
         <Link to="/auth/login">
-          <button>Login</button>
+          <button className={styles.butt}>Login</button>
         </Link>
       )}
     </div>
