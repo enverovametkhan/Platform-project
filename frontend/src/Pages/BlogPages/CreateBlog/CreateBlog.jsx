@@ -47,7 +47,7 @@ export function CreateBlog() {
     <div className={styles.createBlog}>
       <h1 className={styles.h1}>Create Blog</h1>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className={styles.labelGroup}>
           <label htmlFor="title">Title</label>
           <input
             type="text"
@@ -57,7 +57,7 @@ export function CreateBlog() {
           />
         </div>
 
-        <div>
+        <div className={styles.labelGroup}>
           <label htmlFor="content">Content</label>
           <textarea
             name="content"
@@ -68,7 +68,7 @@ export function CreateBlog() {
 
         <ImageUploader formData={newBlog} setFormData={setNewBlog} />
 
-        <div>
+        <div className={styles.labelGroup}>
           <label htmlFor="visible">Visible</label>
           <input
             type="checkbox"
@@ -78,7 +78,7 @@ export function CreateBlog() {
           />
         </div>
 
-        <div>
+        <div className={styles.labelGroup}>
           <label htmlFor="category">Category</label>
           <select
             name="category"
@@ -91,10 +91,18 @@ export function CreateBlog() {
           </select>
         </div>
 
-        <button type="submit">Create Blog</button>
-        <button type="button" onClick={handleDisregard}>
-          Disregard
-        </button>
+        <div className={styles.savedeleteGroup}>
+          <button className={styles.compButGreen} type="submit">
+            Create Blog
+          </button>
+          <button
+            className={styles.compButRed}
+            type="button"
+            onClick={handleDisregard}
+          >
+            Disregard
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -5,7 +5,42 @@
   color: #666;
   font-family: Junge;
   position: absolute;
-  top: 30%;
-  left: 25%;
+  top: 15%;
+  left: 35%;
   margin: 20px;
+}
+
+.h1 {
+  font-size: 50px;
+  margin-bottom: 20px;
+}
+
+.compButRed {
+  border-radius: 50px;
+  background: #ff9d9d;
+  color: #666;
+  font-family: Junge;
+  font-size: 30px;
+  width: 200px;
+  margin-left: 20px;
+  border: none;
+}
+
+.compButGreen {
+  border-radius: 50px;
+  background: #bdff9d;
+  color: #666;
+  font-family: Junge;
+  font-size: 30px;
+  width: 200px;
+  border: none;
+}
+
+.labelGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  color: #666;
+  font-family: Junge;
+  border-radius: 10px;
 }

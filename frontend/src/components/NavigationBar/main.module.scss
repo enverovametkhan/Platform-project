@@ -1,13 +1,8 @@
-.container {
-  display: flex;
-  flex-direction: column;
-}
-
 .yourClass {
   font-size: 50px;
   color: #666;
   font-family: Junge;
-  margin-top: 30px;
+  margin-top: 50px;
   margin-left: 20px;
 }
 
@@ -20,14 +15,27 @@
   left: 90%;
 }
 
+.navigationBar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 30px;
+  margin-top: 70px;
+}
+
+.buttonWrapper {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .pageButton {
-  width: 200px;
+  width: 180px;
   height: 59px;
   border-radius: 50px;
-  // border: none;
   background: #eef1f4;
   margin-top: 20px;
-  margin-left: 20px;
   color: #666;
   font-family: Junge;
   font-size: 25px;
@@ -36,37 +44,12 @@
 .logoutButton {
   position: absolute;
   top: 87%;
-}
-
-.buttonsPage {
-  display: flex;
-  flex-direction: column;
-  margin-top: 80px;
-  margin-left: 20px;
-}
-
-.myLinks {
-  border: none;
-  background-color: white;
-  margin-top: 80px;
-  margin-left: 80px;
+  width: 180px;
+  height: 59px;
+  border-radius: 50px;
+  background: #eef1f4;
+  margin-top: 20px;
+  color: #666;
   font-family: Junge;
-  font-size: 30px;
-  text-decoration: none;
-  transition: color 0.3s, text-decoration 0.3s;
-  display: flex;
-  flex-direction: column;
-
-  a {
-    color: #666;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-}
-
-.myBlogs {
-  margin-bottom: 30px;
+  font-size: 25px;
 }
