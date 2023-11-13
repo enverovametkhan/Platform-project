@@ -15,25 +15,23 @@
   margin-bottom: 20px;
 }
 
-.compButRed {
+.compButton {
   border-radius: 50px;
-  background: #ff9d9d;
   color: #666;
   font-family: Junge;
   font-size: 30px;
   width: 200px;
-  margin-left: 20px;
   border: none;
+  margin-top: 20px;
+}
+
+.compButRed {
+  background: #ff9d9d;
+  margin-left: 20px;
 }
 
 .compButGreen {
-  border-radius: 50px;
   background: #bdff9d;
-  color: #666;
-  font-family: Junge;
-  font-size: 30px;
-  width: 200px;
-  border: none;
 }
 
 .labelGroup {
@@ -43,4 +41,92 @@
   color: #666;
   font-family: Junge;
   border-radius: 10px;
+}
+
+.labelGroup textarea,
+.labelGroup input,
+.labelGroup select {
+  border: 2px solid #eef1f4;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 15px;
+  font-family: Junge;
+}
+
+.labelGroup select {
+  background-color: #eef1f4;
+  cursor: pointer;
+}
+
+.labelGroup select:focus {
+  outline: none;
+  border-color: #eef1f4;
+}
+
+.savedeleteGroup {
+  display: flex;
+  margin-top: 20px;
+}
+
+.toggleVisibilityGroup {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.visText {
+  margin-right: 20px;
+}
+
+.toggleGroup {
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  transform: translate(0, -50%);
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 15px;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 15px;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(15px);
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 11px;
+  width: 11px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 50%;
 }

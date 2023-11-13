@@ -123,10 +123,10 @@ async function createBlogService(newBlog) {
     createdAt: Date.now(),
     updatedAt: Date.now(),
     deletedAt: "",
+    visible: newBlog.visible,
   };
 
   blogsModel.push(createdBlog);
-  console.log("HELLO");
 
   return createdBlog;
 }

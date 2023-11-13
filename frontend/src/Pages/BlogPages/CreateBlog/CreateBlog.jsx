@@ -15,6 +15,7 @@ export function CreateBlog() {
     visible: false,
     image: "",
   });
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
@@ -29,6 +30,12 @@ export function CreateBlog() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!newBlog.title.trim() || !newBlog.content.trim()) {
+      alert("Title and Content are required. Please fill them in.");
+      return;
+    }
+
     try {
       const response = await dispatch(createBlog(newBlog));
 
@@ -41,6 +48,11 @@ export function CreateBlog() {
 
   const handleDisregard = () => {
     navigate("/dashboard");
+  };
+
+  const handleToggle = () => {
+    setIsChecked(!isChecked);
+    setNewBlog({ ...newBlog, visible: isChecked });
   };
 
   return (
@@ -63,20 +75,30 @@ export function CreateBlog() {
             name="content"
             value={newBlog.content}
             onChange={handleInputChange}
+            rows="8"
+            cols="50"
           />
+        </div>
+
+        <div className={styles.toggleVisibilityGroup}>
+          <div className={styles.visText}>Visibility</div>
+          <div className={styles.pubText}>
+            {isChecked ? "Public" : "Private"}
+          </div>
+          <div className={styles.toggleGroup}>
+            <label className={styles.switch}>
+              <input
+                type="checkbox"
+                checked={isChecked}
+                value={newBlog.visible}
+                onChange={handleToggle}
+              />
+              <span className={styles.slider}></span>
+            </label>
+          </div>
         </div>
 
         <ImageUploader formData={newBlog} setFormData={setNewBlog} />
-
-        <div className={styles.labelGroup}>
-          <label htmlFor="visible">Visible</label>
-          <input
-            type="checkbox"
-            name="visible"
-            checked={newBlog.visible}
-            onChange={handleInputChange}
-          />
-        </div>
 
         <div className={styles.labelGroup}>
           <label htmlFor="category">Category</label>
@@ -92,11 +114,14 @@ export function CreateBlog() {
         </div>
 
         <div className={styles.savedeleteGroup}>
-          <button className={styles.compButGreen} type="submit">
+          <button
+            className={`${styles.compButton} ${styles.compButGreen}`}
+            type="submit"
+          >
             Create Blog
           </button>
           <button
-            className={styles.compButRed}
+            className={`${styles.compButton} ${styles.compButRed}`}
             type="button"
             onClick={handleDisregard}
           >

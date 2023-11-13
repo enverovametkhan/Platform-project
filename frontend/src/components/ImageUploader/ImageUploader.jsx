@@ -45,8 +45,13 @@ export function ImageUploader({ formData, setFormData }) {
 
   return (
     <div className={styles["image-uploader"]}>
-      <label htmlFor="image">Image:</label>
-      <input type="file" id="image" name="image" onChange={handlePicChange} />
+      <label htmlFor="image" className={styles.label}>
+        Image:
+      </label>
+      <div className={styles["file-input-wrapper"]}>
+        <input type="file" id="image" name="image" onChange={handlePicChange} />
+        <span>Choose a file</span>
+      </div>
       {formData.image && <img src={formData.image} alt="Selected Image" />}
     </div>
   );
