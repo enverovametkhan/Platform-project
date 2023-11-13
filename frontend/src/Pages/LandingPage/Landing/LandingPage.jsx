@@ -70,7 +70,7 @@ export function LandingPage() {
       </div>
       {isAuthenticated && (
         <Link to="/dashboard/myaccount">
-          <img src={max} alt="Image" />
+          <img className={styles.img} src={max} alt="Image" />
         </Link>
       )}
       <Footer />

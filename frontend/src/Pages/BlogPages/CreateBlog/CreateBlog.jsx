@@ -15,9 +15,7 @@ export function CreateBlog() {
     visible: false,
     image: "",
   });
-  const [formData, setFormData] = useState({
-    image: "",
-  });
+
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
 
@@ -47,7 +45,7 @@ export function CreateBlog() {
 
   return (
     <div className={styles.createBlog}>
-      <h1>Create Blog</h1>
+      <h1 className={styles.h1}>Create Blog</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="title">Title</label>
