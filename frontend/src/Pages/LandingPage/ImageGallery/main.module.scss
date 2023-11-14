@@ -12,6 +12,7 @@
   width: 257.44px;
   height: 395.001px;
   object-fit: cover;
+  border-radius: 10px;
 }
 
 .imageText {
@@ -25,4 +26,16 @@
   text-align: center;
   margin-bottom: 150px;
   font-family: "Junge", serif;
+}
+
+.blogComp {
+  color: #545f71;
+  font-family: Junge;
+  font-size: 10px;
+  text-decoration: none;
+}
+
+.blogComp h1,
+.blogComp p {
+  text-decoration: none;
 }

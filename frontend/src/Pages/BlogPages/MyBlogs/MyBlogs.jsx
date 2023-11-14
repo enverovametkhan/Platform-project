@@ -57,17 +57,19 @@ export function MyBlogs() {
           </button>
         </div>
 
-        {blogs.map((eachBlog) => (
-          <div key={eachBlog.id}>
-            <ImageGallery
-              key={eachBlog.id}
-              id={eachBlog.id}
-              title={eachBlog.title}
-              likes={eachBlog.likes}
-              image={eachBlog.image}
-            />
-          </div>
-        ))}
+        <div className={styles.imageGalleryContainer}>
+          {blogs.map((eachBlog) => (
+            <div key={eachBlog.id}>
+              <ImageGallery
+                key={eachBlog.id}
+                id={eachBlog.id}
+                title={eachBlog.title}
+                likes={eachBlog.likes}
+                image={eachBlog.image}
+              />
+            </div>
+          ))}
+        </div>
 
         {blogs.length === 0 && (
           <div>

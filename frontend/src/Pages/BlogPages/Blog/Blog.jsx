@@ -41,7 +41,7 @@ export function Blog() {
             <p className={`${styles.blog} ${styles.blogText}`}>
               {blog.content}
             </p>
-            <div>
+            <div className={styles.blogComp}>
               <p>Author: {blog.userId}</p>
               <p>Likes: {blog.likes}</p>
               <p>Views: {blog.views}</p>
