@@ -1,15 +1,24 @@
 .image-uploader {
   display: flex;
   flex-direction: column;
-  align-items: center;
+
   margin: 20px;
   color: #666;
   font-family: Junge;
+  align-items: flex-start;
+
+  img {
+    width: 501px;
+    height: 550px;
+    object-fit: cover;
+    margin-top: 30px;
+    border-radius: 90px;
+  }
 }
 
 .label {
   margin-bottom: 10px;
-  margin-left: -370px;
+  margin-left: -20px;
 }
 
 .file-input-wrapper {
@@ -17,6 +26,7 @@
   overflow: hidden;
   display: inline-block;
   cursor: pointer;
+  margin-left: -20px;
 
   input {
     font-size: 100px;
@@ -33,7 +43,5 @@
     background-color: #eef1f4;
     border-radius: 8px;
     cursor: pointer;
-
-    margin-right: 50px;
   }
 }

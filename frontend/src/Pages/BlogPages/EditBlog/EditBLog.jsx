@@ -81,8 +81,8 @@ export function EditBlog() {
 
   return (
     <div className={styles.editBlog}>
-      <h1>Edit Blog</h1>
-      <div>
+      <h1 className={styles.h1}>Edit Blog</h1>
+      <div className={styles.labelGroup}>
         <label htmlFor="title">Title</label>
         <input
           type="text"
@@ -92,28 +92,37 @@ export function EditBlog() {
         />
       </div>
 
-      <div>
+      <div className={styles.labelGroup}>
         <label htmlFor="content">Content</label>
         <textarea
           name="content"
           value={updatedBlog.content}
+          rows="8"
+          cols="50"
           onChange={handleInputChange}
         />
+      </div>
+
+      <div className={styles.toggleVisibilityGroup}>
+        <div className={styles.visText}>Visibility</div>
+        <div className={styles.pubText}></div>
+        <div className={styles.toggleGroup}>
+          <label className={styles.switch}>
+            <input
+              type="checkbox"
+              id="visible"
+              checked={updatedBlog.visible}
+              name="visible"
+              onChange={handleInputChange}
+            />
+            <span className={styles.slider}></span>
+          </label>
+        </div>
       </div>
 
       <ImageUploader formData={updatedBlog} setFormData={setUpdatedBlog} />
 
-      <div>
-        <label htmlFor="visible">Visible</label>
-        <input
-          type="checkbox"
-          name="visible"
-          checked={updatedBlog.visible}
-          onChange={handleInputChange}
-        />
-      </div>
-
-      <div>
+      <div className={styles.labelGroup}>
         <label htmlFor="categories">Categories</label>
         <select
           name="categories"
@@ -125,13 +134,22 @@ export function EditBlog() {
           <option value="life">Life</option>
         </select>
       </div>
-
-      <button type="button" onClick={handleUpdate}>
-        Update Blog
-      </button>
-      <button type="button" onClick={handleDelete}>
-        Delete Blog
-      </button>
+      <div className={styles.savedeleteGroup}>
+        <button
+          className={`${styles.compButton} ${styles.compButGreen}`}
+          type="button"
+          onClick={handleUpdate}
+        >
+          Update Blog
+        </button>
+        <button
+          className={`${styles.compButton} ${styles.compButRed}`}
+          type="button"
+          onClick={handleDelete}
+        >
+          Delete Blog
+        </button>
+      </div>
     </div>
   );
 }
