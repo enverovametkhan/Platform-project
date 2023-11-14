@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
 import styles from "./main.module.scss";
-import max from "src/Assets/max.jpeg";
+import max from "src/Assets/max.avif";
 import { useAuth } from "src/authContext/authContext";
 
 function LogoutButton() {
   const { handleLogout } = useAuth();
+  const [fixedLogout, setFixedLogout] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isFixed = window.scrollY > 50;
+      setFixedLogout(isFixed);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const handleLogoutUser = async () => {
     try {
@@ -17,13 +31,15 @@ function LogoutButton() {
 
   return (
     <Link to="/" className={styles.link}>
-      <button className={styles.logoutButton} onClick={handleLogoutUser}>
-        Logout
-      </button>
+      <div
+        className={`${styles.logoutButton} ${fixedLogout ? styles.fixed : ""}`}
+        onClick={handleLogoutUser}
+      >
+        <span className={styles.logoutText}>Logout</span>
+      </div>
     </Link>
   );
 }
-
 export function NavigationBar() {
   return (
     <div>

@@ -80,3 +80,17 @@
   margin-top: 30px;
   margin-left: 170px;
 }
+
+.inputField {
+  width: 120%;
+  padding: 10px;
+  border: 2px solid #eef1f4;
+  border-radius: 10px;
+  font-family: Junge;
+  margin-top: 5px;
+
+  &:focus {
+    outline: none;
+    border-color: #2196f3;
+  }
+}

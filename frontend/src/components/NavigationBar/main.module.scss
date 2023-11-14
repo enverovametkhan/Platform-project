@@ -42,8 +42,8 @@
 }
 
 .logoutButton {
-  position: absolute;
-  top: 87%;
+  position: fixed;
+  bottom: 0;
   width: 180px;
   height: 59px;
   border-radius: 50px;
@@ -52,4 +52,17 @@
   color: #666;
   font-family: Junge;
   font-size: 25px;
+  transition: top 0.3s ease-in-out;
+  margin-bottom: 20px;
+}
+
+.fixed {
+  top: auto;
+}
+
+.logoutText {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }

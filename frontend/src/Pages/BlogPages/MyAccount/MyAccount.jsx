@@ -98,6 +98,7 @@ export function MyAccount() {
                 minLength="6"
                 value={formData.email}
                 onChange={handleInputChange}
+                className={styles.inputField}
               />
             </div>
           </div>
@@ -114,6 +115,7 @@ export function MyAccount() {
                 name="username"
                 value={formData.username}
                 onChange={handleInputChange}
+                className={styles.inputField}
               />
             </div>
           </div>
