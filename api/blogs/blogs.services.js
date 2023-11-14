@@ -120,10 +120,10 @@ async function createBlogService(newBlog) {
     category: newBlog.category,
     views: 0,
     likes: 0,
+    visible: newBlog.visible,
     createdAt: Date.now(),
     updatedAt: Date.now(),
     deletedAt: "",
-    visible: newBlog.visible,
   };
 
   blogsModel.push(createdBlog);

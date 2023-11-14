@@ -13,19 +13,13 @@ export function CreateBlog() {
     content: "",
     category: "nature",
     visible: false,
-    image: "",
+    image: null,
   });
-  const [isChecked, setIsChecked] = useState(false);
 
   const handleInputChange = (e) => {
-    const { name, value, type } = e.target;
-
-    if (type === "file") {
-      const file = e.target.files[0];
-      setNewBlog({ ...newBlog, [name]: file });
-    } else {
-      setNewBlog({ ...newBlog, [name]: value });
-    }
+    const { name, value, type, checked } = e.target;
+    const newValue = type === "checkbox" ? checked : value;
+    setNewBlog({ ...newBlog, [name]: newValue });
   };
 
   const handleSubmit = async (e) => {
@@ -48,11 +42,6 @@ export function CreateBlog() {
 
   const handleDisregard = () => {
     navigate("/dashboard");
-  };
-
-  const handleToggle = () => {
-    setIsChecked(!isChecked);
-    setNewBlog({ ...newBlog, visible: isChecked });
   };
 
   return (
@@ -82,16 +71,15 @@ export function CreateBlog() {
 
         <div className={styles.toggleVisibilityGroup}>
           <div className={styles.visText}>Visibility</div>
-          <div className={styles.pubText}>
-            {isChecked ? "Public" : "Private"}
-          </div>
+          <div className={styles.pubText}></div>
           <div className={styles.toggleGroup}>
             <label className={styles.switch}>
               <input
                 type="checkbox"
-                checked={isChecked}
-                value={newBlog.visible}
-                onChange={handleToggle}
+                id="visible"
+                checked={newBlog.visible}
+                name="visible"
+                onChange={handleInputChange}
               />
               <span className={styles.slider}></span>
             </label>
