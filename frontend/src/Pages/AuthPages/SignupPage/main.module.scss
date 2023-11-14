@@ -6,69 +6,70 @@
   margin-top: 100px;
   padding: 30px;
   gap: 20px;
-}
 
-.signHeader {
-  font-size: 50px;
-  color: #666;
-  font-family: Junge;
-}
+  .signHeader {
+    font-size: 50px;
+    color: #666;
+    font-family: Junge;
+  }
 
-.signText {
-  margin-bottom: 20px;
-  color: #666;
-  font-family: Junge;
-}
-.formGroup {
-  font-size: 20px;
-  color: #666;
-  font-family: Junge;
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-}
+  .signText {
+    margin-bottom: 20px;
+    color: #666;
+    font-family: Junge;
+  }
 
-.myLabel {
-  font-size: 20px;
-  color: #666;
-  font-family: Junge;
-}
+  .formGroup {
+    font-size: 20px;
+    color: #666;
+    font-family: Junge;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
 
-input {
-  font-size: 16px;
-  padding: 5px;
-  width: 337px;
-  border-radius: 10px;
-  height: 30px;
-  border-color: #666;
-}
+    .myLabel {
+      font-size: 20px;
+      color: #666;
+      font-family: Junge;
+    }
 
-.signBut {
-  width: 337px;
-  height: 59px;
-  border-radius: 10px;
-  border: 1px solid #545f71;
-  background: #9ba5b7;
-  margin-top: 50px;
-  margin-left: 10px;
-  color: #fff;
-  font-size: 20px;
-}
+    input {
+      font-size: 16px;
+      padding: 5px;
+      width: 337px;
+      border-radius: 10px;
+      height: 30px;
+      border-color: #666;
+    }
+  }
 
-.forgotPass {
-  margin-top: 50px;
-  text-align: center;
-}
+  .signBut {
+    width: 337px;
+    height: 59px;
+    border-radius: 10px;
+    border: 1px solid #545f71;
+    background: #9ba5b7;
+    margin-top: 50px;
+    margin-left: 10px;
+    color: #fff;
+    font-size: 20px;
+  }
 
-.notification {
-  color: #666;
-  font-family: Junge;
-  position: absolute;
-  top: 30%;
-}
+  .forgotPass {
+    margin-top: 50px;
+    text-align: center;
+  }
 
-.errorText {
-  color: #666;
-  font-family: Junge;
+  .notification {
+    color: #666;
+    font-family: Junge;
+    position: absolute;
+    top: 30%;
+  }
+
+  .errorText {
+    color: #666;
+    font-family: Junge;
+  }
 }

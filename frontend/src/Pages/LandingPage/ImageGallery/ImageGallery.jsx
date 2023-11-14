@@ -6,7 +6,7 @@ const ImageGallery = ({ id, title, likes, image }) => {
   return (
     <div className={styles.imageGallery}>
       <div className={styles.imageContainer}>
-        <Link to={`/blog/${id}`}>
+        <Link to={`/blog/${id}`} className={styles.linkStyle}>
           <img className={styles.image} src={image} alt={`Image ${id}`} />
           <div className={styles.blogComp}>
             <h1>{title}</h1>
