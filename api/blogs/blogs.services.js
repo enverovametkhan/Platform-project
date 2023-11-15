@@ -22,7 +22,7 @@ async function getBlogService(id) {
 
 function getBlogInCategoryService(category) {
   const blogsInCategory = blogsModel.filter(
-    (blog) => blog.category === category
+    (blog) => blog.category === category && blog.visible === true
   );
 
   if (blogsInCategory.length === 0) {
