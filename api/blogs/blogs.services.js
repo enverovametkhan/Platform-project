@@ -1,23 +1,41 @@
 const { miniDatabase } = require("@root/database/miniDatabase");
 const { getAccessToUserData } = require("@root/utilities/getUserData");
-
+const mongoose = require("mongoose");
 const blogsModel = miniDatabase.Blogs;
 const blogsCommentModel = miniDatabase.BlogComments;
 
-async function getBlogService(id) {
-  const blog = blogsModel.find((blog) => blog.id === id);
-  const comments = blogsCommentModel.find((comment) => comment.blog_id === id);
+// async function getBlogService(id) {
+//   const blog = blogsModel.find((blog) => blog.id === id);
+//   const comments = blogsCommentModel.find((comment) => comment.blog_id === id);
 
-  if (!blog) {
-    const error = new Error("No blog found");
-    error.function = "getBlogService";
+//   if (!blog) {
+//     const error = new Error("No blog found");
+//     error.function = "getBlogService";
+//     throw error;
+//   }
+
+//   return {
+//     ...blog,
+//     comments: [comments],
+//   };
+// }
+async function getBlogService(id) {
+  try {
+    const blog = await BlogsModel.findById(id);
+    const comments = await BlogsCommentModel.find({ blogId: id });
+
+    if (!blog) {
+      throw new Error("No blog found");
+    }
+
+    return {
+      ...blog.toObject(),
+      comments: comments.map((comment) => comment.toObject()),
+    };
+  } catch (error) {
+    console.error(error);
     throw error;
   }
-
-  return {
-    ...blog,
-    comments: [comments],
-  };
 }
 
 function getBlogInCategoryService(category) {
