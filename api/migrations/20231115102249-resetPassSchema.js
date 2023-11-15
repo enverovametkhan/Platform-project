@@ -1,14 +1,38 @@
 module.exports = {
   async up(db, client) {
-    // TODO write your migration here.
-    // See https://github.com/seppevs/migrate-mongo/#creating-a-new-migration-script
-    // Example:
-    // await db.collection('albums').updateOne({artist: 'The Beatles'}, {$set: {blacklisted: true}});
+    await db.createCollection("ResetPass", {
+      validator: {
+        $jsonSchema: {
+          bsonType: "object",
+          required: ["id", "userId", "token"],
+          properties: {
+            id: {
+              bsonType: "string",
+            },
+            userId: {
+              bsonType: "string",
+            },
+            token: {
+              bsonType: "string",
+            },
+            expiresAt: {
+              bsonType: "date",
+            },
+            createdAt: {
+              bsonType: "date",
+            },
+            updatedAt: {
+              bsonType: "date",
+            },
+          },
+        },
+      },
+    });
   },
+  validationLevel: "strict",
+  validationAction: "error",
 
   async down(db, client) {
-    // TODO write the statements to rollback your migration (if possible)
-    // Example:
-    // await db.collection('albums').updateOne({artist: 'The Beatles'}, {$set: {blacklisted: false}});
-  }
+    await db.collection("ResetPass").drop();
+  },
 };
