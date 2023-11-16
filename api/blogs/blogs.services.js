@@ -20,29 +20,26 @@ const blogsCommentModel = miniDatabase.BlogComments;
 //   };
 // }
 
-async function getBlogService(id) {
+const getBlogService = async (id) => {
   try {
-    if (!blogsModel) {
-      throw new Error("blogsModel is not defined");
-    }
-
-    const blog = await blogsModel.findById(id);
+    const blog = await miniDatabase.blogsModel.findById(id);
 
     if (!blog) {
-      throw new Error("No blog found");
+      const error = new Error("No blog found");
+      error.function = "getBlogService";
+      throw error;
     }
 
-    const comments = await blogsCommentModel.find({ blog_id: id });
+    const comments = await miniDatabase.blogsCommentModel.find({ blog_id: id });
 
     return {
-      ...blog.toObject(),
+      ...blog.toObject(), // Convert Mongoose document to plain JavaScript object
       comments,
     };
   } catch (error) {
-    console.error("Error in getBlogService:", error);
-    throw error;
+    throw error; // You might want to handle or log the error appropriately
   }
-}
+};
 
 function getBlogInCategoryService(category) {
   const blogsInCategory = blogsModel.filter(

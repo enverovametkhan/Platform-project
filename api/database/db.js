@@ -1,18 +1,19 @@
 const mongoose = require("mongoose");
 
-const mongoURI =
-  "mongodb+srv://dev_user:RgxCczNMN1B5IPRi@blogsclusterdb.u3yzwcr.mongodb.net/?retryWrites=true&w=majority";
+const connectToDatabase = async () => {
+  try {
+    await mongoose.connect(
+      "mongodb+srv://dev_user:RgxCczNMN1B5IPRi@blogsclusterdb.u3yzwcr.mongodb.net/?retryWrites=true&w=majority",
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }
+    );
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error.message);
+    process.exit(1);
+  }
+};
 
-mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-const db = mongoose.connection;
-
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
-db.once("open", () => {
-  console.log("Connected to MongoDB");
-});
-
-module.exports = db;
+module.exports = { connectToDatabase };

@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const { createNamespace } = require("cls-hooked");
 const namespace = createNamespace("req");
 const cors = require("cors");
-const db = require("./database/db");
+const { connectToDatabase } = require("./database/db");
 
 function contextMiddleware(req, res, next) {
   namespace.run(() => {
@@ -20,6 +20,7 @@ app.use(contextMiddleware);
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json({ limit: "5mb" }));
+connectToDatabase();
 
 require("./interceptors/interceptorIn")(app);
 require("./routes/routes")(app);
