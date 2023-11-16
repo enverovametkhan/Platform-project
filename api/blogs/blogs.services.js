@@ -19,21 +19,27 @@ const blogsCommentModel = miniDatabase.BlogComments;
 //     comments: [comments],
 //   };
 // }
+
 async function getBlogService(id) {
   try {
-    const blog = await BlogsModel.findById(id);
-    const comments = await BlogsCommentModel.find({ blogId: id });
+    if (!blogsModel) {
+      throw new Error("blogsModel is not defined");
+    }
+
+    const blog = await blogsModel.findById(id);
 
     if (!blog) {
       throw new Error("No blog found");
     }
 
+    const comments = await blogsCommentModel.find({ blog_id: id });
+
     return {
       ...blog.toObject(),
-      comments: comments.map((comment) => comment.toObject()),
+      comments,
     };
   } catch (error) {
-    console.error(error);
+    console.error("Error in getBlogService:", error);
     throw error;
   }
 }
