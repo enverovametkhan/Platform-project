@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const blogSchema = new mongoose.Schema({
+const blogsSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Users",
@@ -44,4 +44,4 @@ const blogSchema = new mongoose.Schema({
   },
 });
 
-module.exports = { blogSchema };
+module.exports = { blogsSchema };

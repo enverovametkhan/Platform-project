@@ -1,16 +1,17 @@
 const { miniDatabase } = require("@root/database/miniDatabase");
 const mongoose = require("mongoose");
-const { blogSchema } = require("@root/migrations/blogSchema");
-const { blogCommentsSchema } = require("@root/migrations/blogSchema");
+const { blogsSchema } = require("./schemas/blogsSchema");
 
-let blogsModel = mongoose.model("Blogs", blogSchema, "Blogs");
-let blogsCommentModel = mongoose.model(
+const { blogCommentsSchema } = require("./schemas/blogCommentsSchema");
+
+let BlogModel = mongoose.model("Blogs", blogsSchema, "Blogs");
+let BlogCommentModel = mongoose.model(
   "BlogComments",
   blogCommentsSchema,
   "BlogComments"
 );
 
 module.exports = {
-  blogsModel,
-  blogsCommentModel,
+  BlogModel,
+  BlogCommentModel,
 };

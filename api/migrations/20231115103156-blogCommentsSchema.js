@@ -10,7 +10,7 @@ module.exports = {
               bsonType: "string",
             },
             blogId: {
-              bsonType: "string",
+              bsonType: "objectId",
             },
             content: {
               bsonType: "string",

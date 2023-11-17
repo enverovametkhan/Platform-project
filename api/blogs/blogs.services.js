@@ -1,45 +1,28 @@
 const { miniDatabase } = require("@root/database/miniDatabase");
 const { getAccessToUserData } = require("@root/utilities/getUserData");
 const mongoose = require("mongoose");
-const blogsModel = miniDatabase.Blogs;
-const blogsCommentModel = miniDatabase.BlogComments;
+// const blogsModel = miniDatabase.Blogs;
+// const blogsCommentModel = miniDatabase.BlogComments;
+const { BlogModel, BlogCommentModel } = require("./blogs.data");
 
-// async function getBlogService(id) {
-//   const blog = blogsModel.find((blog) => blog.id === id);
-//   const comments = blogsCommentModel.find((comment) => comment.blog_id === id);
+async function getBlogService(id) {
+  const blog = await blogsModel.findById(id);
+  const comments = await blogsCommentModel.find({ blogId: id });
 
-//   if (!blog) {
-//     const error = new Error("No blog found");
-//     error.function = "getBlogService";
-//     throw error;
-//   }
-
-//   return {
-//     ...blog,
-//     comments: [comments],
-//   };
-// }
-
-const getBlogService = async (id) => {
-  try {
-    const blog = await miniDatabase.blogsModel.findById(id);
-
-    if (!blog) {
-      const error = new Error("No blog found");
-      error.function = "getBlogService";
-      throw error;
-    }
-
-    const comments = await miniDatabase.blogsCommentModel.find({ blog_id: id });
-
-    return {
-      ...blog.toObject(), // Convert Mongoose document to plain JavaScript object
-      comments,
-    };
-  } catch (error) {
-    throw error; // You might want to handle or log the error appropriately
+  if (!blog) {
+    const error = new Error("No blog found");
+    error.function = "getBlogService";
+    throw error;
   }
-};
+  const thisBlog = {
+    ...blog._doc,
+    comments: [comments],
+  };
+
+  return {
+    thisBlog,
+  };
+}
 
 function getBlogInCategoryService(category) {
   const blogsInCategory = blogsModel.filter(
@@ -132,8 +115,7 @@ async function createBlogService(newBlog) {
   }
   const userData = await getAccessToUserData();
 
-  const createdBlog = {
-    id: Date.now().toString(),
+  const createNewBlog = await new BlogModel({
     title: newBlog.title,
     content: newBlog.content,
     image: newBlog.image,
@@ -145,11 +127,14 @@ async function createBlogService(newBlog) {
     createdAt: Date.now(),
     updatedAt: Date.now(),
     deletedAt: "",
+  });
+
+  const savedBlog = await createNewBlog.save();
+  const response = {
+    blog: savedBlog.toObject(),
   };
 
-  blogsModel.push(createdBlog);
-
-  return createdBlog;
+  return response;
 }
 
 async function deleteUsersBlogs(userId) {

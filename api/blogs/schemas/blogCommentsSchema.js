@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const blogSchema = new mongoose.Schema({
+const blogCommentsSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -25,6 +25,4 @@ const blogSchema = new mongoose.Schema({
   },
 });
 
-const Blog = mongoose.model("Blog", blogSchema);
-
-module.exports = Blog;
+module.exports = { blogCommentsSchema };
