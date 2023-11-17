@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const blogSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Users",
+    required: true,
+  },
   title: {
     type: String,
     required: true,
@@ -27,6 +32,7 @@ const blogSchema = new mongoose.Schema({
   },
   category: {
     type: String,
+    required: true,
   },
   createdAt: {
     type: Date,
@@ -38,6 +44,4 @@ const blogSchema = new mongoose.Schema({
   },
 });
 
-const Blog = mongoose.model("Blog", blogSchema);
-
-module.exports = Blog;
+module.exports = { blogSchema };
