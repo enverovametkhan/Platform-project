@@ -6,8 +6,9 @@ const mongoose = require("mongoose");
 const { BlogModel, BlogCommentModel } = require("./blogs.data");
 
 async function getBlogService(id) {
-  const blog = await blogsModel.findById(id);
-  const comments = await blogsCommentModel.find({ blogId: id });
+  console.log("BlogModel:", BlogModel);
+  const blog = await BlogModel.findById(id);
+  const comments = await BlogCommentModel.find({ blogId: id });
 
   if (!blog) {
     const error = new Error("No blog found");
@@ -24,19 +25,15 @@ async function getBlogService(id) {
   };
 }
 
-function getBlogInCategoryService(category) {
-  const blogsInCategory = blogsModel.filter(
-    (blog) => blog.category === category && blog.visible === true
-  );
+async function getBlogInCategoryService(category) {
+  const blogs = await BlogModel.find({ category, visible: true });
 
-  if (blogsInCategory.length === 0) {
-    return {
-      error: "No blogs found in the specified category.",
-    };
+  if (!blogs || blogs.length === 0) {
+    return [];
   }
 
-  const sortedBlogs = blogsInCategory.sort((a, b) => b.likes - a.likes);
-  const top10Blogs = sortedBlogs.slice(0, 10);
+  blogs.sort((a, b) => b.likes - a.likes);
+  const top10Blogs = blogs.slice(0, 10);
 
   return {
     message: "Here are the top 10 blogs in the category.",
