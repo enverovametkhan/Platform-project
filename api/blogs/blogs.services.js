@@ -6,7 +6,6 @@ const mongoose = require("mongoose");
 const { BlogModel, BlogCommentModel } = require("./blogs.data");
 
 async function getBlogService(id) {
-  console.log("BlogModel:", BlogModel);
   const blog = await BlogModel.findById(id);
   const comments = await BlogCommentModel.find({ blogId: id });
 
@@ -29,7 +28,7 @@ async function getBlogInCategoryService(category) {
   const blogs = await BlogModel.find({ category, visible: true });
 
   if (!blogs || blogs.length === 0) {
-    return [];
+    return;
   }
 
   blogs.sort((a, b) => b.likes - a.likes);
@@ -60,26 +59,31 @@ async function getUserBlogInCategoryService(userId, category) {
 }
 
 async function updateBlogService(id, updatedBlog) {
-  const blogIndex = blogsModel.findIndex((blog) => blog.id === id);
+  const existingBlog = await BlogModel.findById(id);
 
-  if (blogIndex === -1) {
+  if (!existingBlog) {
     const error = new Error("No blog found");
     error.function = "updateBlogService";
     throw error;
   }
 
-  blogsModel[blogIndex] = {
-    ...blogsModel[blogIndex],
-    ...updatedBlog,
-  };
-
   const userData = await getAccessToUserData();
   console.log(userData);
 
+  const updatedBlogData = await BlogModel.findByIdAndUpdate(id, updatedBlog, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!updatedBlogData) {
+    const error = new Error("Failed to update blog");
+    error.function = "updateBlogService";
+    throw error;
+  }
+
   return {
     message: "Blog post updated successfully",
-
-    blog: blogsModel[blogIndex],
+    updatedBlogData,
   };
 }
 
