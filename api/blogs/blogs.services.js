@@ -59,9 +59,9 @@ async function getUserBlogInCategoryService(userId, category) {
 }
 
 async function updateBlogService(id, updatedBlog) {
-  const existingBlog = await BlogModel.findById(id);
+  const updateBlog = await BlogModel.findById(id);
 
-  if (!existingBlog) {
+  if (!updateBlog) {
     const error = new Error("No blog found");
     error.function = "updateBlogService";
     throw error;
@@ -75,14 +75,9 @@ async function updateBlogService(id, updatedBlog) {
     runValidators: true,
   });
 
-  if (!updatedBlogData) {
-    const error = new Error("Failed to update blog");
-    error.function = "updateBlogService";
-    throw error;
-  }
-
   return {
     message: "Blog post updated successfully",
+
     updatedBlogData,
   };
 }
@@ -125,9 +120,6 @@ async function createBlogService(newBlog) {
     views: 0,
     likes: 0,
     visible: newBlog.visible,
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
-    deletedAt: "",
   });
 
   const savedBlog = await createNewBlog.save();
