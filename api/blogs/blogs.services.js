@@ -81,14 +81,23 @@ async function updateBlogService(id, updatedBlog) {
 }
 
 async function deleteBlogService(id) {
-  const index = blogsModel.findIndex((blog) => blog.id === id);
+  const deletedBlog = await BlogModel.findById(id);
 
-  if (index === -1) {
+  if (!deletedBlog) {
     throw new Error("No blogs found for deletion");
   }
 
-  const deletedBlog = blogsModel.splice(index, 1)[0];
   const userData = await getAccessToUserData();
+
+  if (deletedBlog.userId.toString() !== userData.userId) {
+    throw new Error("Unauthorized");
+  }
+
+  const deletionResult = await BlogModel.deleteOne({ _id: id });
+
+  if (deletionResult.deletedCount !== 1) {
+    throw new Error("Error deleting blog");
+  }
 
   return {
     message: "Blog deleted successfully",
