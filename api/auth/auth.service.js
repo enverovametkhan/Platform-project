@@ -33,11 +33,11 @@ async function login(email, password) {
     };
   }
 
-  if (user.verifyEmail) {
-    return {
-      message: "Please verify your email address to continue",
-    };
-  }
+  // if (user.verifyEmail) {
+  //   return {
+  //     message: "Please verify your email address to continue",
+  //   };
+  // }
 
   const validPassword = await bcrypt.compare(password, user.password);
 
@@ -135,11 +135,15 @@ async function logout() {
   if (!user) {
     throw new Error("User not found");
   }
+  const updatedTokens = {
+    accessToken: "",
+    refreshToken: "",
+  };
 
-  user.accessToken = "";
-  user.refreshToken = "";
-
-  await user.save();
+  await UserModel.findByIdAndUpdate(user.id, updatedTokens, {
+    new: true,
+    runValidators: true,
+  });
 
   return { message: "Logged out successfully" };
 }
@@ -165,7 +169,10 @@ async function refreshAccessToken(token) {
   user.accessToken = accessToken;
   user.refreshToken = refreshToken;
 
-  await user.save();
+  await UserModel.findByIdAndUpdate(user.id, updatedTokens, {
+    new: true,
+    runValidators: true,
+  });
 
   console.log("Success refresh");
   return {
