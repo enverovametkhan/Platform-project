@@ -48,9 +48,7 @@ async function getUserBlogInCategoryService(userId, category) {
     throw new Error("Unauthorized");
   }
 
-  let blogs = blogsModel.filter(
-    (blog) => blog.category === category && blog.userId === userId
-  );
+  let blogs = await blogsModel.find({ category, userId });
 
   if (!blogs) {
     throw new Error("No blogs found");
