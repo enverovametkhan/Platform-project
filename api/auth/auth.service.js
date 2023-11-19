@@ -84,7 +84,7 @@ async function signup(username, email, password, confirmedPassword) {
 
   const hashedPassword = await hashPassword(password);
 
-  const token = await createToken({ userEmail: email }, "300d");
+  const token = await createToken({ useremail: email }, "300d");
 
   const newUser = await new UserModel({
     username,
@@ -107,18 +107,18 @@ async function signup(username, email, password, confirmedPassword) {
 
 async function verifyEmail(token) {
   const userData = await decryptToken(token);
-  console.log(userData);
-  const userIndex = userModel.findIndex(
-    (user) => user.email === userData.useremail
-  );
 
-  if (userIndex === -1) {
+  const user = await UserModel.findOne({ email: userData.useremail });
+
+  if (!user) {
     throw new Error("User has not been found");
   }
-  console.log("Email has been verifed");
-  console.log("Changing email on ");
 
-  userModel[userIndex].verifyEmail = "";
+  console.log("Email has been verified");
+
+  user.verifyEmail = "";
+
+  await user.save();
 
   const response = {
     message: "Email verified successfully",
@@ -146,13 +146,12 @@ async function logout() {
 
 async function refreshAccessToken(token) {
   const userData = await decryptToken(token);
-  const index = userModel.findIndex((user) => user.id === userData.userId);
 
-  if (index === -1) {
+  const user = await UserModel.findById(userData.userId);
+
+  if (!user) {
     throw new Error("User not found");
   }
-
-  const user = userModel[index];
 
   const userDataJwt = {
     userId: user.id,
@@ -166,7 +165,8 @@ async function refreshAccessToken(token) {
   user.accessToken = accessToken;
   user.refreshToken = refreshToken;
 
-  userModel[index] = user;
+  await user.save();
+
   console.log("Success refresh");
   return {
     ...userData,
