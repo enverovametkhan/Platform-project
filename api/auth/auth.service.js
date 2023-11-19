@@ -5,6 +5,8 @@ const { createToken, decryptToken } = require("@root/utilities/jwt");
 const { v4: uuidv4 } = require("uuid");
 const userModel = miniDatabase.Users;
 const saltRounds = 10;
+const mongoose = require("mongoose");
+const { UserModel, SwapEmailHashModel } = require("../users/users.data");
 
 async function hashPassword(password) {
   return await bcrypt.hash(password, saltRounds);
@@ -23,7 +25,7 @@ async function login(email, password) {
     };
   }
 
-  const user = userModel.find((user) => user.email === email);
+  const user = await UserModel.findOne({ email });
 
   if (!user) {
     return {
@@ -57,6 +59,8 @@ async function login(email, password) {
   user.accessToken = accessJwtToken;
   user.refreshToken = refreshJwtToken;
 
+  await user.save();
+
   return {
     message: "Login successful",
     accessToken: accessJwtToken,
@@ -68,7 +72,7 @@ async function login(email, password) {
 }
 
 async function signup(username, email, password, confirmedPassword) {
-  const user = userModel.find((user) => user.email === email);
+  const user = await UserModel.findOne({ email });
 
   if (user) {
     throw new Error("Email already exists.");
@@ -80,23 +84,17 @@ async function signup(username, email, password, confirmedPassword) {
 
   const hashedPassword = await hashPassword(password);
 
-  const token = await createToken({ useremail: email }, "300d");
+  const token = await createToken({ userEmail: email }, "300d");
 
-  const newUser = {
-    id: uuidv4(),
-    username: username,
-    email: email,
+  const newUser = await new UserModel({
+    username,
+    email,
     password: hashedPassword,
     verifyEmail: token,
     accessToken: "",
     refreshToken: "",
-    deletedAt: "",
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
-  };
-
-  userModel.push(newUser);
-
+  });
+  await newUser.save();
   console.log(
     `Sending verification email, please verify your email at localhost:3000/confirmemail/${token}`
   );
@@ -132,14 +130,16 @@ async function verifyEmail(token) {
 async function logout() {
   const userData = await getAccessToUserData();
 
-  const userIndex = userModel.findIndex((user) => user.id === userData.userId);
+  const user = await UserModel.findById(userData.userId);
 
-  if (userIndex === -1) {
+  if (!user) {
     throw new Error("User not found");
   }
 
-  userModel[userIndex].accessToken = "";
-  userModel[userIndex].refreshToken = "";
+  user.accessToken = "";
+  user.refreshToken = "";
+
+  await user.save();
 
   return { message: "Logged out successfully" };
 }

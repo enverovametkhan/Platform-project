@@ -25,13 +25,13 @@ module.exports = {
               bsonType: "string",
             },
             deletedAt: {
-              bsonType: "string",
+              bsonType: "date",
             },
             createdAt: {
-              bsonType: "int",
+              bsonType: "date",
             },
             updatedAt: {
-              bsonType: "int",
+              bsonType: "date",
             },
           },
         },

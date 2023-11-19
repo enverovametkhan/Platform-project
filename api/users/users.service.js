@@ -17,15 +17,14 @@ const saltRounds = 10;
 
 async function getUser() {
   const userData = await getAccessToUserData();
-  const userIndex = userModel.findIndex((user) => user.id === userData.userId);
-  const user = userModel[userIndex];
+  const user = await UserModel.findOne({ _id: userData.userId });
 
-  if (userIndex === -1) {
+  if (!user) {
     throw new Error("User has not been found");
   }
 
   return {
-    id: user.id,
+    id: user._id,
     username: user.username,
     email: user.email,
   };
