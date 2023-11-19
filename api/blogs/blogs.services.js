@@ -48,7 +48,7 @@ async function getUserBlogInCategoryService(userId, category) {
     throw new Error("Unauthorized");
   }
 
-  let blogs = await blogsModel.find({ category, userId });
+  let blogs = await BlogModel.find({ category, userId });
 
   if (!blogs) {
     throw new Error("No blogs found");
@@ -93,9 +93,9 @@ async function deleteBlogService(id) {
     throw new Error("Unauthorized");
   }
 
-  const deletionResult = await BlogModel.deleteOne({ _id: id });
+  const deletionBlog = await BlogModel.deleteOne({ _id: id });
 
-  if (deletionResult.deletedCount !== 1) {
+  if (deletionBlog.deletedCount !== 1) {
     throw new Error("Error deleting blog");
   }
 
@@ -137,42 +137,42 @@ async function createBlogService(newBlog) {
   return response;
 }
 
-async function deleteUsersBlogs(userId) {
-  const deleteIdBlogs = blogsModel.filter((blog) => blog.userId === userId);
+// async function deleteUsersBlogs(userId) {
+//   const deleteIdBlogs = blogsModel.filter((blog) => blog.userId === userId);
 
-  if (deleteIdBlogs.length === 0) {
-    return { message: "No blogs to delete" };
-  }
+//   if (deleteIdBlogs.length === 0) {
+//     return { message: "No blogs to delete" };
+//   }
 
-  let deletedBlogsNumber = 0;
-  let deletedCommentsNumber = 0;
+//   let deletedBlogsNumber = 0;
+//   let deletedCommentsNumber = 0;
 
-  deleteIdBlogs.forEach((deleteIdBlog) => {
-    const index = blogsModel.indexOf(deleteIdBlog);
+//   deleteIdBlogs.forEach((deleteIdBlog) => {
+//     const index = blogsModel.indexOf(deleteIdBlog);
 
-    if (index !== -1) {
-      blogsModel.splice(index, 1);
-      deletedBlogsNumber++;
+//     if (index !== -1) {
+//       blogsModel.splice(index, 1);
+//       deletedBlogsNumber++;
 
-      const deleteIdComments = blogsCommentModel.filter(
-        (comment) => comment.blogId === deleteIdBlog.id
-      );
-      deleteIdComments.forEach((deleteIdComment) => {
-        const commentIndex = blogsCommentModel.indexOf(deleteIdComment);
+//       const deleteIdComments = blogsCommentModel.filter(
+//         (comment) => comment.blogId === deleteIdBlog.id
+//       );
+//       deleteIdComments.forEach((deleteIdComment) => {
+//         const commentIndex = blogsCommentModel.indexOf(deleteIdComment);
 
-        if (commentIndex !== -1) {
-          blogsCommentModel.splice(commentIndex, 1);
-          deletedCommentsNumber++;
-        }
-      });
-    }
-  });
+//         if (commentIndex !== -1) {
+//           blogsCommentModel.splice(commentIndex, 1);
+//           deletedCommentsNumber++;
+//         }
+//       });
+//     }
+//   });
 
-  return {
-    deletedBlogs: deletedBlogsNumber,
-    deletedComments: deletedCommentsNumber,
-  };
-}
+//   return {
+//     deletedBlogs: deletedBlogsNumber,
+//     deletedComments: deletedCommentsNumber,
+//   };
+// }
 
 module.exports = {
   getBlogService,
@@ -181,5 +181,5 @@ module.exports = {
   updateBlogService,
   deleteBlogService,
   createBlogService,
-  deleteUsersBlogs,
+  // deleteUsersBlogs,
 };

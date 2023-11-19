@@ -1,9 +1,15 @@
 const { miniDatabase } = require("@root/database/miniDatabase");
+const mongoose = require("mongoose");
+const { userSchema } = require("./schemas/userSchema");
 
-let userModel = miniDatabase.Users;
-let swapEmailHashModel = miniDatabase.SwapEmailHash;
+let UserModel = mongoose.model("Users", userSchema, "Users");
+let SwapEmailHashModel = mongoose.model(
+  "SwapEmailHash",
+  swapEmailHashSchema,
+  "SwapEmailHash"
+);
 
 module.exports = {
-  userModel,
-  swapEmailHashModel,
+  UserModel,
+  SwapEmailHashModel,
 };
