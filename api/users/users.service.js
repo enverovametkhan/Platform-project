@@ -3,10 +3,11 @@ const { deleteUsersBlogs } = require("@root/blogs/blogs.services");
 const { miniDatabase } = require("@root/database/miniDatabase");
 const { createToken, decryptToken } = require("@root/utilities/jwt");
 const { getAccessToUserData } = require("@root/utilities/getUserData");
-
-let userModel = miniDatabase.Users;
+const mongoose = require("mongoose");
+const { UserModel, SwapEmailHashModel } = require("./users.data");
+// let userModel = miniDatabase.Users;
 let swapEmailHashModel = miniDatabase.SwapEmailHash;
-// let resetPasswordHashModel = miniDatabase.ResetPasswordHash;
+let resetPasswordHashModel = miniDatabase.ResetPasswordHash;
 
 const saltRounds = 10;
 
