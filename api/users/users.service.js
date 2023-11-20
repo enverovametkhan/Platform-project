@@ -5,9 +5,6 @@ const { createToken, decryptToken } = require("@root/utilities/jwt");
 const { getAccessToUserData } = require("@root/utilities/getUserData");
 const mongoose = require("mongoose");
 const { UserModel, SwapEmailHashModel } = require("./users.data");
-// let userModel = miniDatabase.Users;
-let swapEmailHashModel = miniDatabase.SwapEmailHash;
-let resetPasswordHashModel = miniDatabase.ResetPasswordHash;
 
 const saltRounds = 10;
 
@@ -32,10 +29,9 @@ async function getUser() {
 
 async function deleteUser() {
   const userData = await getAccessToUserData();
-  const userIndex = userModel.findIndex((user) => user.id === userData.userId);
-  const user = userModel[userIndex];
+  const user = await UserModel.findById(userData.userId);
 
-  if (userIndex === -1) {
+  if (!user) {
     throw new Error("User not found");
   }
 
@@ -46,6 +42,8 @@ async function deleteUser() {
   user.refreshToken = "";
   user.accessToken = "";
   user.deletedAt = Date.now();
+
+  await user.save();
 
   console.log("User has been deleted with ID:", user.userId);
   console.log(`Deleted ${deletedBlogs} blogs and ${deletedComments} comments`);
