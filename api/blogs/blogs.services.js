@@ -26,11 +26,13 @@ async function getBlogService(id) {
 
 async function getBlogInCategoryService(category) {
   const blogs = await BlogModel.find({ category, visible: true });
-
+  console.log("HEY", blogs);
   if (!blogs || blogs.length === 0) {
     return {};
   }
-
+  category.toLowerCase();
+  let test = category.toLowerCase();
+  console.log(test);
   blogs.sort((a, b) => b.likes - a.likes);
   const top10Blogs = blogs.slice(0, 10);
 

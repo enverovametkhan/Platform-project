@@ -68,13 +68,13 @@ async function updateUser(updatedUserData) {
     throw new Error("Either username or email should be provided");
   }
 
-  if (updatedUserData.email && updatedUserData.email !== user.email) {
-    await swapEmail(updatedUserData.email);
+  // if (updatedUserData.email && updatedUserData.email !== user.email) {
+  //   await swapEmail(updatedUserData.email);
 
-    response = {
-      email: "Check your email",
-    };
-  }
+  //   response = {
+  //     email: "Check your email",
+  //   };
+  // }
 
   if (updatedUserData.username) {
     user.username = updatedUserData.username;
