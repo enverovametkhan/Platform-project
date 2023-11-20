@@ -132,25 +132,27 @@ async function swapEmail(newEmail) {
 async function confirmEmailSwap(token) {
   const userData = await decryptToken(token);
 
-  const userIndex = userModel.findIndex(
-    (eachUser) => eachUser.id === userData.userId
-  );
-  const user = userModel[userIndex];
-  if (!user) throw new Error("No new user found");
+  const user = await UserModel.findOne({ _id: userData.userId });
 
-  const checkEmailSwapIndex = swapEmailHashModel.findIndex(
-    (each) => each.userId === user.id
-  );
-  const checkEmailSwap = swapEmailHashModel[checkEmailSwapIndex];
-  console.log(checkEmailSwap);
-  if (!checkEmailSwap)
+  if (!user) {
+    throw new Error("No new user found");
+  }
+
+  const checkEmailSwap = await SwapEmailHashModel.findOne({ userId: user._id });
+
+  if (!checkEmailSwap) {
     throw new Error("Something went wrong when trying to swap emails");
+  }
 
   const message = `Swapped email from ${user.email} to ${checkEmailSwap.newEmail}`;
   console.log(message);
+
   user.email = checkEmailSwap.newEmail;
 
-  swapEmailHashModel.splice(checkEmailSwapIndex, 1);
+  await SwapEmailHashModel.findByIdAndDelete(checkEmailSwap._id);
+
+  await user.save();
+
   return {
     status: 200,
     message,
