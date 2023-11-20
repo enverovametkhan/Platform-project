@@ -129,28 +129,22 @@ async function verifyEmail(token) {
 
 async function logout() {
   const userData = await getAccessToUserData();
-
   const user = await UserModel.findById(userData.userId);
 
   if (!user) {
     throw new Error("User not found");
   }
-  const updatedTokens = {
-    accessToken: "",
-    refreshToken: "",
-  };
 
-  await UserModel.findByIdAndUpdate(user.id, updatedTokens, {
-    new: true,
-    runValidators: true,
-  });
+  user.accessToken = "";
+  user.refreshToken = "";
+
+  await user.save();
 
   return { message: "Logged out successfully" };
 }
 
 async function refreshAccessToken(token) {
   const userData = await decryptToken(token);
-
   const user = await UserModel.findById(userData.userId);
 
   if (!user) {
@@ -169,12 +163,10 @@ async function refreshAccessToken(token) {
   user.accessToken = accessToken;
   user.refreshToken = refreshToken;
 
-  await UserModel.findByIdAndUpdate(user.id, updatedTokens, {
-    new: true,
-    runValidators: true,
-  });
+  await user.save();
 
   console.log("Success refresh");
+
   return {
     ...userData,
     accessToken: user.accessToken,

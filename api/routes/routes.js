@@ -54,11 +54,11 @@ module.exports = (app) => {
   app.get("/api/user", authMiddleware, getUserController);
   app.delete("/api/user/delete", authMiddleware, deleteUserController);
   app.put("/api/user/update", authMiddleware, updateUserController);
-  // app.get(
-  //   "/api/user/refreshAccessToken",
-  //   authMiddleware,
-  //   refreshAccessTokenController
-  // );
+  app.get(
+    "/api/user/refreshAccessToken/:token",
+    authMiddleware,
+    refreshAccessTokenController
+  );
   app.get("/api/user/resetPasswordReq/:email", resetPasswordReqController);
   app.get(
     "/api/user/checkResetPasswordToken/:token",
