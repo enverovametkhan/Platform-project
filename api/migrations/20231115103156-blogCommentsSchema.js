@@ -7,7 +7,7 @@ module.exports = {
           required: ["userId", "blogId", "content"],
           properties: {
             userId: {
-              bsonType: "string",
+              bsonType: "objectId",
             },
             blogId: {
               bsonType: "objectId",

@@ -1,6 +1,6 @@
 module.exports = {
   async up(db, client) {
-    await db.createCollection("EmailSwap", {
+    await db.createCollection("SwapEmailHash", {
       validator: {
         $jsonSchema: {
           bsonType: "object",
@@ -33,6 +33,6 @@ module.exports = {
   validationAction: "error",
 
   async down(db, client) {
-    await db.collection("EmailSwap").drop();
+    await db.collection("SwapEmailHash").drop();
   },
 };

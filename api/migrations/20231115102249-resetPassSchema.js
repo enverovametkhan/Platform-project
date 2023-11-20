@@ -7,7 +7,7 @@ module.exports = {
           required: ["userId", "token"],
           properties: {
             userId: {
-              bsonType: "string",
+              bsonType: "objectId",
             },
             token: {
               bsonType: "string",

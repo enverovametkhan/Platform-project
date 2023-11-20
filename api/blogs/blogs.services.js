@@ -28,7 +28,7 @@ async function getBlogInCategoryService(category) {
   const blogs = await BlogModel.find({ category, visible: true });
 
   if (!blogs || blogs.length === 0) {
-    return;
+    return {};
   }
 
   blogs.sort((a, b) => b.likes - a.likes);

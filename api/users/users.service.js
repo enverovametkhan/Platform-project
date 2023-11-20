@@ -35,7 +35,7 @@ async function deleteUser() {
     throw new Error("User not found");
   }
 
-  const { deletedBlogs, deletedComments } = await deleteUsersBlogs(user.id);
+  // const { deletedBlogs, deletedComments } = await deleteUsersBlogs(user.id);
 
   user.password = "";
   user.username = "";
@@ -55,14 +55,14 @@ async function deleteUser() {
 
 async function updateUser(updatedUserData) {
   const userData = await getAccessToUserData();
-  let response;
-  const userIndex = userModel.findIndex((user) => user.id === userData.userId);
 
-  if (userIndex === -1) {
+  const user = await UserModel.findById(userData.userId);
+
+  if (!user) {
     throw new Error("User not found");
   }
 
-  const user = userModel[userIndex];
+  let response;
 
   if (!updatedUserData.username && !updatedUserData.email) {
     throw new Error("Either username or email should be provided");
@@ -81,11 +81,14 @@ async function updateUser(updatedUserData) {
   }
 
   user.updatedAt = Date.now();
-  userModel[userIndex] = user;
+
+  await user.save();
+
   const token = await createToken({ userId: userData.userId }, "7d");
   console.log(
     `Sending verification email, please verify your email at localhost:3000/swapemail/${token}`
   );
+
   return {
     username: "Updated username",
     userData: user,
