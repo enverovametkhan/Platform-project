@@ -65,6 +65,6 @@ module.exports = (app) => {
     checkResetPasswordTokenController
   );
   app.put("/api/user/resetPassword/:token", resetPasswordController);
-  // router.post("/api/user/swapEmail/", swapEmailController);
+  // app.post("/api/user/swapEmail/", swapEmailController);
   app.get("/api/user/confirmEmailSwap/:token", confirmEmailSwapController);
 };

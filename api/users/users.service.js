@@ -68,13 +68,13 @@ async function updateUser(updatedUserData) {
     throw new Error("Either username or email should be provided");
   }
 
-  // if (updatedUserData.email && updatedUserData.email !== user.email) {
-  //   await swapEmail(updatedUserData.email);
+  if (updatedUserData.email && updatedUserData.email !== user.email) {
+    await swapEmail(updatedUserData.email);
 
-  //   response = {
-  //     email: "Check your email",
-  //   };
-  // }
+    response = {
+      email: "Check your email",
+    };
+  }
 
   if (updatedUserData.username) {
     user.username = updatedUserData.username;
@@ -98,36 +98,30 @@ async function updateUser(updatedUserData) {
 
 async function swapEmail(newEmail) {
   const userData = await getAccessToUserData();
-  const user = userModel.find((eachUser) => eachUser.id === userData.userId);
+  const user = await UserModel.findById(userData.userId);
 
   if (!user) {
     throw new Error("User not found");
   }
 
-  const existEmailSwap = swapEmailHashModel.find(
-    (each) => each.userId === user.id
-  );
+  const existEmailSwap = await SwapEmailHashModel.findOne({ userId: user._id });
 
   if (existEmailSwap) {
-    const index = swapEmailHashModel.findIndex(
-      (each) => each.id === existEmailSwap.id
-    );
-    swapEmailHashModel.splice(index, 1);
+    await SwapEmailHashModel.findByIdAndDelete(existEmailSwap._id);
   }
 
-  const token = await createToken({ userId: user.id }, "1d");
+  const token = await createToken({ userId: user.id }, "5d");
 
-  const swapEmailData = {
-    id: "",
-    userId: user.id,
+  const swapEmailData = new SwapEmailHashModel({
+    userId: user._id,
     newEmail: newEmail,
     token: token,
     expiresAt: Date.now(),
     createdAt: Date.now(),
     updatedAt: Date.now(),
-  };
+  });
 
-  swapEmailHashModel.push(swapEmailData);
+  await swapEmailData.save();
 
   return {
     status: 200,
