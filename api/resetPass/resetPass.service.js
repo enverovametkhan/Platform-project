@@ -15,7 +15,6 @@ async function resetPasswordReq(email) {
 
   if (!userData) {
     return {
-      status: 404,
       message: "User not found",
     };
   }
@@ -88,6 +87,7 @@ async function resetPassword(token, password, confirmedPassword) {
   }
 
   const user = await UserModel.findById(checkExistingResetPasswordHash.userId);
+  console.log("User:", user);
 
   if (!user) {
     throw new Error("User not found");

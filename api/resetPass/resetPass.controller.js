@@ -43,12 +43,9 @@ async function checkResetPasswordTokenController(req, res, next) {
 async function resetPasswordController(req, res, next) {
   try {
     const { token } = req.params;
-    const { passwordData } = req.body;
-    const response = await resetPassword(
-      token,
-      passwordData.password,
-      passwordData.confirmedPassword
-    );
+
+    let { password, confirmedPassword } = req.body;
+    const response = await resetPassword(token, password, confirmedPassword);
     res.apiResponse = response;
     next();
   } catch (error) {
