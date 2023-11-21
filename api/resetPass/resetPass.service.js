@@ -1,8 +1,8 @@
 const bcrypt = require("bcrypt");
 const { miniDatabase } = require("@root/database/miniDatabase");
 const { createToken, decryptToken } = require("@root/utilities/jwt");
-let userModel = miniDatabase.Users;
-let resetPasswordHashModel = miniDatabase.ResetPasswordHash;
+const { UserModel } = require("../users/users.data");
+const { ResetPasswordHashModel } = require("./resetPass.data");
 
 const saltRounds = 10;
 
@@ -11,32 +11,37 @@ async function hashPassword(password) {
 }
 
 async function resetPasswordReq(email) {
-  const userData = userModel.find((eachUser) => eachUser.email === email);
-  console.log(userData);
-  const checkExistingResetPasswordHash = resetPasswordHashModel.find(
-    (each) => each.userId === userData.userId
-  );
+  const userData = await UserModel.findOne({ email });
+
+  if (!userData) {
+    return {
+      status: 404,
+      message: "User not found",
+    };
+  }
+
+  const checkExistingResetPasswordHash = await ResetPasswordHashModel.findOne({
+    userId: userData.id,
+  });
 
   if (checkExistingResetPasswordHash) {
-    const index = resetPasswordHashModel.findIndex(
-      (each) => each.id === checkExistingResetPasswordHash.id
+    await ResetPasswordHashModel.findByIdAndDelete(
+      checkExistingResetPasswordHash.id
     );
-    resetPasswordHashModel.splice(index, 1)[0];
-
     console.log("Password reset link already used, removing it.");
   }
 
-  const token = await createToken(userData, "7d");
-  const resetPasswordHash = {
-    id: "",
-    userId: userData.userId,
+  const token = await createToken({ userId: userData.id }, "5d");
+  const resetPasswordHash = new ResetPasswordHashModel({
+    userId: userData.id,
     token: token,
     expiresAt: new Date(),
     createdAt: new Date(),
     updatedAt: new Date(),
-  };
+  });
 
-  resetPasswordHashModel.push(resetPasswordHash);
+  await resetPasswordHash.save();
+
   console.log(
     `Sending verification email, please verify your email at localhost:3000/resetpassword/${token}`
   );

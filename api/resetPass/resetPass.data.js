@@ -1,9 +1,13 @@
 const { miniDatabase } = require("@root/database/miniDatabase");
+const mongoose = require("mongoose");
+const { resetPassSchema } = require("./schemas/resetPassSchema");
 
-const userModel = miniDatabase.Users;
-const resetPasswordHashModel = miniDatabase.ResetPasswordHash;
+let ResetPasswordHashModel = mongoose.model(
+  "ResetPass",
+  resetPassSchema,
+  "ResetPass"
+);
 
 module.exports = {
-  userModel,
-  resetPasswordHashModel,
+  ResetPasswordHashModel,
 };

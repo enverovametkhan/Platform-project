@@ -2,8 +2,7 @@ const bcrypt = require("bcrypt");
 const { miniDatabase } = require("@root/database/miniDatabase");
 const { getAccessToUserData } = require("@root/utilities/getUserData");
 const { createToken, decryptToken } = require("@root/utilities/jwt");
-const { v4: uuidv4 } = require("uuid");
-const userModel = miniDatabase.Users;
+
 const saltRounds = 10;
 const mongoose = require("mongoose");
 const { UserModel, SwapEmailHashModel } = require("../users/users.data");
