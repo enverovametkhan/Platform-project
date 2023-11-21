@@ -54,10 +54,11 @@ async function resetPasswordReq(email) {
 
 async function checkResetPasswordToken(token) {
   const userData = await decryptToken(token);
-  console.log(userData);
-  const checkExistingResetPasswordHash = resetPasswordHashModel.find(
-    (each) => each.userId === userData.userId
-  );
+
+  const checkExistingResetPasswordHash = await ResetPasswordHashModel.findOne({
+    userId: userData.userId,
+  });
+
   if (!checkExistingResetPasswordHash) {
     throw new Error("Invalid token");
   }
