@@ -69,10 +69,9 @@ async function checkResetPasswordToken(token) {
 }
 
 async function resetPassword(token, password, confirmedPassword) {
-  let userData = await decryptToken(token);
-  console.log(password, confirmedPassword);
+  const userData = await decryptToken(token);
 
-  if (!userData || !userData.id) {
+  if (!userData || !userData.userId) {
     throw new Error("Invalid token");
   }
 
@@ -80,28 +79,32 @@ async function resetPassword(token, password, confirmedPassword) {
     throw new Error("Invalid passwords");
   }
 
-  let checkExistingResetPasswordHashIndex = resetPasswordHashModel.findIndex(
-    (each) => each.userId === userData.id
-  );
-  let checkExistingResetPasswordHash =
-    resetPasswordHashModel[checkExistingResetPasswordHashIndex];
+  const checkExistingResetPasswordHash = await ResetPasswordHashModel.findOne({
+    userId: userData.userId,
+  });
 
   if (!checkExistingResetPasswordHash) {
     throw new Error("Invalid token");
   }
 
-  let userIndex = userModel.findIndex(
-    (eachUser) => eachUser.id === checkExistingResetPasswordHash.userId
-  );
-  let user = userModel[userIndex];
+  const user = await UserModel.findById(checkExistingResetPasswordHash.userId);
 
   if (!user) {
     throw new Error("User not found");
   }
+
   const hashedPassword = await hashPassword(password);
+
+  if (!hashedPassword) {
+    throw new Error("Failed to hash the password");
+  }
+
   user.password = hashedPassword;
 
-  resetPasswordHashModel.splice(checkExistingResetPasswordHashIndex, 1);
+  await user.save();
+  await ResetPasswordHashModel.findByIdAndDelete(
+    checkExistingResetPasswordHash._id
+  );
 
   return {
     status: 200,

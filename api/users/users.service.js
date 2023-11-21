@@ -38,7 +38,6 @@ async function deleteUser() {
   // const { deletedBlogs, deletedComments } = await deleteUsersBlogs(user.id);
 
   user.password = "";
-  user.username = "";
   user.refreshToken = "";
   user.accessToken = "";
   user.deletedAt = Date.now();
@@ -46,7 +45,7 @@ async function deleteUser() {
   await user.save();
 
   console.log("User has been deleted with ID:", user.userId);
-  console.log(`Deleted ${deletedBlogs} blogs and ${deletedComments} comments`);
+  // console.log(`Deleted ${deletedBlogs} blogs and ${deletedComments} comments`);
 
   return {
     message: "User deleted successfully",

@@ -14,6 +14,9 @@ async function getBlogService(id) {
     error.function = "getBlogService";
     throw error;
   }
+  category.toLowerCase();
+  let test = category.toLowerCase();
+  console.log(test);
   const thisBlog = {
     ...blog._doc,
     comments: [comments],
@@ -26,7 +29,7 @@ async function getBlogService(id) {
 
 async function getBlogInCategoryService(category) {
   const blogs = await BlogModel.find({ category, visible: true });
-  console.log("HEY", blogs);
+
   if (!blogs || blogs.length === 0) {
     return {};
   }
@@ -51,6 +54,9 @@ async function getUserBlogInCategoryService(userId, category) {
   }
 
   let blogs = await BlogModel.find({ category, userId });
+  category.toLowerCase();
+  let test = category.toLowerCase();
+  console.log(test);
 
   if (!blogs) {
     throw new Error("No blogs found");
@@ -66,6 +72,9 @@ async function updateBlogService(id, updatedBlog) {
     error.function = "updateBlogService";
     throw error;
   }
+  category.toLowerCase();
+  let test = category.toLowerCase();
+  console.log(test);
 
   const userData = await getAccessToUserData();
   console.log(userData);

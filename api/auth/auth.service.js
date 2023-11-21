@@ -5,7 +5,7 @@ const { createToken, decryptToken } = require("@root/utilities/jwt");
 
 const saltRounds = 10;
 const mongoose = require("mongoose");
-const { UserModel, SwapEmailHashModel } = require("../users/users.data");
+const { UserModel } = require("../users/users.data");
 
 async function hashPassword(password) {
   return await bcrypt.hash(password, saltRounds);
