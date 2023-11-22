@@ -11,4 +11,16 @@ class CustomLogger {
     this.logger = logdna.createLogger(ingestionKey, options);
     this.isLocalEnv = "local";
   }
+
+  localMiddleware(message, metadata, type) {
+    if (process.env.NODE_ENV === "local") {
+      if (type === "IN") {
+        console.log(`[Local Middleware IN]: ${message}`, metadata);
+      } else if (type === "OUT") {
+        console.log(`[Local Middleware OUT]: ${message}`, metadata);
+      } else {
+        console.log(`[Local Middleware]: ${message}`, metadata);
+      }
+    }
+  }
 }
