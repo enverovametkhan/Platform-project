@@ -10,17 +10,30 @@ class CustomLogger {
     };
     const ingestionKey = "9b8776a902e87b8494e67a420ba2e943";
     this.logger = logdna.createLogger(ingestionKey, options);
-    this.isLocalEnv = process.env.NODE_ENV === "local";
+    this.isLocalEnv = process.env.IS_LOCAL;
   }
 
   localMiddleware(message, metadata, type) {
-    if (this.isLocalEnv) {
+    if (this.isLocalEnv === "local") {
+      const greenColor = "\x1b[32m";
+      const yellowColor = "\x1b[33m";
+      const blueColor = "\x1b[34m";
+
       if (type === "IN") {
-        console.log(`[Local Middleware IN]: ${message}`.green, metadata);
+        console.log(
+          `[${greenColor}Local Middleware IN${"\x1b[0m"}]: ${message}`,
+          metadata
+        );
       } else if (type === "OUT") {
-        console.log(`[Local Middleware OUT]: ${message}`.yellow, metadata);
+        console.log(
+          `[${yellowColor}Local Middleware OUT${"\x1b[0m"}]: ${message}`,
+          metadata
+        );
       } else {
-        console.log(`[Local Middleware]: ${message}`.blue, metadata);
+        console.log(
+          `[${blueColor}Local Middleware${"\x1b[0m"}]: ${message}`,
+          metadata
+        );
       }
     }
   }
@@ -42,15 +55,59 @@ class CustomLogger {
     }
   }
 
+  consoleInfo(message, metadata) {
+    try {
+      const isLocal = this.localInfo(message, metadata, type);
+      if (isLocal) return;
+      const logObject = {
+        message,
+        indexMeta: true,
+        _meta: {
+          message: message,
+          ...metadata,
+        },
+      };
+      this.logger.info(logObject);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   localInfo(message, metadata) {
-    if (process.env.NODE_ENV === "local") {
-      console.log(`[Local Info]: ${message}`.green, metadata);
+    try {
+      if (this.isLocalEnv) {
+        console.log(`[Local Info]: ${message}`.green, metadata);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  consoleError(message, metadata) {
+    try {
+      const isLocal = this.localError(message, metadata, type);
+      if (isLocal) return;
+      const logObject = {
+        message,
+        indexMeta: true,
+        _meta: {
+          message: message,
+          ...metadata,
+        },
+      };
+      this.logger.info(logObject);
+    } catch (e) {
+      console.log(e);
     }
   }
 
   localError(message, metadata) {
-    if (process.env.NODE_ENV === "local") {
-      console.error(`[Local Error]: ${message}`.red, metadata);
+    try {
+      if (this.isLocalEnv) {
+        console.error(`[Local Error]: ${message}`.red, metadata);
+      }
+    } catch (e) {
+      console.log(e);
     }
   }
 
@@ -66,7 +123,7 @@ class CustomLogger {
     if (process.env.NODE_ENV !== "local") {
       this.localInfo(`[Mezmo Info]: ${message}`, metadata);
     } else {
-      console.log(`[Mezmo Info]: ${message}`.cyan, metadata);
+      console.log(`[Mezmo Info]: ${message}`.green, metadata);
     }
   }
 
