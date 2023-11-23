@@ -1,9 +1,8 @@
-const { miniDatabase } = require("@root/database/miniDatabase");
 const { getAccessToUserData } = require("@root/utilities/getUserData");
 const mongoose = require("mongoose");
-// const blogsModel = miniDatabase.Blogs;
-// const blogsCommentModel = miniDatabase.BlogComments;
+
 const { BlogModel, BlogCommentModel } = require("./blogs.data");
+const { customLogger } = require("../pack/mezmo");
 
 async function getBlogService(id) {
   const blog = await BlogModel.findById(id);
