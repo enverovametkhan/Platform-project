@@ -41,6 +41,48 @@ class CustomLogger {
       console.log(e);
     }
   }
+
+  localInfo(message, metadata) {
+    if (process.env.NODE_ENV === "local") {
+      console.log(`[Local Info]: ${message}`.green, metadata);
+    }
+  }
+
+  localError(message, metadata) {
+    if (process.env.NODE_ENV === "local") {
+      console.error(`[Local Error]: ${message}`.red, metadata);
+    }
+  }
+
+  mezmoError(message, metadata) {
+    if (process.env.NODE_ENV !== "local") {
+      this.localError(message, metadata);
+    } else {
+      console.error(`[Mezmo Error]: ${message}`.red, metadata);
+    }
+  }
+
+  mezmoInfo(message, metadata) {
+    if (process.env.NODE_ENV !== "local") {
+      this.localInfo(`[Mezmo Info]: ${message}`, metadata);
+    } else {
+      console.log(`[Mezmo Info]: ${message}`.cyan, metadata);
+    }
+  }
+
+  mezmoMiddleware(message, metadata, type) {
+    if (process.env.NODE_ENV !== "local") {
+      this.localMiddleware(`[Mezmo Middleware ${type}]: ${message}`, metadata);
+    } else {
+      if (type === "IN") {
+        console.log(`[Mezmo Middleware IN]: ${message}`.green, metadata);
+      } else if (type === "OUT") {
+        console.log(`[Mezmo Middleware OUT]: ${message}`.yellow, metadata);
+      } else {
+        console.log(`[Mezmo Middleware]: ${message}`.blue, metadata);
+      }
+    }
+  }
 }
 
 const customLogger = new CustomLogger();
