@@ -8,33 +8,30 @@ class CustomLogger {
       levels: ["trace", "info", "warn", "debug", "fatal", "http"],
       tags: "Empty",
     };
-    const ingestionKey = "9b8776a902e87b8494e67a420ba2e943";
+    const ingestionKey = process.env.MEZMO_KEY;
     this.logger = logdna.createLogger(ingestionKey, options);
     this.isLocalEnv = process.env.IS_LOCAL;
+    console.log(process.env.IS_LOCAL);
   }
 
   localMiddleware(message, metadata, type) {
     if (this.isLocalEnv === "local") {
       const greenColor = "\x1b[32m";
       const yellowColor = "\x1b[33m";
-      const blueColor = "\x1b[34m";
 
       if (type === "IN") {
         console.log(
-          `[${greenColor}Local Middleware IN${"\x1b[0m"}]: ${message}`,
-          metadata
-        );
-      } else if (type === "OUT") {
-        console.log(
-          `[${yellowColor}Local Middleware OUT${"\x1b[0m"}]: ${message}`,
+          `[${greenColor}INTERCEPTOR${"\x1b[0m"}]: ${message}`,
           metadata
         );
       } else {
         console.log(
-          `[${blueColor}Local Middleware${"\x1b[0m"}]: ${message}`,
+          `[${yellowColor}INTERCEPTOR${"\x1b[0m"}]: ${message}`,
           metadata
         );
+        return true;
       }
+      return false;
     }
   }
 

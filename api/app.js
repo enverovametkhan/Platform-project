@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const { createNamespace } = require("cls-hooked");
 const namespace = createNamespace("req");
 const cors = require("cors");
+require("dotenv").config();
 
 function contextMiddleware(req, res, next) {
   namespace.run(() => {

@@ -14,7 +14,8 @@ module.exports = (app) => {
         timeTaken: `${timeTaken} seconds`,
         originURL: req.originalUrl,
         method: req.method,
-      }
+      },
+      "OUT"
     );
 
     let response = {
