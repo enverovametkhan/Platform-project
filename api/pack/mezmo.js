@@ -101,13 +101,15 @@ class CustomLogger {
   }
 
   localError(message, metadata) {
-    try {
-      if (this.isLocalEnv) {
-        console.error(`[Local Error]: ${message}`.red, metadata);
-      }
-    } catch (e) {
-      console.log(e);
+    if (this.isLocalEnv === "local") {
+      const redColor = "\x1b[31m";
+      console.error(
+        `[${redColor}Local Error${"\x1b[0m"}]: ${message}`,
+        metadata
+      );
+      return true;
     }
+    return false;
   }
 
   mezmoError(message, metadata) {
