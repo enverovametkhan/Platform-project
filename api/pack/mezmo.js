@@ -1,5 +1,4 @@
 const logdna = require("@logdna/logger");
-const colors = require("colors");
 
 class CustomLogger {
   constructor() {
@@ -114,17 +113,21 @@ class CustomLogger {
 
   mezmoError(message, metadata) {
     if (process.env.NODE_ENV !== "local") {
-      this.localError(message, metadata);
+      const isLocalError = this.localError(message, metadata);
+      return isLocalError;
     } else {
-      console.error(`[Mezmo Error]: ${message}`.red, metadata);
+      console.error(`[Mezmo Error]: ${message}`, metadata);
+      return true;
     }
   }
 
   mezmoInfo(message, metadata) {
     if (process.env.NODE_ENV !== "local") {
-      this.localInfo(`[Mezmo Info]: ${message}`, metadata);
+      const isLocalInfo = this.localInfo(`[Mezmo Info]: ${message}`, metadata);
+      return isLocalInfo;
     } else {
-      console.log(`[Mezmo Info]: ${message}`.green, metadata);
+      console.log(`[Mezmo Info]: ${message}`, metadata);
+      return true;
     }
   }
 
@@ -133,12 +136,12 @@ class CustomLogger {
       this.localMiddleware(`[Mezmo Middleware ${type}]: ${message}`, metadata);
     } else {
       if (type === "IN") {
-        console.log(`[Mezmo Middleware IN]: ${message}`.green, metadata);
-      } else if (type === "OUT") {
-        console.log(`[Mezmo Middleware OUT]: ${message}`.yellow, metadata);
+        console.log(`[INTERCEPTOR]: ${message}`, metadata);
       } else {
-        console.log(`[Mezmo Middleware]: ${message}`.blue, metadata);
+        console.log(`[INTERCEPTOR]: ${message}`, metadata);
+        return true;
       }
+      return false;
     }
   }
 }
