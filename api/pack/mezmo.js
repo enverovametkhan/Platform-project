@@ -71,13 +71,15 @@ class CustomLogger {
   }
 
   localInfo(message, metadata) {
-    try {
-      if (this.isLocalEnv) {
-        console.log(`[Local Info]: ${message}`.green, metadata);
-      }
-    } catch (e) {
-      console.log(e);
+    if (this.isLocalEnv === "local") {
+      const greenColor = "\x1b[32m";
+      console.log(
+        `[${greenColor}Local Info${"\x1b[0m"}]: ${message}`,
+        metadata
+      );
+      return true;
     }
+    return false;
   }
 
   consoleError(message, metadata) {
