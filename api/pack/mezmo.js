@@ -53,7 +53,7 @@ class CustomLogger {
 
   consoleInfo(message, metadata) {
     try {
-      const isLocal = this.localInfo(message, metadata, type);
+      const isLocal = this.localInfo(message, metadata);
       if (isLocal) return;
       const logObject = {
         message,
@@ -83,7 +83,7 @@ class CustomLogger {
 
   consoleError(message, metadata) {
     try {
-      const isLocal = this.localError(message, metadata, type);
+      const isLocal = this.localError(message, metadata);
       if (isLocal) return;
       const logObject = {
         message,

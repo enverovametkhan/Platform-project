@@ -6,6 +6,7 @@ const { createToken, decryptToken } = require("@root/utilities/jwt");
 const saltRounds = 10;
 const mongoose = require("mongoose");
 const { UserModel } = require("../users/users.data");
+const { customLogger } = require("../pack/mezmo");
 
 async function hashPassword(password) {
   return await bcrypt.hash(password, saltRounds);
@@ -13,12 +14,14 @@ async function hashPassword(password) {
 
 async function login(email, password) {
   if (!email) {
+    customLogger.consoleError("Email is required");
     return {
       message: "Email is required",
     };
   }
 
   if (!password) {
+    customLogger.consoleError("Password is required");
     return {
       message: "Password is required",
     };
@@ -27,20 +30,16 @@ async function login(email, password) {
   const user = await UserModel.findOne({ email });
 
   if (!user) {
+    customLogger.consoleError("Incorrect login credentials");
     return {
       message: "Incorrect login credentials",
     };
   }
 
-  // if (user.verifyEmail) {
-  //   return {
-  //     message: "Please verify your email address to continue",
-  //   };
-  // }
-
   const validPassword = await bcrypt.compare(password, user.password);
 
   if (!validPassword) {
+    customLogger.consoleError("Incorrect login credentials");
     return {
       message: "Incorrect login credentials",
     };
@@ -59,6 +58,12 @@ async function login(email, password) {
   user.refreshToken = refreshJwtToken;
 
   await user.save();
+
+  customLogger.consoleInfo("Login successful", {
+    userId: user.id,
+    email: user.email,
+    username: user.username,
+  });
 
   return {
     message: "Login successful",
