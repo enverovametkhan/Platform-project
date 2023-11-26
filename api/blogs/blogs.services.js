@@ -133,20 +133,39 @@ async function deleteBlogService(id) {
   const deletedBlog = await BlogModel.findById(id);
 
   if (!deletedBlog) {
-    throw new Error("No blogs found for deletion");
+    customLogger.consoleError("No blogs found for deletion", { blogId: id });
+    return {
+      error: "No blogs found for deletion",
+    };
   }
 
   const userData = await getAccessToUserData();
+  customLogger.consoleInfo("User data retrieved successfully", { userData });
 
   if (deletedBlog.userId.toString() !== userData.userId) {
-    throw new Error("Unauthorized");
+    customLogger.consoleError("Unauthorized deletion attempt", {
+      userId: userData.userId,
+      requestedUserId: deletedBlog.userId.toString(),
+    });
+    return {
+      error: "Unauthorized",
+    };
   }
 
   const deletionBlog = await BlogModel.deleteOne({ _id: id });
 
   if (deletionBlog.deletedCount !== 1) {
-    throw new Error("Error deleting blog");
+    customLogger.consoleError("Error deleting blog", { blogId: id });
+    return {
+      error: "Error deleting blog",
+    };
   }
+
+  customLogger.consoleInfo("Blog deleted successfully", {
+    blogId: id,
+    userData,
+    blog: deletedBlog,
+  });
 
   return {
     message: "Blog deleted successfully",
