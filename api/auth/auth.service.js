@@ -76,37 +76,47 @@ async function login(email, password) {
 }
 
 async function signup(username, email, password, confirmedPassword) {
-  const user = await UserModel.findOne({ email });
+  try {
+    const user = await UserModel.findOne({ email });
 
-  if (user) {
-    throw new Error("Email already exists.");
+    if (user) {
+      customLogger.consoleError("Email already exists.");
+      throw new Error("Email already exists.");
+    }
+
+    if (password !== confirmedPassword) {
+      customLogger.consoleError("Passwords do not match.");
+      throw new Error("Passwords do not match.");
+    }
+
+    const hashedPassword = await hashPassword(password);
+
+    const token = await createToken({ useremail: email }, "300d");
+
+    const newUser = await new UserModel({
+      username,
+      email,
+      password: hashedPassword,
+      verifyEmail: token,
+      accessToken: "",
+      refreshToken: "",
+    });
+
+    await newUser.save();
+    customLogger.consoleInfo("Signup successful", { newUser });
+
+    console.log(
+      `Sending verification email, please verify your email at localhost:3000/confirmemail/${token}`
+    );
+
+    return {
+      message: "Signup successful",
+      newUser,
+    };
+  } catch (error) {
+    customLogger.consoleError("Error during signup", { error });
+    throw error;
   }
-
-  if (password !== confirmedPassword) {
-    throw new Error("Passwords do not match.");
-  }
-
-  const hashedPassword = await hashPassword(password);
-
-  const token = await createToken({ useremail: email }, "300d");
-
-  const newUser = await new UserModel({
-    username,
-    email,
-    password: hashedPassword,
-    verifyEmail: token,
-    accessToken: "",
-    refreshToken: "",
-  });
-  await newUser.save();
-  console.log(
-    `Sending verification email, please verify your email at localhost:3000/confirmemail/${token}`
-  );
-
-  return {
-    message: "Signup successful",
-    newUser,
-  };
 }
 
 async function verifyEmail(token) {
