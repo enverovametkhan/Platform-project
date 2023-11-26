@@ -90,28 +90,41 @@ async function getUserBlogInCategoryService(userId, category) {
 }
 
 async function updateBlogService(id, updatedBlog) {
-  const updateBlog = await BlogModel.findById(id);
+  const blogToUpdate = await BlogModel.findById(id);
 
-  if (!updateBlog) {
-    const error = new Error("No blog found");
-    error.function = "updateBlogService";
-    throw error;
+  if (!blogToUpdate) {
+    customLogger.consoleError("No blog found", {
+      function: "updateBlogService",
+    });
+    return {
+      error: "No blog found",
+    };
   }
-  category.toLowerCase();
-  let test = category.toLowerCase();
-  console.log(test);
 
   const userData = await getAccessToUserData();
-  console.log(userData);
+  customLogger.consoleInfo("User data retrieved successfully", { userData });
 
   const updatedBlogData = await BlogModel.findByIdAndUpdate(id, updatedBlog, {
     new: true,
     runValidators: true,
   });
 
+  if (!updatedBlogData) {
+    customLogger.consoleError("Error updating blog post", {
+      function: "updateBlogService",
+    });
+    return {
+      error: "Error updating blog post",
+    };
+  }
+
+  customLogger.consoleInfo("Blog post updated successfully", {
+    blogId: id,
+    updatedBlogData,
+  });
+
   return {
     message: "Blog post updated successfully",
-
     updatedBlogData,
   };
 }
