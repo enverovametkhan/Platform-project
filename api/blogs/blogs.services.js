@@ -31,13 +31,19 @@ async function getBlogInCategoryService(category) {
   const blogs = await BlogModel.find({ category, visible: true });
 
   if (!blogs || blogs.length === 0) {
-    return {};
+    customLogger.consoleError("No blogs found in the category", { category });
+    return {
+      message: "No blogs found in the category",
+    };
   }
-  category.toLowerCase();
-  let test = category.toLowerCase();
-  console.log(test);
+
   blogs.sort((a, b) => b.likes - a.likes);
   const top10Blogs = blogs.slice(0, 10);
+
+  customLogger.consoleInfo("Top 10 blogs retrieved successfully", {
+    category,
+    numberOfBlogs: top10Blogs.length,
+  });
 
   return {
     message: "Here are the top 10 blogs in the category.",
