@@ -9,17 +9,18 @@ async function getBlogService(id) {
   const comments = await BlogCommentModel.find({ blogId: id });
 
   if (!blog) {
-    const error = new Error("No blog found");
-    error.function = "getBlogService";
-    throw error;
+    customLogger.consoleError("No blog found", { function: "getBlogService" });
+    return {
+      message: "No blog found",
+    };
   }
-  category.toLowerCase();
-  let test = category.toLowerCase();
-  console.log(test);
+
   const thisBlog = {
     ...blog._doc,
     comments: [comments],
   };
+
+  customLogger.consoleInfo("Blog retrieved successfully", { blogId: id });
 
   return {
     thisBlog,
