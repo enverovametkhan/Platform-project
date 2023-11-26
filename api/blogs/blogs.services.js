@@ -163,11 +163,16 @@ async function createBlogService(newBlog) {
     newBlog.visible === undefined ||
     newBlog.visible === ""
   ) {
-    throw new Error("Missing required fields");
+    customLogger.consoleError("Missing required fields");
+    return {
+      error: "Missing required fields",
+    };
   }
-  const userData = await getAccessToUserData();
 
-  const createNewBlog = await new BlogModel({
+  const userData = await getAccessToUserData();
+  customLogger.consoleInfo("User data retrieved successfully", { userData });
+
+  const createNewBlog = new BlogModel({
     title: newBlog.title,
     content: newBlog.content,
     image: newBlog.image,
@@ -179,11 +184,16 @@ async function createBlogService(newBlog) {
   });
 
   const savedBlog = await createNewBlog.save();
-  const response = {
+
+  customLogger.consoleInfo("Blog created successfully", {
+    blogId: savedBlog.id,
+    userData,
+  });
+
+  return {
+    message: "Blog created successfully",
     blog: savedBlog.toObject(),
   };
-
-  return response;
 }
 
 // async function deleteUsersBlogs(userId) {
