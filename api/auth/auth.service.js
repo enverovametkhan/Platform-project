@@ -115,34 +115,28 @@ async function signup(username, email, password, confirmedPassword) {
 }
 
 async function verifyEmail(token) {
-  try {
-    const userData = await decryptToken(token);
+  const userData = await decryptToken(token);
+  const user = await UserModel.findOne({ email: userData.useremail });
 
-    const user = await UserModel.findOne({ email: userData.useremail });
-
-    if (!user) {
-      customLogger.consoleError("User has not been found");
-      throw new Error("User has not been found");
-    }
-
-    console.log("Email has been verified");
-    customLogger.consoleInfo("Email verified successfully", {
-      userEmail: user.email,
-    });
-
-    user.verifyEmail = "";
-
-    await user.save();
-
-    const response = {
-      message: "Email verified successfully",
-      status: 200,
-    };
-    return response;
-  } catch (error) {
-    customLogger.consoleError("Error during email verification", { error });
-    throw error;
+  if (!user) {
+    customLogger.consoleError("User has not been found");
+    throw new Error("User has not been found");
   }
+
+  console.log("Email has been verified");
+  customLogger.consoleInfo("Email verified successfully", {
+    userEmail: user.email,
+  });
+
+  user.verifyEmail = "";
+  await user.save();
+
+  const response = {
+    message: "Email verified successfully",
+    status: 200,
+  };
+
+  return response;
 }
 
 async function logout() {
