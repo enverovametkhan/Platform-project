@@ -144,6 +144,7 @@ async function logout() {
   const user = await UserModel.findById(userData.userId);
 
   if (!user) {
+    customLogger.consoleError("User not found during logout");
     throw new Error("User not found");
   }
 
@@ -151,6 +152,10 @@ async function logout() {
   user.refreshToken = "";
 
   await user.save();
+
+  customLogger.consoleInfo("Logged out successfully", {
+    userId: userData.userId,
+  });
 
   return { message: "Logged out successfully" };
 }
