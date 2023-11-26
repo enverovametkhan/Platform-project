@@ -52,21 +52,40 @@ async function getBlogInCategoryService(category) {
 }
 
 async function getUserBlogInCategoryService(userId, category) {
-  if (!userId || !category) throw new Error("Missing required fields");
+  if (!userId || !category) {
+    customLogger.consoleError("Missing required fields");
+    return {
+      error: "Missing required fields",
+    };
+  }
+
   const userData = await getAccessToUserData();
-  console.log(userData);
+  customLogger.consoleInfo("User data retrieved successfully", { userData });
+
   if (userData.userId !== userId) {
-    throw new Error("Unauthorized");
+    customLogger.consoleError("Unauthorized", {
+      userId,
+      requestedUserId: userData.userId,
+    });
+    return {
+      error: "Unauthorized",
+    };
   }
 
   let blogs = await BlogModel.find({ category, userId });
-  category.toLowerCase();
-  let test = category.toLowerCase();
-  console.log(test);
 
-  if (!blogs) {
-    throw new Error("No blogs found");
+  if (!blogs || blogs.length === 0) {
+    customLogger.consoleError("No blogs found", { userId, category });
+    return {
+      error: "No blogs found",
+    };
   }
+
+  customLogger.consoleInfo("User blogs retrieved successfully", {
+    userId,
+    category,
+    numberOfBlogs: blogs.length,
+  });
   return blogs;
 }
 
