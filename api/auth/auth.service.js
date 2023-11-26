@@ -165,6 +165,7 @@ async function refreshAccessToken(token) {
   const user = await UserModel.findById(userData.userId);
 
   if (!user) {
+    customLogger.consoleError("User not found during token refresh");
     throw new Error("User not found");
   }
 
@@ -182,7 +183,9 @@ async function refreshAccessToken(token) {
 
   await user.save();
 
-  console.log("Success refresh");
+  customLogger.consoleInfo("Token refreshed successfully", {
+    userId: userData.userId,
+  });
 
   return {
     ...userData,
