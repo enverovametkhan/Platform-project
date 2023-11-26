@@ -76,69 +76,73 @@ async function login(email, password) {
 }
 
 async function signup(username, email, password, confirmedPassword) {
-  try {
-    const user = await UserModel.findOne({ email });
+  const user = await UserModel.findOne({ email });
 
-    if (user) {
-      customLogger.consoleError("Email already exists.");
-      throw new Error("Email already exists.");
-    }
-
-    if (password !== confirmedPassword) {
-      customLogger.consoleError("Passwords do not match.");
-      throw new Error("Passwords do not match.");
-    }
-
-    const hashedPassword = await hashPassword(password);
-
-    const token = await createToken({ useremail: email }, "300d");
-
-    const newUser = await new UserModel({
-      username,
-      email,
-      password: hashedPassword,
-      verifyEmail: token,
-      accessToken: "",
-      refreshToken: "",
-    });
-
-    await newUser.save();
-    customLogger.consoleInfo("Signup successful", { newUser });
-
-    console.log(
-      `Sending verification email, please verify your email at localhost:3000/confirmemail/${token}`
-    );
-
-    return {
-      message: "Signup successful",
-      newUser,
-    };
-  } catch (error) {
-    customLogger.consoleError("Error during signup", { error });
-    throw error;
+  if (user) {
+    customLogger.consoleError("Email already exists.");
+    throw new Error("Email already exists.");
   }
+
+  if (password !== confirmedPassword) {
+    customLogger.consoleError("Passwords do not match.");
+    throw new Error("Passwords do not match.");
+  }
+
+  const hashedPassword = await hashPassword(password);
+
+  const token = await createToken({ useremail: email }, "300d");
+
+  const newUser = await new UserModel({
+    username,
+    email,
+    password: hashedPassword,
+    verifyEmail: token,
+    accessToken: "",
+    refreshToken: "",
+  });
+
+  await newUser.save();
+  customLogger.consoleInfo("Signup successful", { newUser });
+
+  console.log(
+    `Sending verification email, please verify your email at localhost:3000/confirmemail/${token}`
+  );
+
+  return {
+    message: "Signup successful",
+    newUser,
+  };
 }
 
 async function verifyEmail(token) {
-  const userData = await decryptToken(token);
+  try {
+    const userData = await decryptToken(token);
 
-  const user = await UserModel.findOne({ email: userData.useremail });
+    const user = await UserModel.findOne({ email: userData.useremail });
 
-  if (!user) {
-    throw new Error("User has not been found");
+    if (!user) {
+      customLogger.consoleError("User has not been found");
+      throw new Error("User has not been found");
+    }
+
+    console.log("Email has been verified");
+    customLogger.consoleInfo("Email verified successfully", {
+      userEmail: user.email,
+    });
+
+    user.verifyEmail = "";
+
+    await user.save();
+
+    const response = {
+      message: "Email verified successfully",
+      status: 200,
+    };
+    return response;
+  } catch (error) {
+    customLogger.consoleError("Error during email verification", { error });
+    throw error;
   }
-
-  console.log("Email has been verified");
-
-  user.verifyEmail = "";
-
-  await user.save();
-
-  const response = {
-    message: "Email verified successfully",
-    status: 200,
-  };
-  return response;
 }
 
 async function logout() {
