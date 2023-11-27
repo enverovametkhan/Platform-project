@@ -102,7 +102,6 @@ async function updateBlogService(id, updatedBlog) {
   }
 
   const userData = await getAccessToUserData();
-  customLogger.consoleInfo("User data retrieved successfully", { userData });
 
   const updatedBlogData = await BlogModel.findByIdAndUpdate(id, updatedBlog, {
     new: true,
@@ -140,7 +139,6 @@ async function deleteBlogService(id) {
   }
 
   const userData = await getAccessToUserData();
-  customLogger.consoleInfo("User data retrieved successfully", { userData });
 
   if (deletedBlog.userId.toString() !== userData.userId) {
     customLogger.consoleError("Unauthorized deletion attempt", {
@@ -189,7 +187,6 @@ async function createBlogService(newBlog) {
   }
 
   const userData = await getAccessToUserData();
-  customLogger.consoleInfo("User data retrieved successfully", { userData });
 
   const createNewBlog = new BlogModel({
     title: newBlog.title,
