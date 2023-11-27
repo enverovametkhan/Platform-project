@@ -5,6 +5,7 @@ const { createToken, decryptToken } = require("@root/utilities/jwt");
 const { getAccessToUserData } = require("@root/utilities/getUserData");
 const mongoose = require("mongoose");
 const { UserModel, SwapEmailHashModel } = require("./users.data");
+const { customLogger } = require("../pack/mezmo");
 
 const saltRounds = 10;
 
@@ -17,8 +18,16 @@ async function getUser() {
   const user = await UserModel.findOne({ _id: userData.userId });
 
   if (!user) {
+    customLogger.consoleError("User has not been found");
     throw new Error("User has not been found");
   }
+
+  customLogger.consoleInfo("User data retrieved successfully", {
+    userData,
+    userId: user._id,
+    username: user.username,
+    email: user.email,
+  });
 
   return {
     id: user._id,
