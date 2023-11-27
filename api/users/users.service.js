@@ -155,20 +155,33 @@ async function swapEmail(newEmail) {
 
 async function confirmEmailSwap(token) {
   const userData = await decryptToken(token);
-
   const user = await UserModel.findOne({ _id: userData.userId });
 
   if (!user) {
-    throw new Error("No new user found");
+    customLogger.consoleError("No new user found");
+    return {
+      status: 400,
+      error: "No new user found",
+    };
   }
 
   const checkEmailSwap = await SwapEmailHashModel.findOne({ userId: user._id });
 
   if (!checkEmailSwap) {
-    throw new Error("Something went wrong when trying to swap emails");
+    customLogger.consoleError(
+      "Something went wrong when trying to swap emails"
+    );
+    return {
+      status: 500,
+      error: "Something went wrong when trying to swap emails",
+    };
   }
 
   const message = `Swapped email from ${user.email} to ${checkEmailSwap.newEmail}`;
+  customLogger.consoleInfo("Email swap confirmed successfully", {
+    userId: user._id,
+    newEmail: checkEmailSwap.newEmail,
+  });
   console.log(message);
 
   user.email = checkEmailSwap.newEmail;
