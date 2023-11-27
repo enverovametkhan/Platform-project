@@ -55,6 +55,30 @@ async function resetPasswordReq(email) {
   };
 }
 
+async function checkResetPasswordToken(token) {
+  const userData = await decryptToken(token);
+
+  const checkExistingResetPasswordHash = await ResetPasswordHashModel.findOne({
+    userId: userData.userId,
+  });
+
+  if (!checkExistingResetPasswordHash) {
+    customLogger.consoleError("Invalid reset password token", { token });
+    return {
+      status: 400,
+      error: "Invalid token",
+    };
+  }
+
+  customLogger.consoleInfo("Reset password token validated successfully", {
+    userId: userData.userId,
+  });
+
+  return {
+    status: 200,
+  };
+}
+
 async function resetPassword(token, password, confirmedPassword) {
   const userData = await decryptToken(token);
 
