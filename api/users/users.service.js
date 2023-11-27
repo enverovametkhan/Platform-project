@@ -73,17 +73,22 @@ async function deleteUser() {
 
 async function updateUser(updatedUserData) {
   const userData = await getAccessToUserData();
-
   const user = await UserModel.findById(userData.userId);
 
   if (!user) {
-    throw new Error("User not found");
+    customLogger.consoleError("User not found");
+    return {
+      error: "User not found",
+    };
   }
 
   let response;
 
   if (!updatedUserData.username && !updatedUserData.email) {
-    throw new Error("Either username or email should be provided");
+    customLogger.consoleError("Either username or email should be provided");
+    return {
+      error: "Either username or email should be provided",
+    };
   }
 
   if (updatedUserData.email && updatedUserData.email !== user.email) {
@@ -103,9 +108,10 @@ async function updateUser(updatedUserData) {
   await user.save();
 
   const token = await createToken({ userId: userData.userId }, "7d");
-  console.log(
-    `Sending verification email, please verify your email at localhost:3000/swapemail/${token}`
-  );
+  customLogger.consoleInfo("User updated successfully", {
+    updatedUserData,
+    emailVerificationLink: `localhost:3000/swapemail/${token}`,
+  });
 
   return {
     username: "Updated username",
