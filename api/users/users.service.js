@@ -125,7 +125,11 @@ async function swapEmail(newEmail) {
   const user = await UserModel.findById(userData.userId);
 
   if (!user) {
-    throw new Error("User not found");
+    customLogger.consoleError("User not found for email swap");
+    return {
+      status: 404,
+      error: "User not found for email swap",
+    };
   }
 
   const existEmailSwap = await SwapEmailHashModel.findOne({ userId: user._id });
@@ -146,6 +150,11 @@ async function swapEmail(newEmail) {
   });
 
   await swapEmailData.save();
+
+  customLogger.consoleInfo("Email swap initiated successfully", {
+    userId: user._id,
+    newEmail,
+  });
 
   return {
     status: 200,
