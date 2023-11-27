@@ -83,11 +83,19 @@ async function resetPassword(token, password, confirmedPassword) {
   const userData = await decryptToken(token);
 
   if (!userData || !userData.userId) {
-    throw new Error("Invalid token");
+    customLogger.consoleError("Invalid reset password token", { token });
+    return {
+      status: 400,
+      error: "Invalid token",
+    };
   }
 
   if (password !== confirmedPassword) {
-    throw new Error("Invalid passwords");
+    customLogger.consoleError("Passwords do not match");
+    return {
+      status: 400,
+      error: "Passwords do not match",
+    };
   }
 
   const checkExistingResetPasswordHash = await ResetPasswordHashModel.findOne({
@@ -95,20 +103,33 @@ async function resetPassword(token, password, confirmedPassword) {
   });
 
   if (!checkExistingResetPasswordHash) {
-    throw new Error("Invalid token");
+    customLogger.consoleError("Invalid reset password token", { token });
+    return {
+      status: 400,
+      error: "Invalid token",
+    };
   }
 
   const user = await UserModel.findById(checkExistingResetPasswordHash.userId);
-  console.log("User:", user);
 
   if (!user) {
-    throw new Error("User not found");
+    customLogger.consoleError("User not found", {
+      userId: checkExistingResetPasswordHash.userId,
+    });
+    return {
+      status: 404,
+      error: "User not found",
+    };
   }
 
   const hashedPassword = await hashPassword(password);
 
   if (!hashedPassword) {
-    throw new Error("Failed to hash the password");
+    customLogger.consoleError("Failed to hash the password");
+    return {
+      status: 500,
+      error: "Failed to hash the password",
+    };
   }
 
   user.password = hashedPassword;
@@ -117,6 +138,10 @@ async function resetPassword(token, password, confirmedPassword) {
   await ResetPasswordHashModel.findByIdAndDelete(
     checkExistingResetPasswordHash._id
   );
+
+  customLogger.consoleInfo("Password reset successful", {
+    userId: userData.userId,
+  });
 
   return {
     status: 200,
