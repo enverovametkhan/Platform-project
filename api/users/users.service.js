@@ -41,7 +41,10 @@ async function deleteUser() {
   const user = await UserModel.findById(userData.userId);
 
   if (!user) {
-    throw new Error("User not found");
+    customLogger.consoleError("User not found");
+    return {
+      error: "User not found",
+    };
   }
 
   // const { deletedBlogs, deletedComments } = await deleteUsersBlogs(user.id);
@@ -52,6 +55,13 @@ async function deleteUser() {
   user.deletedAt = Date.now();
 
   await user.save();
+
+  customLogger.consoleInfo("User deleted successfully", {
+    userData,
+    userId: user.userId,
+    // deletedBlogs,
+    // deletedComments,
+  });
 
   console.log("User has been deleted with ID:", user.userId);
   // console.log(`Deleted ${deletedBlogs} blogs and ${deletedComments} comments`);
