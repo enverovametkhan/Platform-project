@@ -3,6 +3,7 @@ const { miniDatabase } = require("@root/database/miniDatabase");
 const { createToken, decryptToken } = require("@root/utilities/jwt");
 const { UserModel } = require("../users/users.data");
 const { ResetPasswordHashModel } = require("./resetPass.data");
+const { customLogger } = require("../pack/mezmo");
 
 const saltRounds = 10;
 
@@ -14,7 +15,9 @@ async function resetPasswordReq(email) {
   const userData = await UserModel.findOne({ email });
 
   if (!userData) {
+    customLogger.consoleError("User not found for password reset", { email });
     return {
+      status: 404,
       message: "User not found",
     };
   }
@@ -27,7 +30,6 @@ async function resetPasswordReq(email) {
     await ResetPasswordHashModel.findByIdAndDelete(
       checkExistingResetPasswordHash.id
     );
-    console.log("Password reset link already used, removing it.");
   }
 
   const token = await createToken({ userId: userData.id }, "5d");
@@ -41,29 +43,15 @@ async function resetPasswordReq(email) {
 
   await resetPasswordHash.save();
 
-  console.log(
-    `Sending verification email, please verify your email at localhost:3000/resetpassword/${token}`
-  );
+  customLogger.consoleInfo("Password reset link sent successfully", {
+    userId: userData.id,
+    email,
+    emailVerificationLink: `localhost:3000/resetpassword/${token}`,
+  });
 
   return {
     status: 200,
     message: "Check your email for the link",
-  };
-}
-
-async function checkResetPasswordToken(token) {
-  const userData = await decryptToken(token);
-
-  const checkExistingResetPasswordHash = await ResetPasswordHashModel.findOne({
-    userId: userData.userId,
-  });
-
-  if (!checkExistingResetPasswordHash) {
-    throw new Error("Invalid token");
-  }
-
-  return {
-    status: 200,
   };
 }
 
