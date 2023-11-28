@@ -4,7 +4,7 @@ class CustomLogger {
   constructor() {
     const options = {
       app: "Blogs App",
-      levels: ["trace", "info", "warn", "debug", "fatal", "http"],
+      levels: ["trace", "info", "warn", "debug", "fatal", "http", "error"],
       tags: "Empty",
     };
     const ingestionKey = process.env.MEZMO_KEY;
@@ -109,40 +109,6 @@ class CustomLogger {
       return true;
     }
     return false;
-  }
-
-  mezmoError(message, metadata) {
-    if (process.env.NODE_ENV !== "local") {
-      const isLocalError = this.localError(message, metadata);
-      return isLocalError;
-    } else {
-      console.error(`[Mezmo Error]: ${message}`, metadata);
-      return true;
-    }
-  }
-
-  mezmoInfo(message, metadata) {
-    if (process.env.NODE_ENV !== "local") {
-      const isLocalInfo = this.localInfo(`[Mezmo Info]: ${message}`, metadata);
-      return isLocalInfo;
-    } else {
-      console.log(`[Mezmo Info]: ${message}`, metadata);
-      return true;
-    }
-  }
-
-  mezmoMiddleware(message, metadata, type) {
-    if (process.env.NODE_ENV !== "local") {
-      this.localMiddleware(`[Mezmo Middleware ${type}]: ${message}`, metadata);
-    } else {
-      if (type === "IN") {
-        console.log(`[INTERCEPTOR]: ${message}`, metadata);
-      } else {
-        console.log(`[INTERCEPTOR]: ${message}`, metadata);
-        return true;
-      }
-      return false;
-    }
   }
 }
 

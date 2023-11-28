@@ -92,10 +92,7 @@ async function resetPassword(token, password, confirmedPassword) {
 
   if (!checkExistingResetPasswordHash) {
     customLogger.consoleError("Invalid reset password token", { token });
-    return {
-      status: 400,
-      error: "Invalid token",
-    };
+    throw new Error("Invalid reset password token");
   }
 
   const user = await UserModel.findById(checkExistingResetPasswordHash.userId);
