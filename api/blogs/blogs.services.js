@@ -10,9 +10,7 @@ async function getBlogService(id) {
 
   if (!blog) {
     customLogger.consoleError("No blog found", { function: "getBlogService" });
-    return {
-      message: "No blog found",
-    };
+    throw new Error("Failed to hash the password");
   }
 
   const thisBlog = {
@@ -32,9 +30,7 @@ async function getBlogInCategoryService(category) {
 
   if (!blogs || blogs.length === 0) {
     customLogger.consoleError("No blogs found in the category", { category });
-    return {
-      message: "No blogs found in the category",
-    };
+    throw new Error("No blogs found in the category");
   }
 
   blogs.sort((a, b) => b.likes - a.likes);
@@ -54,9 +50,7 @@ async function getBlogInCategoryService(category) {
 async function getUserBlogInCategoryService(userId, category) {
   if (!userId || !category) {
     customLogger.consoleError("Missing required fields");
-    return {
-      error: "Missing required fields",
-    };
+    throw new Error("Missing required fields");
   }
 
   const userData = await getAccessToUserData();
@@ -67,18 +61,14 @@ async function getUserBlogInCategoryService(userId, category) {
       userId,
       requestedUserId: userData.userId,
     });
-    return {
-      error: "Unauthorized",
-    };
+    throw new Error("Unauthorized");
   }
 
   let blogs = await BlogModel.find({ category, userId });
 
   if (!blogs || blogs.length === 0) {
     customLogger.consoleError("No blogs found", { userId, category });
-    return {
-      error: "No blogs found",
-    };
+    throw new Error("No blogs found");
   }
 
   customLogger.consoleInfo("User blogs retrieved successfully", {
@@ -96,12 +86,11 @@ async function updateBlogService(id, updatedBlog) {
     customLogger.consoleError("No blog found", {
       function: "updateBlogService",
     });
-    return {
-      error: "No blog found",
-    };
+    throw new Error("No blog found");
   }
 
   const userData = await getAccessToUserData();
+  console.log(userData);
 
   const updatedBlogData = await BlogModel.findByIdAndUpdate(id, updatedBlog, {
     new: true,
@@ -112,9 +101,7 @@ async function updateBlogService(id, updatedBlog) {
     customLogger.consoleError("Error updating blog post", {
       function: "updateBlogService",
     });
-    return {
-      error: "Error updating blog post",
-    };
+    throw new Error("Error updating blog post");
   }
 
   customLogger.consoleInfo("Blog post updated successfully", {
@@ -133,9 +120,7 @@ async function deleteBlogService(id) {
 
   if (!deletedBlog) {
     customLogger.consoleError("No blogs found for deletion", { blogId: id });
-    return {
-      error: "No blogs found for deletion",
-    };
+    throw new Error("No blogs found for deletion");
   }
 
   const userData = await getAccessToUserData();
@@ -145,18 +130,14 @@ async function deleteBlogService(id) {
       userId: userData.userId,
       requestedUserId: deletedBlog.userId.toString(),
     });
-    return {
-      error: "Unauthorized",
-    };
+    throw new Error("Unauthorized deletion attempt");
   }
 
   const deletionBlog = await BlogModel.deleteOne({ _id: id });
 
   if (deletionBlog.deletedCount !== 1) {
     customLogger.consoleError("Error deleting blog", { blogId: id });
-    return {
-      error: "Error deleting blog",
-    };
+    throw new Error("Error deleting blog");
   }
 
   customLogger.consoleInfo("Blog deleted successfully", {
@@ -181,9 +162,7 @@ async function createBlogService(newBlog) {
     newBlog.visible === ""
   ) {
     customLogger.consoleError("Missing required fields");
-    return {
-      error: "Missing required fields",
-    };
+    throw new Error("Missing required fields");
   }
 
   const userData = await getAccessToUserData();
