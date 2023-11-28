@@ -16,10 +16,7 @@ async function resetPasswordReq(email) {
 
   if (!userData) {
     customLogger.consoleError("User not found for password reset", { email });
-    return {
-      status: 404,
-      message: "User not found",
-    };
+    throw new Error("User not found for password reset");
   }
 
   const checkExistingResetPasswordHash = await ResetPasswordHashModel.findOne({
@@ -64,10 +61,7 @@ async function checkResetPasswordToken(token) {
 
   if (!checkExistingResetPasswordHash) {
     customLogger.consoleError("Invalid reset password token", { token });
-    return {
-      status: 400,
-      error: "Invalid token",
-    };
+    throw new Error("Invalid reset password token");
   }
 
   customLogger.consoleInfo("Reset password token validated successfully", {
@@ -84,18 +78,12 @@ async function resetPassword(token, password, confirmedPassword) {
 
   if (!userData || !userData.userId) {
     customLogger.consoleError("Invalid reset password token", { token });
-    return {
-      status: 400,
-      error: "Invalid token",
-    };
+    throw new Error("Invalid reset password token");
   }
 
   if (password !== confirmedPassword) {
     customLogger.consoleError("Passwords do not match");
-    return {
-      status: 400,
-      error: "Passwords do not match",
-    };
+    throw new Error("Passwords do not match");
   }
 
   const checkExistingResetPasswordHash = await ResetPasswordHashModel.findOne({
@@ -116,20 +104,14 @@ async function resetPassword(token, password, confirmedPassword) {
     customLogger.consoleError("User not found", {
       userId: checkExistingResetPasswordHash.userId,
     });
-    return {
-      status: 404,
-      error: "User not found",
-    };
+    throw new Error("User not found");
   }
 
   const hashedPassword = await hashPassword(password);
 
   if (!hashedPassword) {
     customLogger.consoleError("Failed to hash the password");
-    return {
-      status: 500,
-      error: "Failed to hash the password",
-    };
+    throw new Error("Failed to hash the password");
   }
 
   user.password = hashedPassword;
