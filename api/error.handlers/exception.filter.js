@@ -9,7 +9,7 @@ module.exports = (app) => {
     const timeTaken = (Date.now() - req.timeStarted) / 1000;
     console.log(`Time taken to process the request: ${timeTaken} seconds`);
 
-    customLogger.consoleMiddleware(
+    customLogger.consoleError(
       `[EXCEPTION FILTER] - (ERROR) | Error caught in Exception Filter: ${req.originalUrl}`,
       {
         timeTaken: `${timeTaken} seconds`,

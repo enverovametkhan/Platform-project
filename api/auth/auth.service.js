@@ -15,34 +15,26 @@ async function hashPassword(password) {
 async function login(email, password) {
   if (!email) {
     customLogger.consoleError("Email is required");
-    return {
-      message: "Email is required",
-    };
+    throw new Error("Email is required");
   }
 
   if (!password) {
     customLogger.consoleError("Password is required");
-    return {
-      message: "Password is required",
-    };
+    throw new Error("Password is required");
   }
 
   const user = await UserModel.findOne({ email });
 
   if (!user) {
     customLogger.consoleError("Incorrect login credentials");
-    return {
-      message: "Incorrect login credentials",
-    };
+    throw new Error("Incorrect login credentials");
   }
 
   const validPassword = await bcrypt.compare(password, user.password);
 
   if (!validPassword) {
     customLogger.consoleError("Incorrect login credentials");
-    return {
-      message: "Incorrect login credentials",
-    };
+    throw new Error("Incorrect login credentials");
   }
 
   const userDataJwt = {

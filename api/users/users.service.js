@@ -42,9 +42,7 @@ async function deleteUser() {
 
   if (!user) {
     customLogger.consoleError("User not found");
-    return {
-      error: "User not found",
-    };
+    throw new Error("User not found");
   }
 
   // const { deletedBlogs, deletedComments } = await deleteUsersBlogs(user.id);
@@ -77,18 +75,14 @@ async function updateUser(updatedUserData) {
 
   if (!user) {
     customLogger.consoleError("User not found");
-    return {
-      error: "User not found",
-    };
+    throw new Error("User not found");
   }
 
   let response;
 
   if (!updatedUserData.username && !updatedUserData.email) {
     customLogger.consoleError("Either username or email should be provided");
-    return {
-      error: "Either username or email should be provided",
-    };
+    throw new Error("Either username or email should be provided");
   }
 
   if (updatedUserData.email && updatedUserData.email !== user.email) {
@@ -126,10 +120,7 @@ async function swapEmail(newEmail) {
 
   if (!user) {
     customLogger.consoleError("User not found for email swap");
-    return {
-      status: 404,
-      error: "User not found for email swap",
-    };
+    throw new Error("User not found for email swap");
   }
 
   const existEmailSwap = await SwapEmailHashModel.findOne({ userId: user._id });
@@ -168,10 +159,7 @@ async function confirmEmailSwap(token) {
 
   if (!user) {
     customLogger.consoleError("No new user found");
-    return {
-      status: 400,
-      error: "No new user found",
-    };
+    throw new Error("No new user found");
   }
 
   const checkEmailSwap = await SwapEmailHashModel.findOne({ userId: user._id });
@@ -180,10 +168,7 @@ async function confirmEmailSwap(token) {
     customLogger.consoleError(
       "Something went wrong when trying to swap emails"
     );
-    return {
-      status: 500,
-      error: "Something went wrong when trying to swap emails",
-    };
+    throw new Error("Something went wrong when trying to swap emails");
   }
 
   const message = `Swapped email from ${user.email} to ${checkEmailSwap.newEmail}`;

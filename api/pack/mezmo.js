@@ -93,7 +93,7 @@ class CustomLogger {
           ...metadata,
         },
       };
-      this.logger.info(logObject);
+      this.logger.error(logObject);
     } catch (e) {
       console.log(e);
     }
