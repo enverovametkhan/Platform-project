@@ -1,4 +1,3 @@
-const { miniDatabase } = require("@root/database/miniDatabase");
 const mongoose = require("mongoose");
 const { blogsSchema } = require("./schemas/blogsSchema");
 
