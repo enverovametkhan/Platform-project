@@ -10,7 +10,7 @@ async function getBlogService(id) {
 
   if (!blog) {
     customLogger.consoleError("No blog found", { function: "getBlogService" });
-    throw new Error("Failed to hash the password");
+    throw new Error("No blog found");
   }
 
   const thisBlog = {
@@ -41,10 +41,7 @@ async function getBlogInCategoryService(category) {
     numberOfBlogs: top10Blogs.length,
   });
 
-  return {
-    message: "Here are the top 10 blogs in the category.",
-    blogs: top10Blogs,
-  };
+  return top10Blogs;
 }
 
 async function getUserBlogInCategoryService(userId, category) {
