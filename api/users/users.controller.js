@@ -16,7 +16,7 @@ async function getUserController(req, res, next) {
     const errorMessage = {
       error: error.message,
       function: "getUserController",
-      errorMessage: error.message || "Internal Server Error",
+      errorMessage: `Something went wrong when trying to get a user`,
     };
 
     next(errorMessage);
@@ -32,7 +32,7 @@ async function deleteUserController(req, res, next) {
     const errorMessage = {
       error: error.message,
       function: "deleteUserController",
-      errorMessage: error.message || "Internal Server Error",
+      errorMessage: `Something went wrong when trying to delete a user`,
     };
     next(errorMessage);
   }
@@ -47,7 +47,7 @@ async function updateUserController(req, res, next) {
   } catch (error) {
     const errorMessage = {
       error: error.message,
-      function: "updateUserController",
+      function: `Something went wrong when trying to update a user`,
       errorMessage: error.message,
     };
     next(errorMessage);
@@ -77,7 +77,7 @@ async function confirmEmailSwapController(req, res, next) {
     console.error(error);
     const errorMessage = {
       error: error.message,
-      function: "confirmEmailSwapController",
+      function: `Something went wrong when to confirm email swap`,
       errorMessage: error.message,
     };
 
