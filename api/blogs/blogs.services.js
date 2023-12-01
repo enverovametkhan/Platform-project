@@ -14,15 +14,13 @@ async function getBlogService(id) {
   }
 
   const thisBlog = {
-    ...blog._doc,
+    title: blog.title,
     comments: [comments],
   };
 
   customLogger.consoleInfo("Blog retrieved successfully", { blogId: id });
 
-  return {
-    thisBlog,
-  };
+  return thisBlog;
 }
 
 async function getBlogInCategoryService(category) {

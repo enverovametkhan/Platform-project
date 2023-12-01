@@ -39,7 +39,7 @@ async function getBlogsInCategory(req, res, next) {
     const errorMessage = {
       error: error.message,
       function: "getBlogsInCategory",
-      errorMessage: "Internal Server Error",
+      errorMessage: `Something went wrong when trying to get Blogs in category ${category}`,
       category,
     };
 
@@ -59,7 +59,7 @@ async function getUserBlogsInCategory(req, res, next) {
     const errorMessage = {
       error: error.message,
       function: "getUserBlogsInCategory",
-      errorMessage: "An error occurred while fetching blogs",
+      errorMessage: `Something went wrong when trying to get User Blogs in category ${category}`,
       metaData: { userId, category },
     };
 
@@ -87,7 +87,7 @@ async function updateBlog(req, res, next) {
   } catch (error) {
     const errorMessage = {
       function: "updateBlog",
-      errorMessage: "Internal Server Error",
+      errorMessage: `Something went wrong when updating a Blog with ID ${id}`,
     };
     next(errorMessage);
   }
@@ -104,7 +104,7 @@ async function deleteBlog(req, res, next) {
     const errorMessage = {
       error: error.message,
       function: "deleteBlog",
-      errorMessage: "Internal Server Error",
+      errorMessage: `Something went wrong when deleting a Blog with ID ${id}`,
     };
     next(errorMessage);
   }
@@ -130,7 +130,7 @@ async function createBlog(req, res, next) {
     const errorMessage = {
       error: error.message,
       function: "createBlog",
-      errorMessage: "Internal Server Error",
+      errorMessage: `Something went wrong when creating a Blog`,
     };
     next(errorMessage);
   }
