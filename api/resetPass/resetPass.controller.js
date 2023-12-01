@@ -16,8 +16,8 @@ async function resetPasswordReqController(req, res, next) {
 
     const errorMessage = {
       error: error.message,
-      function: "resetPasswordReqController",
-      errorMessage: error.message,
+      function: resetPasswordReqController,
+      errorMessage: `Something went wrong when trying to reset password`,
     };
     next(errorMessage);
   }
@@ -33,8 +33,8 @@ async function checkResetPasswordTokenController(req, res, next) {
     console.error(error);
     const errorMessage = {
       error: error.message,
-      function: "checkResetPasswordTokenController",
-      errorMessage: error.message,
+      function: checkResetPasswordTokenController,
+      errorMessage: `Something went wrong when trying to check a token for password reset`,
     };
     next(errorMessage);
   }
@@ -54,7 +54,7 @@ async function resetPasswordController(req, res, next) {
     const errorMessage = {
       error: error.message,
       function: "resetPasswordController",
-      errorMessage: error.message,
+      errorMessage: `Something went wrong when trying to change password`,
     };
     next(errorMessage);
   }
