@@ -18,7 +18,7 @@ async function loginController(req, res, next) {
     const errorMessage = {
       error: error.message,
       function: "loginController",
-      errorMessage: error.message || "Internal Server Error",
+      errorMessage: `Something went wrong during a login`,
       id,
     };
 
@@ -36,7 +36,7 @@ async function signupController(req, res, next) {
     const errorMessage = {
       error: error.message,
       function: "signupController",
-      errorMessage: error.message || "Internal Server Error",
+      errorMessage: `Something went wrong during sign up`,
     };
 
     next(errorMessage);
@@ -53,7 +53,7 @@ async function verifyEmailController(req, res, next) {
     const errorMessage = {
       error: error.message,
       function: "verifyEmailController",
-      errorMessage: error.message || "Internal Server Error",
+      errorMessage: `Something went wrong during email verification`,
     };
 
     next(errorMessage);
@@ -69,7 +69,7 @@ async function logoutController(req, res, next) {
     const errorMessage = {
       error: error.message,
       function: "logoutController",
-      errorMessage: error.message || "Internal Server Error",
+      errorMessage: `Something went wrong when trying to log out`,
     };
 
     next(errorMessage);
@@ -86,7 +86,7 @@ async function refreshAccessTokenController(req, res, next) {
     const errorMessage = {
       error: error.message,
       function: "refreshAccessTokenController",
-      errorMessage: error.message || "Internal Server Error",
+      errorMessage: `Something went wrong when trying to refresh access token`,
     };
     next(errorMessage);
   }
