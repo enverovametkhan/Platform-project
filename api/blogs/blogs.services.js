@@ -16,6 +16,17 @@ async function getBlogService(id) {
   const thisBlog = {
     title: blog.title,
     comments: [comments],
+    _id: blog._id,
+    content: blog.content,
+    image: blog.image,
+    category: blog.category,
+    userId: blog.userId,
+    views: blog.views,
+    likes: blog.likes,
+    visible: true,
+    createdAt: blog.createdAt,
+    updatedAt: blog.updatedAt,
+    __v: blog.__v,
   };
 
   customLogger.consoleInfo("Blog retrieved successfully", { blogId: id });
@@ -217,10 +228,10 @@ async function createBlogService(newBlog) {
 //     }
 //   });
 
-//   return {
-//     deletedBlogs: deletedBlogsNumber,
-//     deletedComments: deletedCommentsNumber,
-//   };
+// return {
+//   deletedBlogs: deletedBlogsNumber,
+//   deletedComments: deletedCommentsNumber,
+// };
 // }
 
 module.exports = {
