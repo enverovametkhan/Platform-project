@@ -185,15 +185,18 @@ async function createBlogService(newBlog) {
   });
 
   const savedBlog = await createNewBlog.save();
+  const response = {
+    _id: savedBlog._id,
+  };
 
   customLogger.consoleInfo("Blog created successfully", {
-    blogId: savedBlog.id,
+    blogId: savedBlog._id,
     userData,
   });
 
   return {
     message: "Blog created successfully",
-    blog: savedBlog.toObject(),
+    response,
   };
 }
 

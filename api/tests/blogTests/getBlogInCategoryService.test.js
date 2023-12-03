@@ -4,6 +4,7 @@
 // const { expect } = chai;
 // const { BlogModel } = require("../../blogs/blogs.data");
 // const { app } = require("../../app");
+// const yellowColor = "\x1b[33m";
 
 // chai.use(chaiHttp);
 
@@ -18,10 +19,9 @@
 //     findStub.restore();
 //   });
 
-//   it("should successfully retrieve top 10 blogs in a category", async () => {
-//     const blogId = "6562e22d365a633b118c3b3d";
+//   it(`${yellowColor}should successfully retrieve top 10 blogs in a category`, async () => {
 //     const blogData = {
-//       _id: blogId,
+//       _id: "6562e22d365a633b118c3b3d",
 //       title: "Updated Title",
 //       content: "Updated Content",
 //       image: "Image URL",
@@ -34,23 +34,20 @@
 //       updatedAt: Date.now(),
 //       __v: 0,
 //     };
-
 //     findStub.withArgs(blogData.category).resolves(blogData);
 //     const res = await chai
 //       .request(app)
 //       .get(`/api/blog/category/${blogData.category}`);
-//     console.log(res);
+
 //     expect(res).to.have.status(200);
 
-//     if (res.body.thisBlog) {
-//       expect(res.body.thisBlog).to.have.property(
-//         "category",
-//         blogData._id.toString()
-//       );
-//     }
+//     expect(res.body.processedResponse).to.have.property(
+//       "category",
+//       blogData.category.toString()
+//     );
 //   });
 
-//   it("should handle the case when no blogs are found in the category", async () => {
+//   it(`${yellowColor}should handle the case when no blogs are found in the category`, async () => {
 //     const nonExistingCategory = "Nature";
 
 //     findStub.withArgs(nonExistingCategory).resolves(null);
@@ -62,6 +59,8 @@
 //     expect(res).to.have.status(500);
 //     expect(res.body)
 //       .to.have.property("message")
-//       .to.equal(`Internal Server Error`);
+//       .to.equal(
+//         `Something went wrong when trying to get Blogs in category ${nonExistingCategory}`
+//       );
 //   });
 // });
