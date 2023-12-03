@@ -87,7 +87,7 @@ async function updateBlog(req, res, next) {
   } catch (error) {
     const errorMessage = {
       function: "updateBlog",
-      errorMessage: `Something went wrong when updating a Blog with ID ${id}`,
+      errorMessage: `Something went wrong when updating a Blog`,
     };
     next(errorMessage);
   }
@@ -104,7 +104,7 @@ async function deleteBlog(req, res, next) {
     const errorMessage = {
       error: error.message,
       function: "deleteBlog",
-      errorMessage: `Something went wrong when deleting a Blog with ID ${id}`,
+      errorMessage: `Something went wrong when deleting a Blog`,
     };
     next(errorMessage);
   }
