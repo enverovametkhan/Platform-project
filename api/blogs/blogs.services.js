@@ -38,6 +38,7 @@ async function getBlogInCategoryService(category) {
   const blogs = await BlogModel.find({ category, visible: true });
 
   if (!blogs || blogs.length === 0) {
+    console.log("no blogs");
     customLogger.consoleError("No blogs found in the category", { category });
     throw new Error("No blogs found in the category");
   }
