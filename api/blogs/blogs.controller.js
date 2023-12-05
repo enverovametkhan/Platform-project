@@ -59,7 +59,7 @@ async function getUserBlogsInCategory(req, res, next) {
     const errorMessage = {
       error: error.message,
       function: "getUserBlogsInCategory",
-      errorMessage: `Something went wrong when trying to get User Blogs in category ${category}`,
+      errorMessage: `Something went wrong when trying to get User Blogs in category`,
       metaData: { userId, category },
     };
 
