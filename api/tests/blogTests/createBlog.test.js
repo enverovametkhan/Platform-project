@@ -5,7 +5,6 @@
 // const { BlogModel } = require("../../blogs/blogs.data");
 // const { app } = require("../../app");
 // const { createToken } = require("../../utilities/jwt");
-// const yellowColor = "\x1b[33m";
 
 // chai.use(chaiHttp);
 
@@ -20,7 +19,7 @@
 //     saveStub.restore();
 //   });
 
-//   it(`${yellowColor}should create a new blog and return message`, async () => {
+//   it(`should create a new blog and return message`, async () => {
 //     const newBlogData = {
 //       title: "Blog Title",
 //       content: "Blog Content",
@@ -56,7 +55,7 @@
 //     });
 //   });
 
-//   it(`${yellowColor}should return an error if required fields are missing`, async () => {
+//   it(`should return an error if required fields are missing`, async () => {
 //     const newBlogData = {
 //       title: "Blog Title",
 //       content: "Blog Content",
@@ -85,7 +84,7 @@
 //     );
 //   });
 
-//   it(`${yellowColor}should return an error if the token has expired`, async () => {
+//   it(`should return an error if the token has expired`, async () => {
 //     const newBlogData = {
 //       title: "Blog Title",
 //       content: "Blog Content",

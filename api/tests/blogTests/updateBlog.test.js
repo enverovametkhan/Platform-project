@@ -5,7 +5,6 @@
 // const { app } = require("../../app");
 // const { createToken } = require("../../utilities/jwt");
 // const { BlogModel } = require("../../blogs/blogs.data");
-// const yellowColor = "\x1b[33m";
 
 // chai.use(chaiHttp);
 
@@ -22,7 +21,7 @@
 //     findByIdAndUpdateStub.restore();
 //   });
 
-//   it(`${yellowColor}should update a blog successfully`, async () => {
+//   it(`should update a blog successfully`, async () => {
 //     const userId = "655c92eebe63597606646e1f";
 //     const userData = {
 //       userId,
@@ -77,7 +76,7 @@
 //     });
 //   });
 
-//   it(`${yellowColor}should return an error if the blog is not found`, async () => {
+//   it(`should return an error if the blog is not found`, async () => {
 //     const userId = "655c92eebe63597606646e1f";
 //     const userData = {
 //       userId,

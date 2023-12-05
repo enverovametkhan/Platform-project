@@ -158,4 +158,104 @@ describe("DELETE BLOG", () => {
       "Something went wrong when deleting a Blog"
     );
   });
+  it(`should return an error if access token is expired`, async () => {
+    const userDataJwt = {
+      userId: "655c92eebe63597606646e1f",
+      email: "1@11",
+      username: "user12sd22f11",
+    };
+    const id = "6562e22d365a633b118c3b3d";
+
+    const expiredToken = await createToken(userDataJwt, "-1s");
+
+    const res = await chai
+      .request(app)
+      .delete(`/api/blog/${id}`)
+      .set("Authorization", `Bearer ${expiredToken}`);
+
+    expect(res).to.have.status(500);
+    expect(res.body.message).to.include("Unauthorized");
+  });
+
+  it(`should return an error if refresh token is expired`, async () => {
+    const userDataJwt = {
+      userId: "655c92eebe63597606646e1f",
+      email: "1@11",
+      username: "user12sd22f11",
+    };
+    const id = "6562e22d365a633b118c3b3d";
+
+    const expiredToken = await createToken(userDataJwt, "-1s");
+
+    const res = await chai
+      .request(app)
+      .delete(`/api/blog/${id}`)
+      .set("Authorization", `Bearer ${expiredToken}`);
+
+    expect(res).to.have.status(500);
+    expect(res.body.message).to.include("Unauthorized");
+  });
+
+  it(`should return an error if both tokens are expired`, async () => {
+    const userDataJwt = {
+      userId: "655c92eebe63597606646e1f",
+      email: "1@11",
+      username: "user12sd22f11",
+    };
+    const id = "6562e22d365a633b118c3b3d";
+
+    const expiredToken = await createToken(userDataJwt, "-1s");
+
+    const res = await chai
+      .request(app)
+      .delete(`/api/blog/${id}`)
+      .set("Authorization", `Bearer ${expiredToken}`);
+
+    expect(res).to.have.status(500);
+    expect(res.body.message).to.include("Unauthorized");
+  });
+  it(`should return an error if another authorized user attempts to delete a blog not owned by them`, async () => {
+    const authorizedUserId = "655c92eebe63597606646e1f";
+    const anotherUserId = "differentUserId";
+
+    const authorizedUserData = {
+      userId: authorizedUserId,
+      email: "1@11",
+      username: "user12sd22f11",
+    };
+
+    const anotherUserData = {
+      userId: anotherUserId,
+      email: "another@user.com",
+      username: "anotherUser",
+    };
+
+    const blogId = "6562e22d365a633b118c3b3d";
+    const blogOwnedByAnotherUser = {
+      _id: blogId,
+      title: "Blog Title",
+      content: "Blog Content",
+      userId: anotherUserId,
+      views: 0,
+      likes: 0,
+      visible: true,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      __v: 0,
+    };
+
+    findByIdStub.withArgs(blogId).resolves(blogOwnedByAnotherUser);
+
+    const authorizedUserToken = await createToken(authorizedUserData, "7d");
+
+    const res = await chai
+      .request(app)
+      .delete(`/api/blog/${blogId}`)
+      .set("Authorization", `Bearer ${authorizedUserToken}`);
+
+    expect(res).to.have.status(500);
+    expect(res.body.message).to.include(
+      "Something went wrong when deleting a Blog"
+    );
+  });
 });
