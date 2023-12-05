@@ -173,6 +173,13 @@ async function createBlogService(newBlog) {
   }
 
   const userData = await getAccessToUserData();
+  if (newBlog.userId && newBlog.userId.toString() !== userData.userId) {
+    customLogger.consoleError("Unauthorized blog creation attempt", {
+      userId: userData.userId,
+      requestedUserId: newBlog.userId.toString(),
+    });
+    throw new Error("Unauthorized blog creation attempt");
+  }
 
   const createNewBlog = new BlogModel({
     title: newBlog.title,
