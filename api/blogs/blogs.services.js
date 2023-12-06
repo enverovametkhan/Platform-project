@@ -97,7 +97,14 @@ async function updateBlogService(id, updatedBlog) {
   }
 
   const userData = await getAccessToUserData();
-  console.log(userData);
+
+  if (blogToUpdate.userId.toString() !== userData.userId) {
+    customLogger.consoleError("Unauthorized update attempt", {
+      userId: userData.userId,
+      requestedUserId: blogToUpdate.userId.toString(),
+    });
+    throw new Error("Unauthorized update attempt");
+  }
 
   const updatedBlogData = await BlogModel.findByIdAndUpdate(id, updatedBlog, {
     new: true,
