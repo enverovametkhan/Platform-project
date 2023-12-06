@@ -57,7 +57,10 @@ async function login(email, password) {
   user.accessToken = accessJwtToken;
   user.refreshToken = refreshJwtToken;
 
-  await user.save();
+  await UserModel.findByIdAndUpdate(user._id, {
+    new: true,
+    runValidators: true,
+  });
 
   customLogger.consoleInfo("Login successful", {
     userId: user.id,
@@ -120,7 +123,7 @@ async function signup(username, email, password, confirmedPassword) {
 
 async function verifyEmail(token) {
   const userData = await decryptToken(token);
-  console.log(userData);
+
   const user = await UserModel.findOne({ email: userData.useremail });
 
   if (!user) {
