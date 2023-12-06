@@ -99,12 +99,12 @@ describe("CREATE BLOG", () => {
       username: "user12sd22f11",
     };
 
-    const expiredToken = await createToken(userDataJwt, "-1s");
+    const accessJwtToken = await createToken(userDataJwt, "-1s");
 
     const res = await chai
       .request(app)
       .post("/api/blog")
-      .set("Authorization", `Bearer ${expiredToken}`)
+      .set("Authorization", `Bearer ${accessJwtToken}`)
       .send(newBlogData);
 
     expect(res).to.have.status(500);
@@ -126,12 +126,12 @@ describe("CREATE BLOG", () => {
       username: "user12sd22f11",
     };
 
-    const expiredToken = await createToken(userDataJwt, "-1s");
+    const refreshJwtToken = await createToken(userDataJwt, "-1s");
 
     const res = await chai
       .request(app)
       .post("/api/blog")
-      .set("Authorization", `Bearer ${expiredToken}`)
+      .set("Authorization", `Bearer ${refreshJwtToken}`)
       .send(newBlogData);
 
     expect(res).to.have.status(500);
@@ -153,12 +153,14 @@ describe("CREATE BLOG", () => {
       username: "user12sd22f11",
     };
 
-    const expiredToken = await createToken(userDataJwt, "-1s");
+    const accessJwtToken = await createToken(userDataJwt, "-1s");
+    const refreshJwtToken = await createToken(userDataJwt, "-1s");
 
     const res = await chai
       .request(app)
       .post("/api/blog")
-      .set("Authorization", `Bearer ${expiredToken}`)
+      .set("Authorization", `Bearer ${accessJwtToken}`)
+      .set("refreshtoken", `Bearer ${refreshJwtToken}`)
       .send(newBlogData);
 
     expect(res).to.have.status(500);
