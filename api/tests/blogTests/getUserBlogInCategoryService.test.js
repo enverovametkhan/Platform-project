@@ -77,12 +77,12 @@
 //       email: "1@11",
 //       username: "user12sd22f11",
 //     };
-//     const expiredToken = await createToken(userDataJwt, "-1s");
+//     const accessJwtToken = await createToken(userDataJwt, "-1s");
 
 //     const res = await chai
 //       .request(app)
 //       .get(`/api/blog/user/${userId}/category/${category}`)
-//       .set("Authorization", `Bearer ${expiredToken}`);
+//       .set("Authorization", `Bearer ${accessJwtToken}`);
 
 //     expect(res).to.have.status(500);
 //     expect(res.body.message).to.include("Unauthorized");
@@ -96,12 +96,12 @@
 //       email: "1@11",
 //       username: "user12sd22f11",
 //     };
-//     const expiredToken = await createToken(userDataJwt, "-1s");
+//     const refreshJwtToken = await createToken(userDataJwt, "-1s");
 
 //     const res = await chai
 //       .request(app)
 //       .get(`/api/blog/user/${userId}/category/${category}`)
-//       .set("Authorization", `Bearer ${expiredToken}`);
+//       .set("Authorization", `Bearer ${refreshJwtToken}`);
 
 //     expect(res).to.have.status(500);
 //     expect(res.body.message).to.include("Unauthorized");
@@ -115,12 +115,14 @@
 //       email: "1@11",
 //       username: "user12sd22f11",
 //     };
-//     const expiredToken = await createToken(userDataJwt, "-1s");
+//     const accessJwtToken = await createToken(userDataJwt, "-1s");
+//     const refreshJwtToken = await createToken(userDataJwt, "-1s");
 
 //     const res = await chai
 //       .request(app)
 //       .get(`/api/blog/user/${userId}/category/${category}`)
-//       .set("Authorization", `Bearer ${expiredToken}`);
+//       .set("Authorization", `Bearer ${accessJwtToken}`)
+//       .set("refreshtoken", `Bearer ${refreshJwtToken}`);
 
 //     expect(res).to.have.status(500);
 //     expect(res.body.message).to.include("Unauthorized");

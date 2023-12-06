@@ -4,7 +4,6 @@
 // const { expect } = chai;
 // const { BlogModel } = require("../../blogs/blogs.data");
 // const { app } = require("../../app");
-// const yellowColor = "\x1b[33m";
 
 // chai.use(chaiHttp);
 

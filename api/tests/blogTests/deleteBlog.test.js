@@ -166,12 +166,12 @@
 //     };
 //     const id = "6562e22d365a633b118c3b3d";
 
-//     const expiredToken = await createToken(userDataJwt, "-1s");
+//     const accessJwtToken = await createToken(userDataJwt, "-1s");
 
 //     const res = await chai
 //       .request(app)
 //       .delete(`/api/blog/${id}`)
-//       .set("Authorization", `Bearer ${expiredToken}`);
+//       .set("Authorization", `Bearer ${accessJwtToken}`);
 
 //     expect(res).to.have.status(500);
 //     expect(res.body.message).to.include("Unauthorized");
@@ -185,12 +185,12 @@
 //     };
 //     const id = "6562e22d365a633b118c3b3d";
 
-//     const expiredToken = await createToken(userDataJwt, "-1s");
+//     const refreshJwtToken = await createToken(userDataJwt, "-1s");
 
 //     const res = await chai
 //       .request(app)
 //       .delete(`/api/blog/${id}`)
-//       .set("Authorization", `Bearer ${expiredToken}`);
+//       .set("Authorization", `Bearer ${refreshJwtToken}`);
 
 //     expect(res).to.have.status(500);
 //     expect(res.body.message).to.include("Unauthorized");
@@ -204,12 +204,14 @@
 //     };
 //     const id = "6562e22d365a633b118c3b3d";
 
-//     const expiredToken = await createToken(userDataJwt, "-1s");
+//     const accessJwtToken = await createToken(userDataJwt, "-1s");
+//     const refreshJwtToken = await createToken(userDataJwt, "-1s");
 
 //     const res = await chai
 //       .request(app)
 //       .delete(`/api/blog/${id}`)
-//       .set("Authorization", `Bearer ${expiredToken}`);
+//       .set("Authorization", `Bearer ${accessJwtToken}`)
+//       .set("refreshtoken", `Bearer ${refreshJwtToken}`);
 
 //     expect(res).to.have.status(500);
 //     expect(res.body.message).to.include("Unauthorized");
@@ -218,7 +220,7 @@
 //     const authorizedUserId = "655c92eebe63597606646e1f";
 //     const anotherUserId = "differentUserId";
 
-//     const authorizedUserData = {
+//     const userData = {
 //       userId: authorizedUserId,
 //       email: "1@11",
 //       username: "user12sd22f11",
@@ -240,12 +242,12 @@
 
 //     findByIdStub.withArgs(blogId).resolves(blogOwnedByAnotherUser);
 
-//     const authorizedUserToken = await createToken(authorizedUserData, "7d");
+//     const token = await createToken(userData, "7d");
 
 //     const res = await chai
 //       .request(app)
 //       .delete(`/api/blog/${blogId}`)
-//       .set("Authorization", `Bearer ${authorizedUserToken}`);
+//       .set("Authorization", `Bearer ${token}`);
 
 //     expect(res).to.have.status(500);
 //     expect(res.body.message).to.include(
