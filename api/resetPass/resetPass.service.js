@@ -15,7 +15,10 @@ async function resetPasswordReq(email) {
   const userData = await UserModel.findOne({ email });
 
   if (!userData) {
-    customLogger.consoleError("User not found for password reset", { email });
+    customLogger.consoleError("User not found for password reset", {
+      email,
+      function: "resetPasswordReq",
+    });
     throw new Error("User not found for password reset");
   }
 
@@ -60,7 +63,10 @@ async function checkResetPasswordToken(token) {
   });
 
   if (!checkExistingResetPasswordHash) {
-    customLogger.consoleError("Invalid reset password token", { token });
+    customLogger.consoleError("Invalid reset password token", {
+      token,
+      function: "checkResetPasswordToken",
+    });
     throw new Error("Invalid reset password token");
   }
 
@@ -77,12 +83,17 @@ async function resetPassword(token, password, confirmedPassword) {
   const userData = await decryptToken(token);
 
   if (!userData || !userData.userId) {
-    customLogger.consoleError("Invalid reset password token", { token });
+    customLogger.consoleError("Invalid reset password token", {
+      token,
+      function: "resetPassword",
+    });
     throw new Error("Invalid reset password token");
   }
 
   if (password !== confirmedPassword) {
-    customLogger.consoleError("Passwords do not match");
+    customLogger.consoleError("Passwords do not match", {
+      function: "resetPassword",
+    });
     throw new Error("Passwords do not match");
   }
 
@@ -91,7 +102,10 @@ async function resetPassword(token, password, confirmedPassword) {
   });
 
   if (!checkExistingResetPasswordHash) {
-    customLogger.consoleError("Invalid reset password token", { token });
+    customLogger.consoleError("Invalid reset password token", {
+      token,
+      function: "resetPassword",
+    });
     throw new Error("Invalid reset password token");
   }
 
@@ -100,6 +114,7 @@ async function resetPassword(token, password, confirmedPassword) {
   if (!user) {
     customLogger.consoleError("User not found", {
       userId: checkExistingResetPasswordHash.userId,
+      function: "resetPassword",
     });
     throw new Error("User not found");
   }
@@ -107,7 +122,9 @@ async function resetPassword(token, password, confirmedPassword) {
   const hashedPassword = await hashPassword(password);
 
   if (!hashedPassword) {
-    customLogger.consoleError("Failed to hash the password");
+    customLogger.consoleError("Failed to hash the password", {
+      function: "resetPassword",
+    });
     throw new Error("Failed to hash the password");
   }
 

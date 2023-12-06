@@ -14,26 +14,34 @@ async function hashPassword(password) {
 
 async function login(email, password) {
   if (!email) {
-    customLogger.consoleError("Email is required");
+    customLogger.consoleError("Email is required", {
+      function: "login",
+    });
     throw new Error("Email is required");
   }
 
   if (!password) {
-    customLogger.consoleError("Password is required");
+    customLogger.consoleError("Password is required", {
+      function: "login",
+    });
     throw new Error("Password is required");
   }
 
   const user = await UserModel.findOne({ email });
 
   if (!user) {
-    customLogger.consoleError("Incorrect login credentials");
+    customLogger.consoleError("Incorrect login credentials", {
+      function: "login",
+    });
     throw new Error("Incorrect login credentials");
   }
 
   const validPassword = await bcrypt.compare(password, user.password);
 
   if (!validPassword) {
-    customLogger.consoleError("Incorrect login credentials");
+    customLogger.consoleError("Incorrect login credentials", {
+      function: "login",
+    });
     throw new Error("Incorrect login credentials");
   }
 
@@ -72,11 +80,15 @@ async function signup(username, email, password, confirmedPassword) {
 
   if (user) {
     customLogger.consoleError("Email already exists.");
-    throw new Error("Email already exists.");
+    throw new Error("Email already exists.", {
+      function: "signup",
+    });
   }
 
   if (password !== confirmedPassword) {
-    customLogger.consoleError("Passwords do not match.");
+    customLogger.consoleError("Passwords do not match.", {
+      function: "signup",
+    });
     throw new Error("Passwords do not match.");
   }
 
@@ -108,10 +120,13 @@ async function signup(username, email, password, confirmedPassword) {
 
 async function verifyEmail(token) {
   const userData = await decryptToken(token);
+  console.log(userData);
   const user = await UserModel.findOne({ email: userData.useremail });
 
   if (!user) {
-    customLogger.consoleError("User has not been found");
+    customLogger.consoleError("User has not been found", {
+      function: "verifyEmail",
+    });
     throw new Error("User has not been found");
   }
 
@@ -136,7 +151,9 @@ async function logout() {
   const user = await UserModel.findById(userData.userId);
 
   if (!user) {
-    customLogger.consoleError("User not found during logout");
+    customLogger.consoleError("User not found during logout", {
+      function: "logout",
+    });
     throw new Error("User not found");
   }
 
@@ -157,7 +174,9 @@ async function refreshAccessToken(token) {
   const user = await UserModel.findById(userData.userId);
 
   if (!user) {
-    customLogger.consoleError("User not found during token refresh");
+    customLogger.consoleError("User not found during token refresh", {
+      function: "refreshAccessToken",
+    });
     throw new Error("User not found");
   }
 

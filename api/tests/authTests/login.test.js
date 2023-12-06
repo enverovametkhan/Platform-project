@@ -1,11 +1,11 @@
 // const chai = require("chai");
-// const chaiHttp = require("chai-http");
 // const sinon = require("sinon");
-// const bcrypt = require("bcrypt");
+// const chaiHttp = require("chai-http");
 // const { expect } = chai;
-// const { UserModel } = require("../../users/users.data");
 // const { app } = require("../../app");
 // const { createToken } = require("../../utilities/jwt");
+// const { UserModel } = require("../../users/users.data");
+// const bcrypt = require("bcrypt");
 
 // chai.use(chaiHttp);
 
@@ -25,12 +25,12 @@
 //   });
 
 //   it(`should log in successfully and return tokens`, async () => {
-//     const email = "test@example.com";
-//     const password = "password123";
+//     const email = "123@11";
+//     const password = "123";
 //     const userData = {
-//       id: "655c92eebe63597606646e1f",
-//       email,
-//       username: "user12sd22f11",
+//       userId: "65642e237dbd947479a14ed8",
+//       email: "123@11",
+//       username: "u1se3r12sd22f11",
 //     };
 
 //     const hashedPassword = await bcrypt.hash(password, 10);
@@ -41,68 +41,60 @@
 
 //     const response = await chai
 //       .request(app)
-//       .post("/api/login")
+//       .post("/api/auth/login")
 //       .send({ email, password });
+//     console.log(response);
 
 //     expect(response).to.have.status(200);
-//     expect(response.body.message).to.equal("Login successful");
-//     expect(response.body.accessToken).to.be.a("string");
-//     expect(response.body.refreshToken).to.be.a("string");
-//     expect(response.body.userId).to.equal(userData.id);
-//     expect(response.body.email).to.equal(userData.email);
-//     expect(response.body.username).to.equal(userData.username);
 //   });
 
-//   //   it(`should return an error if email is missing`, async () => {
-//   //     const response = await chai
-//   //       .request(app)
-//   //       .post("/api/login")
-//   //       .send({ password: "password123" });
+//   // it(`should return an error if email is not provided`, async () => {
+//   //   const response = await chai
+//   //     .request(app)
+//   //     .post("/api/auth/login")
+//   //     .send({ password: "123" });
 
-//   //     expect(response).to.have.status(500);
-//   //     expect(response.body.error).to.equal("Email is required");
-//   //   });
+//   //   expect(response).to.have.status(500);
+//   // });
 
-//   //   it(`should return an error if password is missing`, async () => {
-//   //     const response = await chai
-//   //       .request(app)
-//   //       .post("/api/login")
-//   //       .send({ email: "test@example.com" });
+//   // it(`should return an error if password is not provided`, async () => {
+//   //   const response = await chai
+//   //     .request(app)
+//   //     .post("/api/auth/login")
+//   //     .send({ email: "123@11" });
 
-//   //     expect(response).to.have.status(500);
-//   //     expect(response.body.error).to.equal("Password is required");
-//   //   });
+//   //   expect(response).to.have.status(500);
+//   // });
 
-//   //   it(`should return an error if login credentials are incorrect`, async () => {
-//   //     findOneStub.resolves(null);
+//   // it(`should return an error if user is not found`, async () => {
+//   //   findOneStub.withArgs({ email: "nonexistent@user.com" }).resolves(null);
 
-//   //     const response = await chai
-//   //       .request(app)
-//   //       .post("/api/login")
-//   //       .send({ email: "test@example.com", password: "wrongpassword" });
+//   //   const response = await chai
+//   //     .request(app)
+//   //     .post("/api/auth/login")
+//   //     .send({ email: "nonexistent@user.com", password: "password" });
 
-//   //     expect(response).to.have.status(500);
-//   //     expect(response.body.error).to.equal("Incorrect login credentials");
-//   //   });
+//   //   expect(response).to.have.status(500);
+//   // });
 
-//   //   it(`should return an error if password is incorrect`, async () => {
-//   //     const email = "test@example.com";
-//   //     const password = "password123";
-//   //     const userData = {
-//   //       id: "655c92eebe63597606646e1f",
-//   //       email,
-//   //       username: "user12sd22f11",
-//   //     };
+//   // it(`should return an error if password is incorrect`, async () => {
+//   //   const email = "123@11";
+//   //   const password = "incorrectPassword";
+//   //   const userData = {
+//   //     userId: "65642e237dbd947479a14ed8",
+//   //     email: "123@11",
+//   //     username: "u1se3r12sd22f11",
+//   //     password: await bcrypt.hash("correctPassword", 10),
+//   //   };
 
-//   //     findOneStub.withArgs({ email }).resolves(userData);
-//   //     compareStub.resolves(false);
+//   //   findOneStub.withArgs({ email }).resolves(userData);
+//   //   compareStub.withArgs(password, userData.password).resolves(false);
 
-//   //     const response = await chai
-//   //       .request(app)
-//   //       .post("/api/login")
-//   //       .send({ email, password: "wrongpassword" });
+//   //   const response = await chai
+//   //     .request(app)
+//   //     .post("/api/auth/login")
+//   //     .send({ email, password });
 
-//   //     expect(response).to.have.status(500);
-//   //     expect(response.body.error).to.equal("Incorrect login credentials");
-//   //   });
+//   //   expect(response).to.have.status(500);
+//   // });
 // });

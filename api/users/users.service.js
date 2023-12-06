@@ -15,10 +15,13 @@ const saltRounds = 10;
 
 async function getUser() {
   const userData = await getAccessToUserData();
+  console.log(userData);
   const user = await UserModel.findOne({ _id: userData.userId });
 
   if (!user) {
-    customLogger.consoleError("User has not been found");
+    customLogger.consoleError("User has not been found", {
+      function: "getUser",
+    });
     throw new Error("User has not been found");
   }
 
@@ -41,7 +44,9 @@ async function deleteUser() {
   const user = await UserModel.findById(userData.userId);
 
   if (!user) {
-    customLogger.consoleError("User not found");
+    customLogger.consoleError("User not found", {
+      function: "deleteUser",
+    });
     throw new Error("User not found");
   }
 
@@ -74,14 +79,18 @@ async function updateUser(updatedUserData) {
   const user = await UserModel.findById(userData.userId);
 
   if (!user) {
-    customLogger.consoleError("User not found");
+    customLogger.consoleError("User not found", {
+      function: "updateUser",
+    });
     throw new Error("User not found");
   }
 
   let response;
 
   if (!updatedUserData.username && !updatedUserData.email) {
-    customLogger.consoleError("Either username or email should be provided");
+    customLogger.consoleError("Either username or email should be provided", {
+      function: "updateUser",
+    });
     throw new Error("Either username or email should be provided");
   }
 
@@ -119,7 +128,9 @@ async function swapEmail(newEmail) {
   const user = await UserModel.findById(userData.userId);
 
   if (!user) {
-    customLogger.consoleError("User not found for email swap");
+    customLogger.consoleError("User not found for email swap", {
+      function: "swapEmail",
+    });
     throw new Error("User not found for email swap");
   }
 
@@ -158,7 +169,9 @@ async function confirmEmailSwap(token) {
   const user = await UserModel.findOne({ _id: userData.userId });
 
   if (!user) {
-    customLogger.consoleError("No new user found");
+    customLogger.consoleError("No new user found", {
+      function: "confirmEmailSwap",
+    });
     throw new Error("No new user found");
   }
 
@@ -166,7 +179,10 @@ async function confirmEmailSwap(token) {
 
   if (!checkEmailSwap) {
     customLogger.consoleError(
-      "Something went wrong when trying to swap emails"
+      "Something went wrong when trying to swap emails",
+      {
+        function: "confirmEmailSwap",
+      }
     );
     throw new Error("Something went wrong when trying to swap emails");
   }

@@ -14,12 +14,10 @@ async function loginController(req, res, next) {
 
     next();
   } catch (error) {
-    const { id } = req.params;
     const errorMessage = {
       error: error.message,
       function: "loginController",
       errorMessage: `Something went wrong during a login`,
-      id,
     };
 
     next(errorMessage);
