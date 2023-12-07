@@ -138,7 +138,11 @@ async function verifyEmail(token) {
   });
 
   user.verifyEmail = "";
-  await user.save();
+
+  await UserModel.findByIdAndUpdate(user._id, {
+    new: true,
+    runValidators: true,
+  });
 
   const response = {
     message: "Email verified successfully",
