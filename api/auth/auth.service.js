@@ -63,7 +63,6 @@ async function login(email, password) {
   });
 
   customLogger.consoleInfo("Login successful", {
-    userId: user.id,
     email: user.email,
     username: user.username,
   });
@@ -163,7 +162,10 @@ async function logout() {
   user.accessToken = "";
   user.refreshToken = "";
 
-  await user.save();
+  await UserModel.findByIdAndUpdate(user._id, {
+    new: true,
+    runValidators: true,
+  });
 
   customLogger.consoleInfo("Logged out successfully", {
     userId: userData.userId,
