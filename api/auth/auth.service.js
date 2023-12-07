@@ -201,7 +201,10 @@ async function refreshAccessToken(token) {
   user.accessToken = accessToken;
   user.refreshToken = refreshToken;
 
-  await user.save();
+  await UserModel.findByIdAndUpdate(user._id, {
+    new: true,
+    runValidators: true,
+  });
 
   customLogger.consoleInfo("Token refreshed successfully", {
     userId: userData.userId,
