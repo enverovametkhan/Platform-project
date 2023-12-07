@@ -8,18 +8,20 @@
 
 // chai.use(chaiHttp);
 
-// describe("GET USER", () => {
-//   let findOneStub;
+// describe("deleteUser", () => {
+//   let findByIdStub, saveStub;
 
 //   beforeEach(() => {
-//     findOneStub = sinon.stub(UserModel, "findOne");
+//     findByIdStub = sinon.stub(UserModel, "findById");
+//     saveStub = sinon.stub(UserModel.prototype, "save");
 //   });
 
 //   afterEach(() => {
-//     findOneStub.restore();
+//     findByIdStub.restore();
+//     saveStub.restore();
 //   });
 
-//   it("should retrieve user data successfully", async () => {
+//   it("should delete a user successfully", async () => {
 //     const userDataJwt = {
 //       userId: "655c92eebe63597606646e1f",
 //       email: "1@11",
@@ -30,19 +32,18 @@
 //       username: userDataJwt.username,
 //       email: userDataJwt.email,
 //     };
+//     findByIdStub.resolves(user);
 //     const token = await createToken(userDataJwt, "7d");
-
-//     findOneStub.resolves(user);
 
 //     const response = await chai
 //       .request(app)
-//       .get("/api/user")
+//       .delete("/api/user/delete")
 //       .set("Authorization", `Bearer ${token}`);
 
 //     expect(response).to.have.status(200);
 //   });
 
-//   it("should return an error if user has not been found", async () => {
+//   it("should handle the case when the user is not found", async () => {
 //     const userDataJwt = {
 //       userId: "655c92eebe63597606646e1f",
 //       email: "1@11",
@@ -50,11 +51,11 @@
 //     };
 //     const token = await createToken(userDataJwt, "7d");
 
-//     findOneStub.resolves(null);
+//     findByIdStub.resolves(null);
 
 //     const response = await chai
 //       .request(app)
-//       .get("/api/user")
+//       .delete("/api/user/delete")
 //       .set("Authorization", `Bearer ${token}`);
 
 //     expect(response).to.have.status(500);
@@ -70,7 +71,7 @@
 
 //     const response = await chai
 //       .request(app)
-//       .get("/api/user")
+//       .delete("/api/user/delete")
 //       .set("Authorization", `Bearer ${accessJwtToken}`);
 
 //     expect(response).to.have.status(500);
@@ -86,7 +87,7 @@
 
 //     const response = await chai
 //       .request(app)
-//       .get("/api/user")
+//       .delete("/api/user/delete")
 //       .set("Authorization", `Bearer ${refreshJwtToken}`);
 
 //     expect(response).to.have.status(500);
@@ -103,7 +104,7 @@
 
 //     const response = await chai
 //       .request(app)
-//       .get("/api/user")
+//       .delete("/api/user/delete")
 //       .set("Authorization", `Bearer ${accessJwtToken}`)
 //       .set("Refresh-Token", refreshJwtToken);
 

@@ -57,16 +57,18 @@ async function deleteUser() {
   user.accessToken = "";
   user.deletedAt = Date.now();
 
-  await user.save();
+  await UserModel.findByIdAndUpdate(user._id, {
+    new: true,
+    runValidators: true,
+  });
 
   customLogger.consoleInfo("User deleted successfully", {
     userData,
-    userId: user.userId,
+
     // deletedBlogs,
     // deletedComments,
   });
 
-  console.log("User has been deleted with ID:", user.userId);
   // console.log(`Deleted ${deletedBlogs} blogs and ${deletedComments} comments`);
 
   return {
