@@ -11,36 +11,40 @@
 // describe("REFRESH ACCESS TOKEN", () => {
 //   let findByIdStub, saveStub;
 
-//   before(() => {
+//   beforeEach(() => {
 //     findByIdStub = sinon.stub(UserModel, "findById");
 //     saveStub = sinon.stub(UserModel.prototype, "save");
 //   });
 
-//   after(() => {
+//   afterEach(() => {
 //     findByIdStub.restore();
 //     saveStub.restore();
 //   });
 
 //   it(`should refresh access token successfully`, async () => {
-//     const userId = "655c92eebe63597606646e1f";
-
-//     findByIdStub.resolves({
-//       _id: userId,
-//       accessToken: "sampleAccessToken",
-//       refreshToken: "sampleRefreshToken",
-//     });
-
 //     const userDataJwt = {
 //       userId: "655c92eebe63597606646e1f",
 //       email: "1@11",
 //       username: "user12sd22f11",
 //     };
-
-//     const token = await createToken(userDataJwt, "7d");
-//     const userData = await decryptToken(token);
+//     const user = {
+//       _id: userDataJwt.userId,
+//       username: userDataJwt.username,
+//       email: userDataJwt.email,
+//     };
+//     const userId = "655c92eebe63597606646e1f";
+//     const userData = {
+//       userId,
+//       email: "1@11",
+//       username: "user12sd22f11",
+//     };
+//     findByIdStub.resolves(user);
+//     const token = await createToken(userData, "7d");
+//     const accessJwtToken = await createToken(userDataJwt, "300h");
 
 //     const response = await chai
 //       .request(app)
+//       .set("Authorization", `Bearer ${accessJwtToken}`)
 //       .get(`/api/user/refreshAccessToken/${token}`);
 
 //     expect(response).to.have.status(200);

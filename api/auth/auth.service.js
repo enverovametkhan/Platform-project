@@ -195,11 +195,11 @@ async function refreshAccessToken(token) {
     username: user.username,
   };
 
-  const refreshToken = await createToken(userDataJwt, "100d");
-  const accessToken = await createToken(userDataJwt, "300h");
+  const accessJwtToken = await createToken(userDataJwt, "300d");
+  const refreshJwtToken = await createToken(userDataJwt, "500h");
 
-  user.accessToken = accessToken;
-  user.refreshToken = refreshToken;
+  user.accessToken = accessJwtToken;
+  user.refreshToken = refreshJwtToken;
 
   await UserModel.findByIdAndUpdate(user._id, {
     new: true,

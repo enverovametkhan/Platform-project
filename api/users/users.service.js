@@ -110,7 +110,10 @@ async function updateUser(updatedUserData) {
 
   user.updatedAt = Date.now();
 
-  await user.save();
+  await UserModel.findByIdAndUpdate(user._id, {
+    new: true,
+    runValidators: true,
+  });
 
   const token = await createToken({ userId: userData.userId }, "7d");
   customLogger.consoleInfo("User updated successfully", {
