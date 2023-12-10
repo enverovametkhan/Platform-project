@@ -20,7 +20,13 @@
 //   });
 
 //   it("should validate reset password token successfully", async () => {
-//     const token = await createToken({ userId: "userId" }, "5d");
+//     const userDataJwt = {
+//       userId: "655c92eebe63597606646e1f",
+//       email: "1@11",
+//       username: "user12sd22f11",
+//     };
+
+//     const token = await createToken(userDataJwt, "7d");
 //     findResetPasswordHashStub.resolves({ userId: "userId" });
 
 //     const response = await chai

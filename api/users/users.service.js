@@ -147,16 +147,19 @@ async function swapEmail(newEmail) {
 
   const token = await createToken({ userId: user.id }, "5d");
 
-  const swapEmailData = new SwapEmailHashModel({
+  const swapEmailData = {
     userId: user._id,
     newEmail: newEmail,
     token: token,
     expiresAt: Date.now(),
     createdAt: Date.now(),
     updatedAt: Date.now(),
-  });
+  };
 
-  await swapEmailData.save();
+  await SwapEmailHashModel.findByIdAndUpdate(user._id, swapEmailData, {
+    new: true,
+    runValidators: true,
+  });
 
   customLogger.consoleInfo("Email swap initiated successfully", {
     userId: user._id,

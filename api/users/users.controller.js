@@ -74,7 +74,6 @@ async function confirmEmailSwapController(req, res, next) {
     res.apiResponse = response;
     next();
   } catch (error) {
-    console.error(error);
     const errorMessage = {
       error: error.message,
       function: "confirmEmailSwapController",
