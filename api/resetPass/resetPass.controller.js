@@ -12,11 +12,9 @@ async function resetPasswordReqController(req, res, next) {
     res.apiResponse = response;
     next();
   } catch (error) {
-    console.error(error);
-
     const errorMessage = {
       error: error.message,
-      function: resetPasswordReqController,
+      function: "resetPasswordReqController",
       errorMessage: `Something went wrong when trying to reset password`,
     };
     next(errorMessage);
@@ -30,10 +28,9 @@ async function checkResetPasswordTokenController(req, res, next) {
     res.apiResponse = response;
     next();
   } catch (error) {
-    console.error(error);
     const errorMessage = {
       error: error.message,
-      function: checkResetPasswordTokenController,
+      function: "checkResetPasswordTokenController",
       errorMessage: `Something went wrong when trying to check a token for password reset`,
     };
     next(errorMessage);
@@ -49,8 +46,6 @@ async function resetPasswordController(req, res, next) {
     res.apiResponse = response;
     next();
   } catch (error) {
-    console.error(error);
-
     const errorMessage = {
       error: error.message,
       function: "resetPasswordController",

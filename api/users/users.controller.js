@@ -47,8 +47,8 @@ async function updateUserController(req, res, next) {
   } catch (error) {
     const errorMessage = {
       error: error.message,
-      function: `Something went wrong when trying to update a user`,
-      errorMessage: error.message,
+      function: "updateUserController",
+      errorMessage: `Something went wrong when trying to update a user`,
     };
     next(errorMessage);
   }
@@ -77,8 +77,8 @@ async function confirmEmailSwapController(req, res, next) {
     console.error(error);
     const errorMessage = {
       error: error.message,
-      function: `Something went wrong when to confirm email swap`,
-      errorMessage: error.message,
+      function: "confirmEmailSwapController",
+      errorMessage: `Something went wrong when to confirm email swap`,
     };
 
     next(errorMessage);
