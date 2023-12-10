@@ -174,10 +174,10 @@ async function confirmEmailSwap(token) {
   const user = await UserModel.findOne({ _id: userData.userId });
 
   if (!user) {
-    customLogger.consoleError("No new user found", {
+    customLogger.consoleError("No user found", {
       function: "confirmEmailSwap",
     });
-    throw new Error("No new user found");
+    throw new Error("No user found");
   }
 
   const checkEmailSwap = await SwapEmailHashModel.findOne({ userId: user._id });
@@ -199,11 +199,12 @@ async function confirmEmailSwap(token) {
   });
   console.log(message);
 
-  user.email = checkEmailSwap.newEmail;
+  await UserModel.findByIdAndUpdate(user._id, {
+    new: true,
+    runValidators: true,
+  });
 
   await SwapEmailHashModel.findByIdAndDelete(checkEmailSwap._id);
-
-  await user.save();
 
   return {
     status: 200,

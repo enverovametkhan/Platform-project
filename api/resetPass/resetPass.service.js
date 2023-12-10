@@ -14,14 +14,6 @@ async function hashPassword(password) {
 async function resetPasswordReq(email) {
   const userData = await UserModel.findOne({ email });
 
-  if (!userData) {
-    customLogger.consoleError("User not found for password reset", {
-      email,
-      function: "resetPasswordReq",
-    });
-    throw new Error("User not found for password reset");
-  }
-
   const checkExistingResetPasswordHash = await ResetPasswordHashModel.findOne({
     userId: userData.id,
   });
@@ -44,7 +36,6 @@ async function resetPasswordReq(email) {
   await resetPasswordHash.save();
 
   customLogger.consoleInfo("Password reset link sent successfully", {
-    userId: userData.id,
     email,
     emailVerificationLink: `localhost:3000/resetpassword/${token}`,
   });
