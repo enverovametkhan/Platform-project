@@ -32,14 +32,22 @@ async function resetPasswordReq(email) {
   }
 
   const token = await createToken({ userId: userData.id }, "5d");
-  const resetPasswordHash = new ResetPasswordHashModel({
+  const resetPasswordHash = {
     userId: userData.id,
     token: token,
     expiresAt: new Date(),
     createdAt: new Date(),
     updatedAt: new Date(),
-  });
-  await resetPasswordHash.save();
+  };
+
+  await ResetPasswordHashModel.findByIdAndUpdate(
+    userData.id,
+    resetPasswordHash,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
   customLogger.consoleInfo("Password reset link sent successfully", {
     email,
     emailVerificationLink: `localhost:3000/resetpassword/${token}`,

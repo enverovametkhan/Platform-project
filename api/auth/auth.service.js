@@ -82,9 +82,7 @@ async function signup(username, email, password, confirmedPassword) {
 
   if (user) {
     customLogger.consoleError("Email already exists.");
-    throw new Error("Email already exists.", {
-      function: "signup",
-    });
+    throw new Error("Email already exists.");
   }
 
   if (password !== confirmedPassword) {
