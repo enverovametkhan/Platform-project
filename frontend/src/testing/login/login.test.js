@@ -1,10 +1,10 @@
-// const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer");
 
-// (async () => {
-//   const browser = await puppeteer.launch({ headless: false });
-//   const page = await browser.newPage();
-//   await page.goto("http://localhost:3000/");
-// })();
+(async () => {
+  const browser = await puppeteer.launch({ headless: false });
+  const page = await browser.newPage();
+  await page.goto("http://localhost:3000/");
+})();
 
 const puppeteer = require("puppeteer");
 
