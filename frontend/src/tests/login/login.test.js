@@ -18,7 +18,7 @@ describe("Login Page", () => {
   it("should have email and password input fields", async () => {
     const emailInput = await page.$('input[name="email"]');
     const passwordInput = await page.$('input[name="password"]');
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
     expect(emailInput).toBeTruthy();
     expect(passwordInput).toBeTruthy();
   });
@@ -40,16 +40,18 @@ describe("Login Page", () => {
     await page.waitForNavigation();
 
     await page.goto("http://localhost:3000/dashboard");
-    await page.goto("http://localhost:3000/auth/login");
   });
 
   it("should navigate to signup page when 'Sign up' link is clicked", async () => {
     await page.goto("http://localhost:3000/auth/signup");
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
   });
 
   it("should navigate to password reset page when 'Forgot Password' link is clicked", async () => {
     await page.goto("http://localhost:3000/auth/resetpass");
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
+  });
+  afterAll(async () => {
+    await browser.close();
   });
 });
