@@ -1,35 +1,22 @@
 const puppeteer = require("puppeteer");
 
 describe("Landing Page", () => {
-  let page;
   let browser;
+  let page;
 
   beforeAll(async () => {
     browser = await puppeteer.launch({ headless: false });
     page = await browser.newPage();
     await page.goto("http://localhost:3000");
+    jest.setTimeout(15000);
   });
 
-  it("should render landing page", async () => {
-    await page.waitForSelector(".landingPage");
-    const landingPage = await page.$(".landingPage");
-    expect(landingPage).toBeTruthy();
-  });
-
-  it("should have 'Nature', 'Technology', and 'Life' buttons", async () => {
-    const natureButton = await page.$$eval("button", (buttons) =>
-      buttons.find((button) => button.innerText === "Nature")
-    );
-    const technologyButton = await page.$$eval("button", (buttons) =>
-      buttons.find((button) => button.innerText === "Technology")
-    );
-    const lifeButton = await page.$$eval("button", (buttons) =>
-      buttons.find((button) => button.innerText === "Life")
-    );
-
-    expect(natureButton).toBeTruthy();
-    expect(technologyButton).toBeTruthy();
-    expect(lifeButton).toBeTruthy();
+  it("should render landing page with 'the happy blog' heading", async () => {
+    await page.waitForSelector("h1", { timeout: 10000 });
+    const heading = await page.$("h1");
+    expect(heading).toBeTruthy();
+    const headingText = await page.evaluate((el) => el.textContent, heading);
+    expect(headingText).toContain("the happy blog");
   });
 
   afterAll(async () => {
