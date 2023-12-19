@@ -19,6 +19,22 @@ describe("Landing Page", () => {
     expect(headingText).toContain("the happy blog");
   });
 
+  it("should display Nature, Technology, and Life buttons", async () => {
+    const natureButton = await page.waitForXPath(
+      '//button[contains(text(), "Nature")]'
+    );
+    const technologyButton = await page.waitForXPath(
+      '//button[contains(text(), "Technology")]'
+    );
+    const lifeButton = await page.waitForXPath(
+      '//button[contains(text(), "Life")]'
+    );
+
+    expect(natureButton).toBeTruthy();
+    expect(technologyButton).toBeTruthy();
+    expect(lifeButton).toBeTruthy();
+  });
+
   afterAll(async () => {
     await browser.close();
   });
