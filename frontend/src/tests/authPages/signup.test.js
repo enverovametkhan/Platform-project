@@ -31,23 +31,23 @@
 //     await page.waitForTimeout(1000);
 //   });
 
-//   //   it("should display error message for short email", async () => {
-//   //     await page.type('input[name="email"]', "short");
-//   //     await page.click('button[type="submit"]');
-//   //     await page.waitForTimeout(1000);
-//   //   });
+//   it("should display error message for short email", async () => {
+//     await page.type('input[name="email"]', "short");
+//     await page.click('button[type="submit"]');
+//     await page.waitForTimeout(1000);
+//   });
 
-//   //   it("should display error message for short password", async () => {
-//   //     await page.type('input[name="password"]', "short");
-//   //     await page.click('button[type="submit"]');
-//   //     await page.waitForTimeout(1000);
-//   //   });
+//   it("should display error message for short password", async () => {
+//     await page.type('input[name="password"]', "short");
+//     await page.click('button[type="submit"]');
+//     await page.waitForTimeout(1000);
+//   });
 
-//   //   it("should display error message for password and confirmedPassword mismatch", async () => {
-//   //     await page.type('input[name="confirmedPassword"]', "mismatched");
-//   //     await page.click('button[type="submit"]');
-//   //     await page.waitForTimeout(1000);
-//   //   });
+//   it("should display error message for password and confirmedPassword mismatch", async () => {
+//     await page.type('input[name="confirmedPassword"]', "mismatched");
+//     await page.click('button[type="submit"]');
+//     await page.waitForTimeout(1000);
+//   });
 
 //   it("should sign up successfully with valid credentials and show 'Thanks for signing up' notification", async () => {
 //     await page.type('input[name="username"]', "testuser");
@@ -56,7 +56,10 @@
 //     await page.type('input[name="confirmedPassword"]', "password");
 //     await page.click('button[type="submit"]');
 
-//     await page.waitForSelector(".notification");
+//     await page.waitForNavigation();
+
+//     await page.waitForSelector(".notification", { timeout: 15000 });
+
 //     await page.waitForTimeout(5000);
 //   });
 

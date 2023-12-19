@@ -11,7 +11,7 @@
 //   });
 
 //   it("should render reset password form", async () => {
-//     const form = await page.$("div > h1");
+//     const form = await page.$("h1");
 //     expect(form).toBeTruthy();
 //   });
 
@@ -27,7 +27,8 @@
 
 //     await page.click("button");
 
-//     await page.waitForSelector(".notification", { timeout: 10000 });
+//     await page.waitForSelector(".notification");
+//     jest.setTimeout(10000);
 
 //     const notificationText = await page.$eval(
 //       ".notification",
