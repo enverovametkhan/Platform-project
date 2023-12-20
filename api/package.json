@@ -30,6 +30,7 @@
     "mongodb-core": "^3.2.7",
     "mongoose": "^8.0.0",
     "nodemon": "^3.0.1",
+    "redis": "^4.6.12",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

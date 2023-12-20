@@ -49,19 +49,17 @@
 //     await page.waitForTimeout(1000);
 //   });
 
-//   it("should sign up successfully with valid credentials and show 'Thanks for signing up' notification", async () => {
-//     await page.type('input[name="username"]', "testuser");
-//     await page.type('input[name="email"]', "testuser@mail.com");
-//     await page.type('input[name="password"]', "password");
-//     await page.type('input[name="confirmedPassword"]', "password");
-//     await page.click('button[type="submit"]');
+//   // it("should sign up successfully with valid credentials and show 'Thanks for signing up' notification", async () => {
+//   //   await page.type('input[name="username"]', "testuser");
+//   //   await page.type('input[name="email"]', "testuser@mail.com");
+//   //   await page.type('input[name="password"]', "password");
+//   //   await page.type('input[name="confirmedPassword"]', "password");
+//   //   await page.click('button[type="submit"]');
 
-//     await page.waitForNavigation();
+//   //   await page.waitForNavigation();
 
-//     await page.waitForSelector(".notification", { timeout: 15000 });
-
-//     await page.waitForTimeout(5000);
-//   });
+//   //   await page.waitForSelector(".notification");
+//   // });
 
 //   afterAll(async () => {
 //     await browser.close();

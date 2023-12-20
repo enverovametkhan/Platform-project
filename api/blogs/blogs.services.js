@@ -1,8 +1,60 @@
 const { getAccessToUserData } = require("@root/utilities/getUserData");
 const mongoose = require("mongoose");
 
+const { client } = require("../app");
+
 const { BlogModel, BlogCommentModel } = require("./blogs.data");
 const { customLogger } = require("../pack/mezmo");
+// async function getBlogService(id) {
+//   const key = `blog:${id}`;
+//   const cachedBlog = await getFromCache(key);
+
+//   if (cachedBlog) {
+//     customLogger.consoleInfo("Blog retrieved from cache", { blogId: id });
+//     return cachedBlog;
+//   }
+
+//   const blog = await BlogModel.findById(id).lean();
+//   const comments = await BlogCommentModel.find({ blogId: id }).lean();
+
+//   if (!blog) {
+//     customLogger.consoleError("No blog found", { function: "getBlogService" });
+//     throw new Error("No blog found");
+//   }
+
+//   const thisBlog = {
+//     title: blog.title,
+//     comments,
+//     _id: blog._id,
+//     content: blog.content,
+//     image: blog.image,
+//     category: blog.category,
+//     userId: blog.userId,
+//     views: blog.views,
+//     likes: blog.likes,
+//     visible: true,
+//     createdAt: blog.createdAt,
+//     updatedAt: blog.updatedAt,
+//     __v: blog.__v,
+//   };
+
+//   await setToCache(key, thisBlog);
+
+//   customLogger.consoleInfo("Blog retrieved successfully from the database", {
+//     blogId: id,
+//   });
+
+//   return thisBlog;
+// }
+
+// async function getFromCache(key) {
+//   const cachedBlog = await client.getAsync(key);
+//   return cachedBlog ? JSON.parse(cachedBlog) : null;
+// }
+
+// async function setToCache(key, data) {
+//   await client.setAsync(key, JSON.stringify(data));
+// }
 
 async function getBlogService(id) {
   const blog = await BlogModel.findById(id);
