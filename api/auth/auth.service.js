@@ -155,8 +155,8 @@ async function login(email, password) {
       email: user.email,
       username: user.username,
     };
-
-    await redisClient.set(key, JSON.stringify(results));
+    // await redisClient.set(key, JSON.stringify(results));
+    await redisClient.set(key, JSON.stringify(results), "EX", 3600, "NX");
   }
 
   customLogger.consoleInfo("Login successful", {
