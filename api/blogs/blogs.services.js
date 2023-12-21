@@ -97,14 +97,52 @@ async function getBlogService(id) {
   return { fromCache: isCached, data: results };
 }
 
+// async function getBlogInCategoryService(category) {
+//   const blogs = await BlogModel.find({ category, visible: true });
+
+//   if (!blogs || blogs.length === 0) {
+//     console.log("no blogs");
+//     customLogger.consoleError("No blogs found in the category", {
+//       category,
+//       function: " getBlogInCategoryService",
+//     });
+//     throw new Error("No blogs found in the category");
+//   }
+
+//   blogs.sort((a, b) => b.likes - a.likes);
+//   const top10Blogs = blogs.slice(0, 10);
+
+//   customLogger.consoleInfo("Top 10 blogs retrieved successfully", {
+//     category,
+//     numberOfBlogs: top10Blogs.length,
+//   });
+
+//   return top10Blogs;
+// }
 async function getBlogInCategoryService(category) {
-  const blogs = await BlogModel.find({ category, visible: true });
+  const key = `category:${category}`;
+  let results;
+  let isCached = false;
+
+  const cacheResults = await redisClient.get(key);
+
+  if (cacheResults) {
+    isCached = true;
+    results = JSON.parse(cacheResults);
+    customLogger.consoleInfo("Top 10 blogs retrieved from cache", {
+      category,
+      numberOfBlogs: results.length,
+    });
+    return results;
+  }
+
+  const blogs = await BlogModel.find({ category, visible: true }).lean();
 
   if (!blogs || blogs.length === 0) {
     console.log("no blogs");
     customLogger.consoleError("No blogs found in the category", {
       category,
-      function: " getBlogInCategoryService",
+      function: "getBlogInCategoryService",
     });
     throw new Error("No blogs found in the category");
   }
@@ -112,12 +150,18 @@ async function getBlogInCategoryService(category) {
   blogs.sort((a, b) => b.likes - a.likes);
   const top10Blogs = blogs.slice(0, 10);
 
-  customLogger.consoleInfo("Top 10 blogs retrieved successfully", {
-    category,
-    numberOfBlogs: top10Blogs.length,
-  });
+  results = top10Blogs;
+  await redisClient.set(key, JSON.stringify(results));
 
-  return top10Blogs;
+  customLogger.consoleInfo(
+    "Top 10 blogs retrieved successfully from the database",
+    {
+      category,
+      numberOfBlogs: top10Blogs.length,
+    }
+  );
+
+  return { fromCache: isCached, data: results };
 }
 
 async function getUserBlogInCategoryService(userId, category) {
