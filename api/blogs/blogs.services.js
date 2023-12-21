@@ -2,20 +2,15 @@ const { getAccessToUserData } = require("@root/utilities/getUserData");
 const mongoose = require("mongoose");
 
 const { client } = require("../app");
+const redis = require("redis");
+// const { redisClient } = require("@root/app");
 
 const { BlogModel, BlogCommentModel } = require("./blogs.data");
 const { customLogger } = require("../pack/mezmo");
+
 // async function getBlogService(id) {
-//   const key = `blog:${id}`;
-//   const cachedBlog = await getFromCache(key);
-
-//   if (cachedBlog) {
-//     customLogger.consoleInfo("Blog retrieved from cache", { blogId: id });
-//     return cachedBlog;
-//   }
-
-//   const blog = await BlogModel.findById(id).lean();
-//   const comments = await BlogCommentModel.find({ blogId: id }).lean();
+//   const blog = await BlogModel.findById(id);
+//   const comments = await BlogCommentModel.find({ blogId: id });
 
 //   if (!blog) {
 //     customLogger.consoleError("No blog found", { function: "getBlogService" });
@@ -24,7 +19,7 @@ const { customLogger } = require("../pack/mezmo");
 
 //   const thisBlog = {
 //     title: blog.title,
-//     comments,
+//     comments: [comments],
 //     _id: blog._id,
 //     content: blog.content,
 //     image: blog.image,
@@ -38,36 +33,48 @@ const { customLogger } = require("../pack/mezmo");
 //     __v: blog.__v,
 //   };
 
-//   await setToCache(key, thisBlog);
-
-//   customLogger.consoleInfo("Blog retrieved successfully from the database", {
-//     blogId: id,
-//   });
+//   customLogger.consoleInfo("Blog retrieved successfully", { blogId: id });
 
 //   return thisBlog;
 // }
+let redisClient;
 
-// async function getFromCache(key) {
-//   const cachedBlog = await client.getAsync(key);
-//   return cachedBlog ? JSON.parse(cachedBlog) : null;
-// }
+(async () => {
+  redisClient = redis.createClient({
+    url: "redis://default:I2cVxjQXj4v07UAWPjQcfVrJND4lfDKh@redis-13093.c302.asia-northeast1-1.gce.cloud.redislabs.com:13093",
+  });
 
-// async function setToCache(key, data) {
-//   await client.setAsync(key, JSON.stringify(data));
-// }
+  redisClient.on("error", (error) => console.error(`Error : ${error}`));
+
+  await redisClient.connect();
+})();
 
 async function getBlogService(id) {
+  const key = `blog:${id}`;
+  let results;
+  let isCached = false;
+
+  const cacheResults = await redisClient.get(key);
+
+  if (cacheResults) {
+    isCached = true;
+    results = JSON.parse(cacheResults);
+    customLogger.consoleInfo("Blog retrieved from cache", { blogId: id });
+    return results;
+  }
+
   const blog = await BlogModel.findById(id);
-  const comments = await BlogCommentModel.find({ blogId: id });
 
   if (!blog) {
     customLogger.consoleError("No blog found", { function: "getBlogService" });
     throw new Error("No blog found");
   }
 
-  const thisBlog = {
+  const comments = await BlogCommentModel.find({ blogId: id }).lean();
+
+  results = {
     title: blog.title,
-    comments: [comments],
+    comments,
     _id: blog._id,
     content: blog.content,
     image: blog.image,
@@ -81,9 +88,13 @@ async function getBlogService(id) {
     __v: blog.__v,
   };
 
-  customLogger.consoleInfo("Blog retrieved successfully", { blogId: id });
+  await redisClient.set(key, JSON.stringify(results));
 
-  return thisBlog;
+  customLogger.consoleInfo("Blog retrieved successfully from the API", {
+    blogId: id,
+  });
+
+  return { fromCache: isCached, data: results };
 }
 
 async function getBlogInCategoryService(category) {

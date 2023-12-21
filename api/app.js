@@ -6,20 +6,10 @@ const port = process.env.PORT || 4000;
 const bodyParser = require("body-parser");
 const { createNamespace } = require("cls-hooked");
 const namespace = createNamespace("req");
-const { createClient } = require("redis");
-
+const redis = require("redis");
 const cors = require("cors");
+
 require("dotenv").config();
-
-const client = createClient({
-  password: "I2cVxjQXj4v07UAWPjQcfVrJND4lfDKh",
-  socket: {
-    host: "redis-13093.c302.asia-northeast1-1.gce.cloud.redislabs.com",
-    port: 13093,
-  },
-});
-
-client.on("error", (err) => console.log("Redis Client Error", err));
 
 function contextMiddleware(req, res, next) {
   namespace.run(() => {
@@ -27,6 +17,18 @@ function contextMiddleware(req, res, next) {
     next();
   });
 }
+
+let redisClient;
+
+(async () => {
+  redisClient = redis.createClient({
+    url: "redis://default:I2cVxjQXj4v07UAWPjQcfVrJND4lfDKh@redis-13093.c302.asia-northeast1-1.gce.cloud.redislabs.com:13093",
+  });
+
+  redisClient.on("error", (error) => console.error(`Error : ${error}`));
+
+  await redisClient.connect();
+})();
 
 app.use(contextMiddleware);
 app.use(bodyParser.json());
@@ -48,4 +50,4 @@ app.listen(port, (err) => {
   }
 });
 
-module.exports = { app, redisClient: client };
+module.exports = { app, redisClient };
