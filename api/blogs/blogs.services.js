@@ -164,12 +164,68 @@ async function getBlogInCategoryService(category) {
   return { fromCache: isCached, data: results };
 }
 
+// async function getUserBlogInCategoryService(userId, category) {
+//   if (!userId || !category) {
+//     customLogger.consoleError("Missing required fields", {
+//       function: "getUserBlogInCategoryService",
+//     });
+//     throw new Error("Missing required fields");
+//   }
+
+//   const userData = await getAccessToUserData();
+//   customLogger.consoleInfo("User data retrieved successfully", { userData });
+
+//   if (userData.userId !== userId) {
+//     customLogger.consoleError("Unauthorized", {
+//       userId,
+//       requestedUserId: userData.userId,
+//       function: "getUserBlogInCategoryService",
+//     });
+//     throw new Error("Unauthorized");
+//   }
+
+//   let blogs = await BlogModel.find({ category, userId });
+
+//   if (!blogs || blogs.length === 0) {
+//     customLogger.consoleError("No blogs found", {
+//       userId,
+//       category,
+//       function: " getUserBlogInCategoryService",
+//     });
+//     throw new Error("No blogs found");
+//   }
+
+//   customLogger.consoleInfo("User blogs retrieved successfully", {
+//     userId,
+//     category,
+//     numberOfBlogs: blogs.length,
+//   });
+//   return blogs;
+// }
+
 async function getUserBlogInCategoryService(userId, category) {
   if (!userId || !category) {
     customLogger.consoleError("Missing required fields", {
       function: "getUserBlogInCategoryService",
     });
     throw new Error("Missing required fields");
+  }
+
+  const key = `user:${userId}:category:${category}`;
+  let results;
+  let isCached = false;
+
+  const cacheResults = await redisClient.get(key);
+
+  if (cacheResults) {
+    isCached = true;
+    results = JSON.parse(cacheResults);
+    customLogger.consoleInfo("User blogs retrieved from cache", {
+      userId,
+      category,
+      numberOfBlogs: results.length,
+    });
+    return results;
   }
 
   const userData = await getAccessToUserData();
@@ -184,23 +240,30 @@ async function getUserBlogInCategoryService(userId, category) {
     throw new Error("Unauthorized");
   }
 
-  let blogs = await BlogModel.find({ category, userId });
+  let blogs = await BlogModel.find({ category, userId }).lean();
 
   if (!blogs || blogs.length === 0) {
     customLogger.consoleError("No blogs found", {
       userId,
       category,
-      function: " getUserBlogInCategoryService",
+      function: "getUserBlogInCategoryService",
     });
     throw new Error("No blogs found");
   }
 
-  customLogger.consoleInfo("User blogs retrieved successfully", {
-    userId,
-    category,
-    numberOfBlogs: blogs.length,
-  });
-  return blogs;
+  results = blogs;
+  await redisClient.set(key, JSON.stringify(results));
+
+  customLogger.consoleInfo(
+    "User blogs retrieved successfully from the database",
+    {
+      userId,
+      category,
+      numberOfBlogs: blogs.length,
+    }
+  );
+
+  return { fromCache: isCached, data: results };
 }
 
 async function updateBlogService(id, updatedBlog) {
