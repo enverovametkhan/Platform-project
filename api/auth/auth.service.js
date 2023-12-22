@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const { miniDatabase } = require("@root/database/miniDatabase");
 const { getAccessToUserData } = require("@root/utilities/getUserData");
 const { createToken, decryptToken } = require("@root/utilities/jwt");
-const redis = require("redis");
+
 const saltRounds = 10;
 const mongoose = require("mongoose");
 const { UserModel } = require("../users/users.data");
@@ -11,81 +11,6 @@ const { customLogger } = require("../pack/mezmo");
 async function hashPassword(password) {
   return await bcrypt.hash(password, saltRounds);
 }
-let redisClient;
-
-(async () => {
-  redisClient = redis.createClient({
-    url: "redis://default:I2cVxjQXj4v07UAWPjQcfVrJND4lfDKh@redis-13093.c302.asia-northeast1-1.gce.cloud.redislabs.com:13093",
-  });
-
-  redisClient.on("error", (error) => console.error(`Error : ${error}`));
-
-  await redisClient.connect();
-})();
-// async function login(email, password) {
-//   if (!email) {
-//     customLogger.consoleError("Email is required", {
-//       function: "login",
-//     });
-//     throw new Error("Email is required");
-//   }
-
-//   if (!password) {
-//     customLogger.consoleError("Password is required", {
-//       function: "login",
-//     });
-//     throw new Error("Password is required");
-//   }
-
-//   const user = await UserModel.findOne({ email });
-
-//   if (!user) {
-//     customLogger.consoleError("Incorrect login credentials", {
-//       function: "login",
-//     });
-//     throw new Error("Incorrect login credentials");
-//   }
-
-//   const validPassword = await bcrypt.compare(password, user.password);
-
-//   if (!validPassword) {
-//     customLogger.consoleError("Incorrect login credentials", {
-//       function: "login",
-//     });
-//     throw new Error("Incorrect login credentials");
-//   }
-
-//   const userDataJwt = {
-//     userId: user.id,
-//     email: user.email,
-//     username: user.username,
-//   };
-
-//   const accessJwtToken = await createToken(userDataJwt, "300d");
-//   const refreshJwtToken = await createToken(userDataJwt, "500h");
-
-//   user.accessToken = accessJwtToken;
-//   user.refreshToken = refreshJwtToken;
-
-//   await UserModel.findByIdAndUpdate(user._id, {
-//     new: true,
-//     runValidators: true,
-//   });
-
-//   customLogger.consoleInfo("Login successful", {
-//     email: user.email,
-//     username: user.username,
-//   });
-
-//   return {
-//     message: "Login successful",
-//     accessToken: accessJwtToken,
-//     refreshToken: refreshJwtToken,
-//     userId: user.id,
-//     email: user.email,
-//     username: user.username,
-//   };
-// }
 
 async function login(email, password) {
   if (!email) {
@@ -102,69 +27,54 @@ async function login(email, password) {
     throw new Error("Password is required");
   }
 
-  const key = `user:${email}`;
-  let results;
-  let isCached = false;
+  const user = await UserModel.findOne({ email });
 
-  const cacheResults = await redisClient.get(key);
-
-  if (cacheResults) {
-    isCached = true;
-    results = JSON.parse(cacheResults);
-  } else {
-    const user = await UserModel.findOne({ email });
-
-    if (!user) {
-      customLogger.consoleError("Incorrect login credentials", {
-        function: "login",
-      });
-      throw new Error("Incorrect login credentials");
-    }
-
-    const validPassword = await bcrypt.compare(password, user.password);
-
-    if (!validPassword) {
-      customLogger.consoleError("Incorrect login credentials", {
-        function: "login",
-      });
-      throw new Error("Incorrect login credentials");
-    }
-
-    const userDataJwt = {
-      userId: user.id,
-      email: user.email,
-      username: user.username,
-    };
-
-    const accessJwtToken = await createToken(userDataJwt, "300d");
-    const refreshJwtToken = await createToken(userDataJwt, "500h");
-
-    user.accessToken = accessJwtToken;
-    user.refreshToken = refreshJwtToken;
-
-    await UserModel.findByIdAndUpdate(user._id, {
-      new: true,
-      runValidators: true,
+  if (!user) {
+    customLogger.consoleError("Incorrect login credentials", {
+      function: "login",
     });
-
-    results = {
-      message: "Login successful",
-      accessToken: accessJwtToken,
-      refreshToken: refreshJwtToken,
-      userId: user.id,
-      email: user.email,
-      username: user.username,
-    };
-    // await redisClient.set(key, JSON.stringify(results));
-    await redisClient.set(key, JSON.stringify(results), "EX", 3600, "NX");
+    throw new Error("Incorrect login credentials");
   }
 
-  customLogger.consoleInfo("Login successful", {
-    email: results.email,
-    username: results.username,
+  const validPassword = await bcrypt.compare(password, user.password);
+
+  if (!validPassword) {
+    customLogger.consoleError("Incorrect login credentials", {
+      function: "login",
+    });
+    throw new Error("Incorrect login credentials");
+  }
+
+  const userDataJwt = {
+    userId: user.id,
+    email: user.email,
+    username: user.username,
+  };
+
+  const accessJwtToken = await createToken(userDataJwt, "300d");
+  const refreshJwtToken = await createToken(userDataJwt, "500h");
+
+  user.accessToken = accessJwtToken;
+  user.refreshToken = refreshJwtToken;
+
+  await UserModel.findByIdAndUpdate(user._id, {
+    new: true,
+    runValidators: true,
   });
 
-  return { fromCache: isCached, data: results };
+  customLogger.consoleInfo("Login successful", {
+    email: user.email,
+    username: user.username,
+  });
+
+  return {
+    message: "Login successful",
+    accessToken: accessJwtToken,
+    refreshToken: refreshJwtToken,
+    userId: user.id,
+    email: user.email,
+    username: user.username,
+  };
 }
 
 async function signup(username, email, password, confirmedPassword) {
