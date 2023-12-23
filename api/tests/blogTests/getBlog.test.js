@@ -4,7 +4,6 @@
 // const { expect } = chai;
 // const { BlogModel } = require("../../blogs/blogs.data");
 // const { app } = require("../../app");
-// const yellowColor = "\x1b[33m";
 
 // chai.use(chaiHttp);
 
@@ -19,7 +18,7 @@
 //     findByIdStub.restore();
 //   });
 
-//   it(`${yellowColor}should successfully retrieve a blog when it exists`, async () => {
+//   it(`should successfully retrieve a blog when it exists`, async () => {
 //     const blogId = "6562e22d365a633b118c3b3d";
 //     const blogData = {
 //       _id: blogId,
@@ -42,15 +41,15 @@
 
 //     expect(res).to.have.status(200);
 
-//     expect(res.body.processedResponse).to.have.property(
-//       "_id",
-//       blogData._id.toString()
-//     );
-//     expect(res.body.processedResponse).to.have.property("comments");
+//     // expect(res.body.processedResponse).to.have.property(
+//     //   "_id",
+//     //   blogData._id.toString()
+//     // );
+//     // expect(res.body.processedResponse).to.have.property("comments");
 //   });
 
-//   it(`${yellowColor}should handle the case when no blog is found`, async () => {
-//     const nonExistingBlogId = "6562e22d365a633b118c3b3d";
+//   it(`should handle the case when no blog is found`, async () => {
+//     const nonExistingBlogId = "nonExistingBlogId";
 
 //     findByIdStub.withArgs(nonExistingBlogId).resolves(null);
 
