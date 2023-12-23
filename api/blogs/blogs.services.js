@@ -70,7 +70,7 @@ async function getBlogService(id) {
     throw new Error("No blog found");
   }
 
-  const comments = await BlogCommentModel.find({ blogId: id }).lean();
+  const comments = await BlogCommentModel.find({ blogId: id });
 
   results = {
     title: blog.title,
@@ -90,7 +90,7 @@ async function getBlogService(id) {
 
   await redisClient.set(key, JSON.stringify(results));
 
-  customLogger.consoleInfo("Blog retrieved successfully from the API", {
+  customLogger.consoleInfo("Blog retrieved successfully from the database", {
     blogId: id,
   });
 
@@ -136,7 +136,7 @@ async function getBlogInCategoryService(category) {
     return results;
   }
 
-  const blogs = await BlogModel.find({ category, visible: true }).lean();
+  const blogs = await BlogModel.find({ category, visible: true });
 
   if (!blogs || blogs.length === 0) {
     console.log("no blogs");
@@ -240,7 +240,7 @@ async function getUserBlogInCategoryService(userId, category) {
     throw new Error("Unauthorized");
   }
 
-  let blogs = await BlogModel.find({ category, userId }).lean();
+  let blogs = await BlogModel.find({ category, userId });
 
   if (!blogs || blogs.length === 0) {
     customLogger.consoleError("No blogs found", {

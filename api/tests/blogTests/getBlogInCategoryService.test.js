@@ -43,7 +43,7 @@
 //   });
 
 //   it(`should handle the case when no blogs are found in the category`, async () => {
-//     const nonExistingCategory = "Nature";
+//     const nonExistingCategory = "nonExistingCategory";
 
 //     findStub.resolves(null);
 
