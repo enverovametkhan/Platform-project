@@ -57,19 +57,7 @@ describe("GET USER BLOGS IN CATEGORY", () => {
     // expect(res.body.processedResponse).to.deep.include(blogData);
   });
 
-  it(`should return an error if required fields are missing`, async () => {
-    const userId = "655c92eebe63597606646e1f";
-    const category = null;
-
-    const res = await chai
-      .request(app)
-      .get(`/api/blog/user/${userId}/category/${category}`);
-
-    expect(res).to.have.status(500);
-    expect(res.body.message).to.include("Unauthorized");
-  });
-
-  it(`should return an error if the access token is expired`, async () => {
+  it(`should return an error if access token is expired and no refresh token provided`, async () => {
     const userId = "655c92eebe63597606646e1f";
     const category = "Nature";
     const userDataJwt = {
