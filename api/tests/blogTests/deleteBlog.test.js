@@ -263,4 +263,12 @@
 //       "Something went wrong when deleting a Blog"
 //     );
 //   });
+//   it(`should return an error if no tokens are provided`, async () => {
+//     const id = "6562e22d365a633b118c3b3d";
+
+//     const res = await chai.request(app).delete(`/api/blog/${id}`);
+
+//     expect(res).to.have.status(500);
+//     expect(res.body.message).to.include("Unauthorized");
+//   });
 // });
