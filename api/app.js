@@ -6,7 +6,7 @@ const port = process.env.PORT || 4000;
 const bodyParser = require("body-parser");
 const { createNamespace } = require("cls-hooked");
 const namespace = createNamespace("req");
-const redis = require("redis");
+
 const cors = require("cors");
 
 require("dotenv").config();
@@ -17,18 +17,6 @@ function contextMiddleware(req, res, next) {
     next();
   });
 }
-
-let redisClient;
-
-(async () => {
-  redisClient = redis.createClient({
-    url: "redis://default:I2cVxjQXj4v07UAWPjQcfVrJND4lfDKh@redis-13093.c302.asia-northeast1-1.gce.cloud.redislabs.com:13093",
-  });
-
-  redisClient.on("error", (error) => console.error(`Error : ${error}`));
-
-  await redisClient.connect();
-})();
 
 app.use(contextMiddleware);
 app.use(bodyParser.json());
@@ -50,4 +38,4 @@ app.listen(port, (err) => {
   }
 });
 
-module.exports = { app, redisClient };
+module.exports = { app };
