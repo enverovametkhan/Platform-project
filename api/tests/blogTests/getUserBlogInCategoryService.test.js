@@ -21,7 +21,7 @@
 
 //   it(`should successfully retrieve user blogs in a category`, async () => {
 //     const userId = "655c92eebe63597606646e1f";
-//     const category = "Nature";
+//     const category = "IT";
 //     const userData = {
 //       userId,
 //       email: "1@11",
@@ -35,7 +35,7 @@
 //       title: "User Blog Title",
 //       content: "User Blog Content",
 //       image: "User Image URL",
-//       category: "Nature",
+//       category: "IT",
 //       userId,
 //       views: 0,
 //       likes: 0,

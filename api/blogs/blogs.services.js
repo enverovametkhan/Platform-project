@@ -48,33 +48,26 @@ let redisClient;
 
   await redisClient.connect();
 })();
-
+const blogCache = {};
 async function getBlogService(id) {
   const key = `blog:${id}`;
-  let results;
-  let isCached = false;
 
-  const cacheResults = await redisClient.get(key);
-
-  if (cacheResults) {
-    isCached = true;
-    results = JSON.parse(cacheResults);
+  if (blogCache[key]) {
     customLogger.consoleInfo("Blog retrieved from cache", { blogId: id });
-    return results;
+    return blogCache[key];
   }
 
   const blog = await BlogModel.findById(id);
+  const comments = await BlogCommentModel.find({ blogId: id });
 
   if (!blog) {
     customLogger.consoleError("No blog found", { function: "getBlogService" });
     throw new Error("No blog found");
   }
 
-  const comments = await BlogCommentModel.find({ blogId: id });
-
-  results = {
+  const thisBlog = {
     title: blog.title,
-    comments,
+    comments: comments,
     _id: blog._id,
     content: blog.content,
     image: blog.image,
@@ -88,13 +81,11 @@ async function getBlogService(id) {
     __v: blog.__v,
   };
 
-  await redisClient.set(key, JSON.stringify(results));
+  blogCache[key] = thisBlog;
 
-  customLogger.consoleInfo("Blog retrieved successfully from the database", {
-    blogId: id,
-  });
+  customLogger.consoleInfo("Blog retrieved successfully", { blogId: id });
 
-  return { fromCache: isCached, data: results };
+  return thisBlog;
 }
 
 // async function getBlogInCategoryService(category) {
@@ -119,21 +110,16 @@ async function getBlogService(id) {
 
 //   return top10Blogs;
 // }
+
 async function getBlogInCategoryService(category) {
   const key = `category:${category}`;
-  let results;
-  let isCached = false;
 
-  const cacheResults = await redisClient.get(key);
-
-  if (cacheResults) {
-    isCached = true;
-    results = JSON.parse(cacheResults);
+  if (blogCache[key]) {
     customLogger.consoleInfo("Top 10 blogs retrieved from cache", {
       category,
-      numberOfBlogs: results.length,
+      numberOfBlogs: blogCache[key].length,
     });
-    return results;
+    return blogCache[key];
   }
 
   const blogs = await BlogModel.find({ category, visible: true });
@@ -150,8 +136,7 @@ async function getBlogInCategoryService(category) {
   blogs.sort((a, b) => b.likes - a.likes);
   const top10Blogs = blogs.slice(0, 10);
 
-  results = top10Blogs;
-  await redisClient.set(key, JSON.stringify(results));
+  blogCache[key] = top10Blogs;
 
   customLogger.consoleInfo(
     "Top 10 blogs retrieved successfully from the database",
@@ -161,7 +146,7 @@ async function getBlogInCategoryService(category) {
     }
   );
 
-  return { fromCache: isCached, data: results };
+  return top10Blogs;
 }
 
 // async function getUserBlogInCategoryService(userId, category) {
@@ -202,34 +187,20 @@ async function getBlogInCategoryService(category) {
 //   });
 //   return blogs;
 // }
-
+const userBlogCache = {};
 async function getUserBlogInCategoryService(userId, category) {
-  if (!userId || !category) {
-    customLogger.consoleError("Missing required fields", {
-      function: "getUserBlogInCategoryService",
-    });
-    throw new Error("Missing required fields");
-  }
-
   const key = `user:${userId}:category:${category}`;
-  let results;
-  let isCached = false;
 
-  const cacheResults = await redisClient.get(key);
-
-  if (cacheResults) {
-    isCached = true;
-    results = JSON.parse(cacheResults);
+  if (userBlogCache[key]) {
     customLogger.consoleInfo("User blogs retrieved from cache", {
       userId,
       category,
-      numberOfBlogs: results.length,
+      numberOfBlogs: userBlogCache[key].length,
     });
-    return results;
+    return userBlogCache[key];
   }
 
   const userData = await getAccessToUserData();
-  customLogger.consoleInfo("User data retrieved successfully", { userData });
 
   if (userData.userId !== userId) {
     customLogger.consoleError("Unauthorized", {
@@ -251,8 +222,7 @@ async function getUserBlogInCategoryService(userId, category) {
     throw new Error("No blogs found");
   }
 
-  results = blogs;
-  await redisClient.set(key, JSON.stringify(results));
+  userBlogCache[key] = blogs;
 
   customLogger.consoleInfo(
     "User blogs retrieved successfully from the database",
@@ -263,7 +233,7 @@ async function getUserBlogInCategoryService(userId, category) {
     }
   );
 
-  return { fromCache: isCached, data: results };
+  return blogs;
 }
 
 async function updateBlogService(id, updatedBlog) {
@@ -298,6 +268,15 @@ async function updateBlogService(id, updatedBlog) {
     });
     throw new Error("Error updating blog post");
   }
+
+  const key = `blog:${id}`;
+  delete blogCache[key];
+
+  const categoryKey = `category:${updatedBlogData.category}`;
+  delete blogCache[categoryKey];
+
+  const userBlogKey = `user:${userData.userId}:category:${updatedBlogData.category}`;
+  delete userBlogCache[userBlogKey];
 
   customLogger.consoleInfo("Blog post updated successfully", {
     blogId: id,
