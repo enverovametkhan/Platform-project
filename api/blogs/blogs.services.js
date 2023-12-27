@@ -189,7 +189,6 @@ async function getBlogInCategoryService(category) {
 //   });
 //   return blogs;
 // }
-
 async function getUserBlogInCategoryService(userId, category) {
   const key = `user:${userId}:category:${category}`;
 
@@ -240,7 +239,6 @@ async function getUserBlogInCategoryService(userId, category) {
 
   return blogs;
 }
-
 async function updateBlogService(id, updatedBlog) {
   const blogToUpdate = await BlogModel.findById(id);
 
