@@ -3,9 +3,33 @@ const { customLogger } = require("../pack/mezmo");
 const { getAccessToUserData } = require("@root/utilities/getUserData");
 const mongoose = require("mongoose");
 
+async function getCommentService(id) {
+  const comment = await BlogCommentModel.findById(id);
+
+  if (!comment) {
+    customLogger.consoleError("No comments found", {
+      function: "getCommentService",
+    });
+    throw new Error("No comments found");
+  }
+
+  const thisComment = {
+    _id: comment._id,
+    content: comment.content,
+    userId: comment.userId,
+    likes: comment.likes,
+    createdAt: comment.createdAt,
+    updatedAt: comment.updatedAt,
+  };
+
+  customLogger.consoleInfo("Comment retrieved successfully", { blogId: id });
+
+  return thisComment;
+}
+
 async function createCommentService(newComment) {
   const userData = await getAccessToUserData();
-  console.log("newComment:", newComment);
+
   if (!newComment.content) {
     customLogger.consoleError("Missing required fields");
     throw new Error("Missing required fields", {
@@ -45,5 +69,6 @@ async function createCommentService(newComment) {
 }
 
 module.exports = {
+  getCommentService,
   createCommentService,
 };

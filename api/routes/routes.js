@@ -72,6 +72,6 @@ module.exports = (app) => {
   app.put("/api/user/resetPassword/:token", resetPasswordController);
   // app.post("/api/user/swapEmail/", swapEmailController);
   app.get("/api/user/confirmEmailSwap/:token", confirmEmailSwapController);
-  app.get("api/comments/:id", getComments);
+  app.get("/api/comments/:id", getComments);
   app.post("/api/comments", authMiddleware, createComment);
 };
