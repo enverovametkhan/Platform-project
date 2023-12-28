@@ -272,15 +272,23 @@ async function updateBlogService(id, updatedBlog) {
     throw new Error("Error updating blog post");
   }
 
-  const cacheKeys = [
-    `blog:${id}`,
-    `category:${updatedBlogData.category}`,
-    `user:${updatedBlogData.userId}:category:${updatedBlogData.category}`,
-  ];
+  const top10Blogs = await getBlogInCategoryService(updatedBlogData.category);
 
-  cacheKeys.forEach(async (key) => {
-    await redisClient.del(key);
-  });
+  if (
+    top10Blogs.some(
+      (blog) => blog._id.toString() === updatedBlogData._id.toString()
+    )
+  ) {
+    const cacheKeys = [
+      `blog:${id}`,
+      `category:${updatedBlogData.category}`,
+      `user:${updatedBlogData.userId}:category:${updatedBlogData.category}`,
+    ];
+
+    cacheKeys.forEach(async (key) => {
+      await redisClient.del(key);
+    });
+  }
 
   customLogger.consoleInfo("Blog post updated successfully", {
     blogId: id,
