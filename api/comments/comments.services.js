@@ -2,6 +2,7 @@ const { BlogModel, BlogCommentModel } = require("../blogs/blogs.data");
 const { customLogger } = require("../pack/mezmo");
 const { getAccessToUserData } = require("@root/utilities/getUserData");
 const mongoose = require("mongoose");
+const { redisClient } = require("../database/caching");
 
 async function getCommentService(id) {
   const comment = await BlogCommentModel.findById(id);
@@ -15,6 +16,7 @@ async function getCommentService(id) {
 
   const thisComment = {
     _id: comment._id,
+    blogId: comment.blogId,
     content: comment.content,
     userId: comment.userId,
     likes: comment.likes,
@@ -22,7 +24,7 @@ async function getCommentService(id) {
     updatedAt: comment.updatedAt,
   };
 
-  customLogger.consoleInfo("Comment retrieved successfully", { blogId: id });
+  customLogger.consoleInfo("Comment retrieved successfully");
 
   return thisComment;
 }
@@ -53,6 +55,7 @@ async function createCommentService(newComment) {
   });
 
   const savedComment = await createNewComment.save();
+  await deleteBlogCache(newComment.blogId);
   const response = {
     _id: savedComment._id,
   };
@@ -68,7 +71,14 @@ async function createCommentService(newComment) {
   };
 }
 
+async function deleteBlogCache(blogId) {
+  const key = `blog:${blogId}`;
+  await redisClient.del(key);
+  customLogger.consoleInfo("Cache deleted for blog", { blogId });
+}
+
 module.exports = {
   getCommentService,
   createCommentService,
+  deleteBlogCache,
 };
