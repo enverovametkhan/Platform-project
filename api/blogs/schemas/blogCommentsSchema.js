@@ -1,8 +1,14 @@
 const mongoose = require("mongoose");
 
 const blogCommentsSchema = new mongoose.Schema({
-  title: {
-    type: String,
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Users",
+    required: true,
+  },
+  blogId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Blogs",
     required: true,
   },
   content: {

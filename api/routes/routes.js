@@ -33,6 +33,11 @@ const {
   resetPasswordController,
 } = require("@root/resetPass/resetPass.controller");
 
+const {
+  getComments,
+  createComment,
+} = require("@root/comments/comments.controller");
+
 module.exports = (app) => {
   // Blog Routes
   app.get("/api/blog/:id", getBlog);
@@ -67,4 +72,6 @@ module.exports = (app) => {
   app.put("/api/user/resetPassword/:token", resetPasswordController);
   // app.post("/api/user/swapEmail/", swapEmailController);
   app.get("/api/user/confirmEmailSwap/:token", confirmEmailSwapController);
+  app.get("api/comments/:id", getComments);
+  app.post("/api/comments", authMiddleware, createComment);
 };

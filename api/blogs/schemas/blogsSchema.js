@@ -6,6 +6,7 @@ const blogsSchema = new mongoose.Schema({
     ref: "Users",
     required: true,
   },
+
   title: {
     type: String,
     required: true,
