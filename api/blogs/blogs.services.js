@@ -324,6 +324,15 @@ async function deleteBlogService(id) {
     });
     throw new Error("Error deleting blog");
   }
+  const cacheKeys = [
+    `blog:${id}`,
+    `category:${deletedBlog.category}`,
+    `user:${deletedBlog.userId}:category:${deletedBlog.category}`,
+  ];
+
+  cacheKeys.forEach(async (key) => {
+    await redisClient.del(key);
+  });
 
   customLogger.consoleInfo("Blog deleted successfully", {
     blogId: id,
