@@ -21,9 +21,7 @@ module.exports = {
             views: {
               bsonType: "int",
             },
-            likes: {
-              bsonType: "int",
-            },
+
             visible: {
               bsonType: "bool",
             },
