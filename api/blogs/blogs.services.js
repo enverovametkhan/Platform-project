@@ -4,7 +4,6 @@ const redis = require("redis");
 const { BlogModel, BlogCommentModel } = require("./blogs.data");
 const { customLogger } = require("../pack/mezmo");
 const { redisClient } = require("../database/caching");
-const { getComments } = require("../comments/comments.services");
 
 // async function getBlogService(id) {
 //   const blog = await BlogModel.findById(id);

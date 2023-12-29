@@ -36,6 +36,7 @@ const {
 const {
   getComments,
   createComment,
+  updateComment,
 } = require("@root/comments/comments.controller");
 
 module.exports = (app) => {
@@ -74,4 +75,5 @@ module.exports = (app) => {
   app.get("/api/user/confirmEmailSwap/:token", confirmEmailSwapController);
   app.get("/api/comments/:id", getComments);
   app.post("/api/comments", authMiddleware, createComment);
+  app.put("/api/comments/:id", authMiddleware, updateComment);
 };

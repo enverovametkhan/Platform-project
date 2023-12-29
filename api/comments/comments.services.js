@@ -24,7 +24,9 @@ async function getCommentService(id) {
     updatedAt: comment.updatedAt,
   };
 
-  customLogger.consoleInfo("Comment retrieved successfully");
+  customLogger.consoleInfo("Comment retrieved successfully", {
+    commentData: thisComment,
+  });
 
   return thisComment;
 }
@@ -77,8 +79,55 @@ async function deleteBlogCache(blogId) {
   customLogger.consoleInfo("Cache deleted for blog", { blogId });
 }
 
+async function updateCommentService(id, updatedComment) {
+  const commentToUpdate = await BlogCommentModel.findById(id);
+
+  if (!commentToUpdate) {
+    customLogger.consoleError("No comment found", {
+      function: "updateBlogService",
+    });
+    throw new Error("No comment found");
+  }
+
+  const userData = await getAccessToUserData();
+
+  if (commentToUpdate.userId.toString() !== userData.userId) {
+    customLogger.consoleError("Unauthorized update attempt", {
+      userId: userData.userId,
+      requestedUserId: commentToUpdate.userId.toString(),
+      function: "updateBlogService",
+    });
+    throw new Error("Unauthorized update attempt");
+  }
+
+  const updatedCommentData = await BlogCommentModel.findByIdAndUpdate(
+    id,
+    updatedComment,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  if (!updatedCommentData) {
+    customLogger.consoleError("Error updating comment", {
+      function: "updateCommentService",
+    });
+    throw new Error("Error updating comment");
+  }
+  customLogger.consoleInfo("Comment updated successfully", {
+    id,
+    updatedCommentData,
+  });
+  return {
+    message: "Comment updated successfully",
+    updatedCommentData,
+  };
+}
+
 module.exports = {
   getCommentService,
   createCommentService,
   deleteBlogCache,
+  updateCommentService,
 };

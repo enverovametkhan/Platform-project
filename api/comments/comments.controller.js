@@ -1,6 +1,7 @@
 const {
   getCommentService,
   createCommentService,
+  updateCommentService,
 } = require("./comments.services");
 
 async function getComments(req, res, next) {
@@ -63,9 +64,31 @@ async function createComment(req, res, next) {
     next(errorMessage);
   }
 }
+async function updateComment(req, res, next) {
+  try {
+    const { id } = req.params;
+    const { content } = req.body;
+
+    const updatedComment = {
+      content,
+    };
+
+    const response = await updateCommentService(id, updatedComment);
+
+    res.apiResponse = response;
+    next();
+  } catch (error) {
+    const errorMessage = {
+      function: "updateComment",
+      errorMessage: `Something went wrong when updating a Comment`,
+    };
+    next(errorMessage);
+  }
+}
 
 module.exports = {
   getComments,
   //   deleteCommentsController,
   createComment,
+  updateComment,
 };
