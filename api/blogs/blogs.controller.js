@@ -5,6 +5,8 @@ const {
   updateBlogService,
   deleteBlogService,
   createBlogService,
+  likeBlogService,
+  unlikeBlogService,
 } = require("./blogs.services");
 
 async function getBlog(req, res, next) {
@@ -136,6 +138,39 @@ async function createBlog(req, res, next) {
   }
 }
 
+const likeBlog = async (req, res, next) => {
+  try {
+    const { id } = req.body;
+    const response = await likeBlogService(id);
+
+    res.apiResponse = response;
+    next();
+  } catch (error) {
+    const errorMessage = {
+      error: error.message,
+      function: "likeBlog ",
+      errorMessage: `Something went wrong when liking blog`,
+    };
+    next(errorMessage);
+  }
+};
+const unlikeBlog = async (req, res, next) => {
+  try {
+    const { blogId, userId } = req.body;
+    const response = await unlikeBlogService(blogId, userId);
+
+    res.apiResponse = response;
+    next();
+  } catch (error) {
+    const errorMessage = {
+      error: error.message,
+      function: "unlikeBlog ",
+      errorMessage: `Something went wrong when unliking blog`,
+    };
+    next(errorMessage);
+  }
+};
+
 module.exports = {
   getBlog,
   getBlogsInCategory,
@@ -143,4 +178,6 @@ module.exports = {
   updateBlog,
   createBlog,
   deleteBlog,
+  likeBlog,
+  unlikeBlog,
 };

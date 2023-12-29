@@ -433,6 +433,67 @@ async function createBlogService(newBlog) {
 // };
 // }
 
+async function likeBlogService(id) {
+  // const userData = await getAccessToUserData();
+  // if (userData.userId !== userId) {
+  //   customLogger.consoleError("Unauthorized", {
+  //     userId,
+  //     requestedUserId: userData.userId,
+  //     function: "likeBlogService",
+  //   });
+  //   throw new Error("Unauthorized");
+  // }
+  const blogs = await BlogModel.findById(id);
+  if (!blogs || blogs.length === 0) {
+    customLogger.consoleError("No blogs found", {
+      function: "likeBlogService",
+    });
+    throw new Error("No blogs found");
+  }
+
+  // if (blogs.likes.includes(userId)) {
+  //   throw new Error("You have already liked this blog");
+  // }
+
+  await BlogModel.findByIdAndUpdate(id);
+  const updatedBlog = await BlogModel.findById(id);
+
+  return {
+    message: "Blog liked successfully",
+    likes: updatedBlog.likes.length,
+  };
+}
+
+async function unlikeBlogService(blogId, userId) {
+  const userData = await getAccessToUserData();
+  if (userData.userId !== userId) {
+    customLogger.consoleError("Unauthorized", {
+      userId,
+      requestedUserId: userData.userId,
+      function: "unlikeBlogService",
+    });
+    throw new Error("Unauthorized");
+  }
+
+  const blog = await BlogModel.findById(blogId);
+
+  if (!blog) {
+    throw new Error("Blog not found");
+  }
+
+  if (!blog.likes.includes(userId)) {
+    throw new Error("You have not liked this blog");
+  }
+
+  blog.likes = blog.likes.filter((id) => id !== userId);
+  await blog.save();
+
+  return {
+    message: "Blog unliked successfully",
+    likes: blog.likes.length,
+  };
+}
+
 module.exports = {
   getBlogService,
   getBlogInCategoryService,
@@ -441,4 +502,6 @@ module.exports = {
   deleteBlogService,
   createBlogService,
   // deleteUsersBlogs,
+  likeBlogService,
+  unlikeBlogService,
 };
