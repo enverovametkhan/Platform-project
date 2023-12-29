@@ -37,6 +37,7 @@ const {
   getComments,
   createComment,
   updateComment,
+  deleteComment,
 } = require("@root/comments/comments.controller");
 
 module.exports = (app) => {
@@ -76,4 +77,5 @@ module.exports = (app) => {
   app.get("/api/comments/:id", getComments);
   app.post("/api/comments", authMiddleware, createComment);
   app.put("/api/comments/:id", authMiddleware, updateComment);
+  app.delete("/api/comments/:id", authMiddleware, deleteComment);
 };

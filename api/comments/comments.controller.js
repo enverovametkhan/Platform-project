@@ -2,6 +2,7 @@ const {
   getCommentService,
   createCommentService,
   updateCommentService,
+  deleteCommentService,
 } = require("./comments.services");
 
 async function getComments(req, res, next) {
@@ -22,26 +23,6 @@ async function getComments(req, res, next) {
     next(errorMessage);
   }
 }
-
-// async function deleteCommentsController(req, res, next) {
-//   try {
-//     const { blogId } = req.params;
-//     await deleteComments(blogId);
-
-//     res.apiResponse = { message: "Comments deleted successfully" };
-
-//     next();
-//   } catch (error) {
-//     const { blogId } = req.params;
-//     const errorMessage = {
-//       error: error.message,
-//       function: "deleteCommentsController",
-//       errorMessage: `Something went wrong while processing deleteCommentsController with Blog ID ${blogId}`,
-//     };
-
-//     next(errorMessage);
-//   }
-// }
 
 async function createComment(req, res, next) {
   try {
@@ -85,10 +66,25 @@ async function updateComment(req, res, next) {
     next(errorMessage);
   }
 }
+async function deleteComment(req, res, next) {
+  try {
+    const { id } = req.params;
+    const response = await deleteCommentService(id);
 
+    res.apiResponse = response;
+    next();
+  } catch (error) {
+    const errorMessage = {
+      error: error.message,
+      function: "deleteComment",
+      errorMessage: `Something went wrong when deleting a Comment`,
+    };
+    next(errorMessage);
+  }
+}
 module.exports = {
   getComments,
-  //   deleteCommentsController,
   createComment,
   updateComment,
+  deleteComment,
 };

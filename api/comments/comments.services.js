@@ -125,9 +125,54 @@ async function updateCommentService(id, updatedComment) {
   };
 }
 
+async function deleteCommentService(id) {
+  const deletedComment = await BlogCommentModel.findById(id);
+
+  if (!deletedComment) {
+    customLogger.consoleError("No comments found for deletion", {
+      blogId: id,
+      function: "deleteCommentService",
+    });
+    throw new Error("No comments found for deletion");
+  }
+
+  const userData = await getAccessToUserData();
+
+  if (deletedComment.userId.toString() !== userData.userId) {
+    customLogger.consoleError("Unauthorized deletion attempt", {
+      userId: userData.userId,
+      requestedUserId: deletedComment.userId.toString(),
+      function: "deleteCommentService",
+    });
+    throw new Error("Unauthorized deletion attempt");
+  }
+
+  const deletionComment = await BlogCommentModel.deleteOne({ _id: id });
+
+  if (deletionComment.deletedCount !== 1) {
+    customLogger.consoleError("Error deleting comment", {
+      blogId: id,
+      function: "deleteCommentService",
+    });
+    throw new Error("Error deleting comment");
+  }
+
+  customLogger.consoleInfo("Comment deleted successfully", {
+    blogId: id,
+    userData,
+    comment: deletedComment,
+  });
+
+  return {
+    message: "Comment deleted successfully",
+    userData,
+    comment: deletedComment,
+  };
+}
 module.exports = {
   getCommentService,
   createCommentService,
   deleteBlogCache,
   updateCommentService,
+  deleteCommentService,
 };
