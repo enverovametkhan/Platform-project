@@ -434,27 +434,86 @@ async function createBlogService(newBlog) {
 // };
 // }
 
-async function likeBlogService(blogId, userId) {
-  const userLikedBlog = await BlogLikesModel.findOne({ blogId, userId });
+// async function likeBlogService(blogId, userId) {
+//   const userLikedBlog = await BlogLikesModel.findOne({ blogId, userId });
 
-  if (userLikedBlog) {
-    throw new Error("You have already liked this blog.");
+//   if (userLikedBlog) {
+//     throw new Error("You have already liked this blog.");
+//   }
+
+//   const newLike = new BlogLikesModel({ blogId, userId, likes: 2 });
+//   await newLike.save();
+//   await deleteBlogCache(newLike.blogId);
+
+//   customLogger.consoleInfo("Blog liked successfully", {
+//     blogId,
+//     userId,
+//   });
+
+//   return { message: "Blog liked successfully" };
+// }
+
+// async function unlikeBlogService(blogId, userId) {
+//   console.log(blogId, userId);
+//   const userLikedBlog = await BlogLikesModel.findOneAndDelete({
+//     blogId,
+//     userId,
+//   });
+
+//   if (!userLikedBlog) {
+//     throw new Error("You have not liked this blog.");
+//   }
+
+//   await deleteBlogCache(blogId);
+
+//   const newLike = new BlogLikesModel({ blogId, userId, likes: 0 });
+//   await newLike.save();
+
+//   customLogger.consoleInfo("Blog unliked successfully", {
+//     blogId,
+//     userId,
+//   });
+
+//   return { message: "Blog unliked successfully" };
+// }
+
+async function blogLikeService(blogId, userId) {
+  const blogLike = await BlogLikesModel.findOne({ blogId, userId });
+
+  if (!blogLike) {
+    const newLike = new BlogLikesModel({ blogId, userId, likes: 3 });
+    await newLike.save();
+    await deleteBlogCache(newLike.blogId);
+
+    customLogger.consoleInfo("Blog liked successfully", {
+      blogId,
+      userId,
+    });
+
+    return { message: "Blog liked successfully" };
   }
 
-  const newLike = new BlogLikesModel({ blogId, userId, likes: 1 });
-  await newLike.save();
-  await deleteBlogCache(newLike.blogId);
+  const newLikesCount = Math.max(0, blogLike.likes - 1);
+  await BlogLikesModel.updateOne({ blogId, userId }, { likes: newLikesCount });
 
-  const updatedLikes = await BlogLikesModel.findOneAndUpdate({ blogId });
-  customLogger.consoleInfo("Blog liked successfully", {
+  await deleteBlogCache(blogId);
+
+  if (blogLike.likes === 0) {
+    customLogger.consoleInfo("Blog unliked successfully", {
+      blogId,
+      userId,
+    });
+
+    return { message: "You have already unliked this blog." };
+  }
+
+  customLogger.consoleInfo("Blog unliked successfully", {
     blogId,
     userId,
   });
 
-  return { message: "Blog liked successfully", likes: updatedLikes };
+  return { message: "Blog unliked successfully" };
 }
-
-async function unlikeBlogService(blogId, userId) {}
 
 module.exports = {
   getBlogService,
@@ -464,6 +523,6 @@ module.exports = {
   deleteBlogService,
   createBlogService,
   // deleteUsersBlogs,
-  likeBlogService,
-  unlikeBlogService,
+
+  blogLikeService,
 };

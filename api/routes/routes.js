@@ -9,8 +9,7 @@ const {
   updateBlog,
   deleteBlog,
   createBlog,
-  likeBlog,
-  unlikeBlog,
+  blogLike,
 } = require("@root/blogs/blogs.controller");
 
 const {
@@ -80,6 +79,5 @@ module.exports = (app) => {
   app.post("/api/comments", authMiddleware, createComment);
   app.put("/api/comments/:id", authMiddleware, updateComment);
   app.delete("/api/comments/:id", authMiddleware, deleteComment);
-  app.post("/api/blogs/like/:blogId/blog/:userId", likeBlog);
-  app.post("/api/blogs/unlike/:blogId", authMiddleware, unlikeBlog);
+  app.post("/api/blogs/bloglike/:blogId/:userId", blogLike);
 };
