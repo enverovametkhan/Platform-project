@@ -11,10 +11,6 @@ const userLikedBlogsSchema = new mongoose.Schema({
     ref: "Blogs",
     required: true,
   },
-  likes: {
-    type: Number,
-    default: 0,
-  },
 });
 
 module.exports = { userLikedBlogsSchema };

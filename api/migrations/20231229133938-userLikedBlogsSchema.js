@@ -4,7 +4,7 @@ module.exports = {
       validator: {
         $jsonSchema: {
           bsonType: "object",
-          required: ["userId", "blogId", "likes"],
+          required: ["userId", "blogId"],
           properties: {
             userId: {
               bsonType: "objectId",
@@ -13,9 +13,6 @@ module.exports = {
               bsonType: "objectId",
             },
 
-            likes: {
-              bsonType: "int",
-            },
             createdAt: {
               bsonType: "date",
             },

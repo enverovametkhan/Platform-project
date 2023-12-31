@@ -434,25 +434,6 @@ async function createBlogService(newBlog) {
 // };
 // }
 
-// async function likeBlogService(blogId, userId) {
-//   const userLikedBlog = await BlogLikesModel.findOne({ blogId, userId });
-
-//   if (userLikedBlog) {
-//     throw new Error("You have already liked this blog.");
-//   }
-
-//   const newLike = new BlogLikesModel({ blogId, userId, likes: 2 });
-//   await newLike.save();
-//   await deleteBlogCache(newLike.blogId);
-
-//   customLogger.consoleInfo("Blog liked successfully", {
-//     blogId,
-//     userId,
-//   });
-
-//   return { message: "Blog liked successfully" };
-// }
-
 // async function unlikeBlogService(blogId, userId) {
 //   console.log(blogId, userId);
 //   const userLikedBlog = await BlogLikesModel.findOneAndDelete({
@@ -481,7 +462,7 @@ async function blogLikeService(blogId, userId) {
   const blogLike = await BlogLikesModel.findOne({ blogId, userId });
 
   if (!blogLike) {
-    const newLike = new BlogLikesModel({ blogId, userId, likes: 3 });
+    const newLike = new BlogLikesModel({ blogId, userId });
     await newLike.save();
     await deleteBlogCache(newLike.blogId);
 
@@ -493,8 +474,7 @@ async function blogLikeService(blogId, userId) {
     return { message: "Blog liked successfully" };
   }
 
-  const newLikesCount = Math.max(0, blogLike.likes - 1);
-  await BlogLikesModel.updateOne({ blogId, userId }, { likes: newLikesCount });
+  await BlogLikesModel.findOneAndDelete({ blogId, userId });
 
   await deleteBlogCache(blogId);
 
