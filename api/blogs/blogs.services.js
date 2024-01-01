@@ -36,8 +36,18 @@ const { deleteBlogCache } = require("../comments/comments.services");
 //   return thisBlog;
 // }
 
-async function getBlogService(id) {
+async function getBlogService(id, userId) {
   const key = `blog:${id}`;
+  let userLiked = false;
+  const isPublicUser = userId === "public";
+
+  if (!isPublicUser) {
+    const userLikedBlog = await BlogLikesModel.findOne({ blogId: id, userId });
+
+    if (userLikedBlog) {
+      userLiked = true;
+    }
+  }
 
   const cacheResults = await redisClient.get(key);
 
@@ -55,6 +65,9 @@ async function getBlogService(id) {
     throw new Error("No blog found");
   }
 
+  const allLikes = await BlogLikesModel.find({ blogId: id });
+  const totalLikes = allLikes.map((like) => like.userId).length;
+
   const thisBlog = {
     title: blog.title,
     comments: comments,
@@ -64,7 +77,8 @@ async function getBlogService(id) {
     category: blog.category,
     userId: blog.userId,
     views: blog.views,
-    likes: blog.likes,
+    likes: totalLikes,
+    userLiked: userLiked,
     visible: true,
     createdAt: blog.createdAt,
     updatedAt: blog.updatedAt,
@@ -477,15 +491,6 @@ async function blogLikeService(blogId, userId) {
   await BlogLikesModel.findOneAndDelete({ blogId, userId });
 
   await deleteBlogCache(blogId);
-
-  if (blogLike.likes === 0) {
-    customLogger.consoleInfo("Blog unliked successfully", {
-      blogId,
-      userId,
-    });
-
-    return { message: "You have already unliked this blog." };
-  }
 
   customLogger.consoleInfo("Blog unliked successfully", {
     blogId,

@@ -43,7 +43,7 @@ const {
 
 module.exports = (app) => {
   // Blog Routes
-  app.get("/api/blog/:id", getBlog);
+  app.get("/api/blog/:id/:userId", getBlog);
   app.get("/api/blog/category/:category", getBlogsInCategory);
   app.get(
     "/api/blog/user/:userId/category/:category",

@@ -12,8 +12,8 @@ const {
 
 async function getBlog(req, res, next) {
   try {
-    const { id } = req.params;
-    const response = await getBlogService(id);
+    const { id, userId } = req.params;
+    const response = await getBlogService(id, userId);
 
     res.apiResponse = response;
 
