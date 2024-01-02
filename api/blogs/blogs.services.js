@@ -42,7 +42,7 @@ async function getBlogService(id, userId) {
   const isPublicUser = userId === "public";
 
   if (!isPublicUser) {
-    const userLikedBlog = await BlogLikesModel.findOne({ blogId: id, userId });
+    const userLikedBlog = await BlogLikesModel.find({ blogId: id, userId });
 
     if (userLikedBlog) {
       userLiked = true;
@@ -473,6 +473,11 @@ async function createBlogService(newBlog) {
 // }
 
 async function blogLikeService(blogId, userId) {
+  const userData = await getAccessToUserData();
+
+  if (!userData) {
+    throw new Error("Unauthorized access to user data");
+  }
   const blogLike = await BlogLikesModel.findOne({ blogId, userId });
 
   if (!blogLike) {
