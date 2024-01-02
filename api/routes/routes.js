@@ -10,6 +10,7 @@ const {
   deleteBlog,
   createBlog,
   blogLike,
+  blogView,
 } = require("@root/blogs/blogs.controller");
 
 const {
@@ -43,7 +44,7 @@ const {
 
 module.exports = (app) => {
   // Blog Routes
-  app.get("/api/blog/:id/:userId", getBlog);
+  app.get("/api/blog/:id/user/:userId", getBlog);
   app.get("/api/blog/category/:category", getBlogsInCategory);
   app.get(
     "/api/blog/user/:userId/category/:category",
@@ -80,4 +81,5 @@ module.exports = (app) => {
   app.put("/api/comments/:id", authMiddleware, updateComment);
   app.delete("/api/comments/:id", authMiddleware, deleteComment);
   app.post("/api/blogs/bloglike/:blogId/:userId", authMiddleware, blogLike);
+  app.post("/api/blogs/:blogId/blogview/", blogView);
 };

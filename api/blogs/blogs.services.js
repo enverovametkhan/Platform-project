@@ -49,13 +49,13 @@ async function getBlogService(id, userId) {
     }
   }
 
-  const cacheResults = await redisClient.get(key);
+  // const cacheResults = await redisClient.get(key);
 
-  if (cacheResults) {
-    const cachedBlog = JSON.parse(cacheResults);
-    customLogger.consoleInfo("Blog retrieved from cache", { blogId: id });
-    return cachedBlog;
-  }
+  // if (cacheResults) {
+  //   const cachedBlog = JSON.parse(cacheResults);
+  //   customLogger.consoleInfo("Blog retrieved from cache", { blogId: id });
+  //   return cachedBlog;
+  // }
 
   const blog = await BlogModel.findById(id);
   const comments = await BlogCommentModel.find({ blogId: id });
@@ -85,7 +85,7 @@ async function getBlogService(id, userId) {
     __v: blog.__v,
   };
 
-  await redisClient.set(key, JSON.stringify(thisBlog));
+  // await redisClient.set(key, JSON.stringify(thisBlog));
 
   customLogger.consoleInfo("Blog retrieved successfully from the database", {
     blogId: id,
@@ -505,6 +505,22 @@ async function blogLikeService(blogId, userId) {
   return { message: "Blog unliked successfully" };
 }
 
+async function blogViewsService(blogId) {
+  const blogView = await BlogModel.findById(blogId);
+
+  if (!blogView) {
+    const newView = new BlogModel({ blogId, likes: 1 });
+    await newView.save();
+    await deleteBlogCache(newView.blogId);
+
+    customLogger.consoleInfo("Blog views updated successfully", {
+      blogId,
+    });
+  }
+
+  return { message: "Blog views updated successfully" };
+}
+
 module.exports = {
   getBlogService,
   getBlogInCategoryService,
@@ -515,4 +531,5 @@ module.exports = {
   // deleteUsersBlogs,
 
   blogLikeService,
+  blogViewsService,
 };

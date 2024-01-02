@@ -8,6 +8,7 @@ const {
   // likeBlogService,
   // unlikeBlogService,
   blogLikeService,
+  blogViewsService,
 } = require("./blogs.services");
 
 async function getBlog(req, res, next) {
@@ -156,6 +157,21 @@ async function blogLike(req, res, next) {
   }
 }
 
+async function blogView(req, res, next) {
+  try {
+    const { blogId } = req.params;
+    const response = await blogViewsService(blogId);
+    res.apiResponse = response;
+    next();
+  } catch (error) {
+    const errorMessage = {
+      error: error.message,
+      function: "blogView",
+      errorMessage: `Something went wrong when viewing a Blog`,
+    };
+    next(errorMessage);
+  }
+}
 module.exports = {
   getBlog,
   getBlogsInCategory,
@@ -164,4 +180,5 @@ module.exports = {
   createBlog,
   deleteBlog,
   blogLike,
+  blogView,
 };
