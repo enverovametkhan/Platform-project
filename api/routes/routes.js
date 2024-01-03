@@ -80,6 +80,6 @@ module.exports = (app) => {
   app.post("/api/comments", authMiddleware, createComment);
   app.put("/api/comments/:id", authMiddleware, updateComment);
   app.delete("/api/comments/:id", authMiddleware, deleteComment);
-  app.post("/api/blogs/bloglike/:blogId/:userId", authMiddleware, blogLike);
-  app.post("/api/blogs/:blogId/blogview/", blogView);
+  app.post("/api/blog/bloglike/:blogId/:userId", authMiddleware, blogLike);
+  app.post("/api/blog/:blogId/blogview/", blogView);
 };
