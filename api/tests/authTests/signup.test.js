@@ -38,6 +38,19 @@
 //       .send({ email, username, password, confirmedPassword });
 
 //     expect(response).to.have.status(200);
+//     expect(response.body).to.be.an("object");
+//     expect(response.body.processedResponse)
+//       .to.have.property("message")
+//       .that.equals("Signup successful");
+//     expect(response.body.processedResponse)
+//       .to.have.property("newUser")
+//       .that.is.an("object");
+//     expect(response.body.processedResponse.newUser)
+//       .to.have.property("email")
+//       .that.equals(email);
+//     expect(response.body.processedResponse.newUser)
+//       .to.have.property("username")
+//       .that.equals(username);
 //   });
 
 //   it(`should return an error if email already exists`, async () => {

@@ -43,6 +43,11 @@
 //       .send({ email, password });
 
 //     expect(response).to.have.status(200);
+//     expect(response.body).to.be.an("object");
+//     expect(response.body)
+//       .to.have.property("processedResponse")
+//       .to.have.property("email")
+//       .to.equal(userData.email);
 //   });
 
 //   it(`should return an error if email is not provided`, async () => {

@@ -35,6 +35,7 @@
 //       .send();
 
 //     expect(response).to.have.status(200);
+//     expect(response.body).to.be.an("object");
 //   });
 
 //   it("should handle the case when reset password token is invalid", async () => {

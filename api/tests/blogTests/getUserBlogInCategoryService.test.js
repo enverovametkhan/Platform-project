@@ -53,8 +53,8 @@
 //       .set("Authorization", `Bearer ${token}`);
 
 //     expect(res).to.have.status(200);
-
-//     // expect(res.body.processedResponse).to.deep.include(blogData);
+//     expect(res.body).to.be.an("object");
+//     expect(res.body).to.have.property("processedResponse").that.is.an("array");
 //   });
 
 //   it(`should return an error if access token is expired and no refresh token provided`, async () => {
@@ -73,7 +73,6 @@
 //       .set("Authorization", `Bearer ${accessJwtToken}`);
 
 //     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include("Unauthorized");
 //   });
 
 //   it(`should return an error if the refresh token is expired`, async () => {
@@ -92,7 +91,6 @@
 //       .set("Authorization", `Bearer ${refreshJwtToken}`);
 
 //     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include("Unauthorized");
 //   });
 
 //   it(`should return an error if both tokens are expired`, async () => {
@@ -113,7 +111,6 @@
 //       .set("refreshtoken", `Bearer ${refreshJwtToken}`);
 
 //     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include("Unauthorized");
 //   });
 
 //   it(`should return an error if an unauthorized user attempts to access user blogs`, async () => {
@@ -133,9 +130,6 @@
 //       .set("Authorization", `Bearer ${token}`);
 
 //     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include(
-//       "Something went wrong when trying to get User Blogs in category"
-//     );
 //   });
 //   it(`should return an error if no tokens are provided`, async () => {
 //     const userId = "655c92eebe63597606646e1f";
@@ -146,6 +140,5 @@
 //       .get(`/api/blog/user/${userId}/category/${category}`);
 
 //     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include("Unauthorized");
 //   });
 // });

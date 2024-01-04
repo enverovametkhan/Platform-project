@@ -64,6 +64,7 @@
 //       });
 
 //     expect(response).to.have.status(200);
+//     expect(response.body).to.be.an("object");
 //   });
 
 //   it("should handle the case when passwords do not match", async () => {

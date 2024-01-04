@@ -42,6 +42,10 @@
 //       .set("Authorization", `Bearer ${token}`);
 
 //     expect(response).to.have.status(200);
+//     expect(response.body).to.be.an("object");
+//     expect(response.body)
+//       .to.have.property("processedResponse")
+//       .to.have.property("message");
 //   });
 
 //   it("should return an error if user is not found during logout", async () => {

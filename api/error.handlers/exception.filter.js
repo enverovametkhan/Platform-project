@@ -24,7 +24,7 @@
 //       .send({ message: err.errorMessage || "Internal Server Error" });
 //   });
 // };
-
+const { customLogger } = require("../pack/mezmo");
 module.exports = (app) => {
   app.use((err, req, res, next) => {
     try {
@@ -36,29 +36,23 @@ module.exports = (app) => {
         "jwt expired",
       ];
 
-      const processErrorMessage = (originalErrorMessage) =>
-        sensitiveErrors.some((error) => originalErrorMessage.includes(error))
+      const processErrorMessage = (error) =>
+        sensitiveErrors.some((error) => error.includes(error))
           ? "Internal Server Error"
-          : originalErrorMessage;
+          : error;
 
-      let proccessedErrorMessage = processErrorMessage(
-        err.originalErrorMessage
-      );
+      let proccessedErrorMessage = processErrorMessage(err.error);
 
       customLogger.consoleError(
         "[EXCEPTION FILTER] (OUT) | Oops something went wrong, sending an Exception Filter Error",
         {
-          message: processErrorMessage,
+          message: proccessedErrorMessage,
           timeTaken: `Time taken to process the request: ${timeTaken} seconds`,
           requestedUrl: req.originalUrl,
-          origin: req.headers.origin,
-          ip: req.headers["cf-connecting-ip"],
           method: req.method,
           // ...err,
         }
       );
-      // custom error message needed when Invalid unauth token
-      // yet to find out when i need original Error Message
 
       res
         .status(500)

@@ -6,29 +6,32 @@ const { customLogger } = require("../pack/mezmo");
 const { redisClient } = require("../database/caching");
 const { deleteBlogCache } = require("../comments/comments.services");
 
-// async function getBlogService(id) {
-//   const blog = await BlogModel.findById(id);
+// async function getBlogService(id, userId) {
+//   const blogs = await BlogModel.findById(id);
 //   const comments = await BlogCommentModel.find({ blogId: id });
 
-//   if (!blog) {
-//     customLogger.consoleError("No blog found", { function: "getBlogService" });
+//   if (!blogs) {
+//     customLogger.consoleError("No blog found", {
+//       id,
+//       function: "getBlogService",
+//     });
 //     throw new Error("No blog found");
 //   }
 
 //   const thisBlog = {
-//     title: blog.title,
+//     title: blogs.title,
 //     comments: [comments],
-//     _id: blog._id,
-//     content: blog.content,
-//     image: blog.image,
-//     category: blog.category,
-//     userId: blog.userId,
-//     views: blog.views,
-//     likes: blog.likes,
+//     _id: blogs._id,
+//     content: blogs.content,
+//     image: blogs.image,
+//     category: blogs.category,
+//     userId: blogs.userId,
+//     views: blogs.views,
+//     likes: blogs.likes,
 //     visible: true,
-//     createdAt: blog.createdAt,
-//     updatedAt: blog.updatedAt,
-//     __v: blog.__v,
+//     createdAt: blogs.createdAt,
+//     updatedAt: blogs.updatedAt,
+//     __v: blogs.__v,
 //   };
 
 //   customLogger.consoleInfo("Blog retrieved successfully", { blogId: id });
@@ -59,7 +62,6 @@ async function getBlogService(id, userId) {
 
   const blog = await BlogModel.findById(id);
   const comments = await BlogCommentModel.find({ blogId: id });
-
   if (!blog) {
     customLogger.consoleError("No blog found", { function: "getBlogService" });
     throw new Error("No blog found");
@@ -368,10 +370,11 @@ async function createBlogService(newBlog) {
     newBlog.visible === undefined ||
     newBlog.visible === ""
   ) {
-    customLogger.consoleError("Missing required fields");
-    throw new Error("Missing required fields", {
+    customLogger.consoleError("Missing required fields", {
       function: "createBlogService",
+      userId: userData.userId,
     });
+    throw new Error("Missing required fields");
   }
 
   const userData = await getAccessToUserData();

@@ -41,6 +41,7 @@
 //       .set("Authorization", `Bearer ${token}`);
 
 //     expect(response).to.have.status(200);
+//     expect(response.body).to.be.an("object");
 //   });
 
 //   it("should handle the case when the user is not found", async () => {

@@ -9,12 +9,11 @@
 // chai.use(chaiHttp);
 
 // describe("CONFIRM EMAIL SWAP", () => {
-//   let findOneStub, findByIdAndDeleteStub, findByIdAndUpdateStub;
+//   let findOneStub, findByIdAndDeleteStub;
 
 //   beforeEach(() => {
 //     findOneStub = sinon.stub(UserModel, "findOne");
 //     findByIdAndDeleteStub = sinon.stub(SwapEmailHashModel, "findByIdAndDelete");
-//     findByIdAndUpdateStub = sinon.stub(UserModel, "findByIdAndUpdate");
 //   });
 
 //   afterEach(() => {
@@ -23,9 +22,9 @@
 
 //   it("should confirm email swap successfully", async () => {
 //     const userDataJwt = {
-//       userId: "655c92eebe63597606646e1f",
-//       email: "1@11",
-//       username: "user12sd22f11",
+//       userId: "6577d5504e1f9dd56aa2628d",
+//       email: "adidas@mail.com",
+//       username: "Adidas",
 //     };
 
 //     const token = await createToken(userDataJwt, "7d");

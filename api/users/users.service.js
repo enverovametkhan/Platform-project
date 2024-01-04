@@ -117,7 +117,7 @@ async function updateUser(updatedUserData) {
   const token = await createToken({ userId: userData.userId }, "7d");
   customLogger.consoleInfo("User updated successfully", {
     updatedUserData,
-    emailVerificationLink: `localhost:3000/swapemail/${token}`,
+    emailVerificationLink: `localhost:4000/confirmEmailSwap/${token}`,
   });
 
   return {
@@ -146,19 +146,16 @@ async function swapEmail(newEmail) {
 
   const token = await createToken({ userId: user.id }, "5d");
 
-  const swapEmailData = {
+  const swapEmailData = new SwapEmailHashModel({
     userId: user._id,
     newEmail: newEmail,
     token: token,
     expiresAt: Date.now(),
     createdAt: Date.now(),
     updatedAt: Date.now(),
-  };
-
-  await SwapEmailHashModel.findByIdAndUpdate(user._id, swapEmailData, {
-    new: true,
-    runValidators: true,
   });
+
+  await swapEmailData.save();
 
   customLogger.consoleInfo("Email swap initiated successfully", {
     userId: user._id,
@@ -173,7 +170,7 @@ async function swapEmail(newEmail) {
 
 async function confirmEmailSwap(token) {
   const userData = await decryptToken(token);
-  const user = await UserModel.findOne({ _id: userData.userId });
+  const user = await UserModel.findById(userData.userId);
 
   if (!user) {
     customLogger.consoleError("No user found", {
@@ -200,8 +197,10 @@ async function confirmEmailSwap(token) {
     newEmail: checkEmailSwap.newEmail,
   });
   console.log(message);
-
-  await UserModel.findByIdAndUpdate(user._id, {
+  const updateEmail = {
+    email: checkEmailSwap.newEmail,
+  };
+  await UserModel.findByIdAndUpdate(user._id, updateEmail, {
     new: true,
     runValidators: true,
   });

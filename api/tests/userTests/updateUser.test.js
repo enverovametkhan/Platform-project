@@ -47,6 +47,7 @@
 //       .send(updatedUserData);
 
 //     expect(response).to.have.status(200);
+//     expect(response.body).to.be.an("object");
 //   });
 
 //   it(`should update user successfully with email`, async () => {
@@ -75,6 +76,7 @@
 //       .send(updatedUserData);
 
 //     expect(response).to.have.status(200);
+//     expect(response.body).to.be.an("object");
 //   });
 
 //   it(`should return an error if user is not found`, async () => {

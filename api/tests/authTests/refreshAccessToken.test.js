@@ -37,6 +37,7 @@
 //       .set("Authorization", `Bearer ${token}`);
 
 //     expect(response).to.have.status(200);
+//     expect(response.body).to.be.an("object");
 //   });
 
 //   it("should return an error if user is not found", async () => {
