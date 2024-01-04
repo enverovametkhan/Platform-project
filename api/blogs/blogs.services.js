@@ -508,7 +508,7 @@ async function blogLikeService(blogId, userId) {
 async function blogViewsService(blogId) {
   let blogView = await BlogModel.findById(blogId);
   if (!blogView) {
-    blogView = new BlogModel({ blogId, views: 0 });
+    blogView = new BlogModel({ blogId });
   }
 
   blogView.views += 1;
