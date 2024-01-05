@@ -25,6 +25,7 @@ async function getBlog(req, res, next) {
       error: error.message,
       function: "getBlog",
       errorMessage: `Something went wrong while processing getBlog controller with ID ${id}`,
+      stack: error.stack,
     };
 
     next(errorMessage);
