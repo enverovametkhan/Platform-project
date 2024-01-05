@@ -289,6 +289,7 @@ async function updateBlogService(id, updatedBlog) {
 
   const userBlogsCacheKey = `user:${updatedBlogData.userId}:category:${updatedBlogData.category}`;
   await redisClient.del(userBlogsCacheKey);
+  await redisClient.expire(userBlogsCacheKey, 86400);
 
   const top10Blogs = await getBlogInCategoryService(updatedBlogData.category);
 
@@ -299,6 +300,7 @@ async function updateBlogService(id, updatedBlog) {
   if (isUpdatedBlogInTop10) {
     const top10CacheKey = `category:${updatedBlogData.category}`;
     await redisClient.del(top10CacheKey);
+    await redisClient.expire(top10CacheKey, 86400);
   }
 
   customLogger.consoleInfo("Blog post updated successfully", {
@@ -343,15 +345,26 @@ async function deleteBlogService(id) {
     });
     throw new Error("Error deleting blog");
   }
-  const cacheKeys = [
-    `blog:${id}`,
-    `category:${deletedBlog.category}`,
-    `user:${deletedBlog.userId}:category:${deletedBlog.category}`,
-  ];
 
-  cacheKeys.forEach(async (key) => {
-    await redisClient.del(key);
-  });
+  const blogCacheKey = `blog:${id}`;
+  await redisClient.del(blogCacheKey);
+  await redisClient.expire(blogCacheKey, 86400);
+
+  const userBlogsCacheKey = `user:${deletedBlog.userId}:category:${deletedBlog.category}`;
+  await redisClient.del(userBlogsCacheKey);
+  await redisClient.expire(userBlogsCacheKey, 86400);
+
+  const top10Blogs = await getBlogInCategoryService(deletedBlog.category);
+
+  const isDeletedBlogInTop10 = top10Blogs.some(
+    (blog) => blog._id.toString() === deletedBlog._id.toString()
+  );
+
+  if (isDeletedBlogInTop10) {
+    const top10CacheKey = `category:${deletedBlog.category}`;
+    await redisClient.del(top10CacheKey);
+    await redisClient.expire(top10CacheKey, 86400);
+  }
 
   customLogger.consoleInfo("Blog deleted successfully", {
     blogId: id,
