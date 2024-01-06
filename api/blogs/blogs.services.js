@@ -87,7 +87,7 @@ async function getBlogService(id, userId) {
     __v: blog.__v,
   };
 
-  await redisClient.set(key, JSON.stringify(thisBlog));
+  await redisClient.set(key, JSON.stringify(thisBlog), "EX", 86400);
 
   customLogger.consoleInfo("Blog retrieved successfully from the database", {
     blogId: id,
@@ -145,7 +145,7 @@ async function getBlogInCategoryService(category) {
 
   const top10Blogs = blogs.sort((a, b) => b.likes - a.likes).slice(0, 10);
 
-  await redisClient.set(key, JSON.stringify(top10Blogs));
+  await redisClient.set(key, JSON.stringify(top10Blogs), "EX", 86400);
 
   customLogger.consoleInfo(
     "Top 10 blogs retrieved successfully from the database",
@@ -233,7 +233,7 @@ async function getUserBlogInCategoryService(userId, category) {
     throw new Error("No blogs found");
   }
 
-  await redisClient.set(key, JSON.stringify(blogs));
+  await redisClient.set(key, JSON.stringify(blogs), "EX", 86400);
 
   customLogger.consoleInfo(
     "User blogs retrieved successfully from the database",
@@ -289,7 +289,6 @@ async function updateBlogService(id, updatedBlog) {
 
   const userBlogsCacheKey = `user:${updatedBlogData.userId}:category:${updatedBlogData.category}`;
   await redisClient.del(userBlogsCacheKey);
-  await redisClient.expire(userBlogsCacheKey, 86400);
 
   const top10Blogs = await getBlogInCategoryService(updatedBlogData.category);
 
@@ -300,7 +299,6 @@ async function updateBlogService(id, updatedBlog) {
   if (isUpdatedBlogInTop10) {
     const top10CacheKey = `category:${updatedBlogData.category}`;
     await redisClient.del(top10CacheKey);
-    await redisClient.expire(top10CacheKey, 86400);
   }
 
   customLogger.consoleInfo("Blog post updated successfully", {
@@ -348,11 +346,9 @@ async function deleteBlogService(id) {
 
   const blogCacheKey = `blog:${id}`;
   await redisClient.del(blogCacheKey);
-  await redisClient.expire(blogCacheKey, 86400);
 
   const userBlogsCacheKey = `user:${deletedBlog.userId}:category:${deletedBlog.category}`;
   await redisClient.del(userBlogsCacheKey);
-  await redisClient.expire(userBlogsCacheKey, 86400);
 
   const top10Blogs = await getBlogInCategoryService(deletedBlog.category);
 
@@ -363,7 +359,6 @@ async function deleteBlogService(id) {
   if (isDeletedBlogInTop10) {
     const top10CacheKey = `category:${deletedBlog.category}`;
     await redisClient.del(top10CacheKey);
-    await redisClient.expire(top10CacheKey, 86400);
   }
 
   customLogger.consoleInfo("Blog deleted successfully", {
