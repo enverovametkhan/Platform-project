@@ -22,17 +22,17 @@
 //   });
 
 //   it(`should successfully delete a blog`, async () => {
-//     const userId = "655c92eebe63597606646e1f";
+//     const userId = "6577d5504e1f9dd56aa2628d";
 //     const userData = {
 //       userId,
-//       email: "1@11",
-//       username: "user12sd22f11",
+//       email: "adidas@mail.com",
+//       username: "n1223e233",
 //     };
 //     const token = await createToken(userData, "7d");
 
 //     const deletedBlog = {
-//       _id: "6562e22d365a633b118c3b3d",
-//       title: "Blog Title",
+//       _id: "658d03ef94d4b2649d6b3dce",
+//       title: "1",
 //       content: "Blog Content",
 //       userId,
 //       views: 0,
@@ -44,8 +44,6 @@
 //     };
 
 //     const id = deletedBlog._id;
-//     findByIdStub.withArgs(id).resolves(deletedBlog);
-//     deleteOneStub.withArgs({ _id: id }).resolves({ deletedCount: 1 });
 
 //     const res = await chai
 //       .request(app)
@@ -80,9 +78,7 @@
 //       .set("Authorization", `Bearer ${token}`);
 
 //     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include(
-//       "Something went wrong when deleting a Blog"
-//     );
+//     expect(res.body.message).to.include("Internal Server Error");
 //   });
 
 //   it(`should return an error if unauthorized deletion attempt`, async () => {
@@ -116,9 +112,7 @@
 //       .set("Authorization", `Bearer ${token}`);
 
 //     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include(
-//       "Something went wrong when deleting a Blog"
-//     );
+//     expect(res.body.message).to.include("Internal Server Error");
 //   });
 
 //   it(`should return an error if an error occurs during deletion`, async () => {
@@ -147,7 +141,7 @@
 //     findByIdStub.resolves(deletedBlog);
 //     deleteOneStub
 //       .withArgs({ _id: blogId })
-//       .rejects(new Error("Something went wrong when deleting a Blog"));
+//       .rejects(new Error("Internal Server Error"));
 
 //     const res = await chai
 //       .request(app)
@@ -155,9 +149,7 @@
 //       .set("Authorization", `Bearer ${token}`);
 
 //     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include(
-//       "Something went wrong when deleting a Blog"
-//     );
+//     expect(res.body.message).to.include("Internal Server Error");
 //   });
 //   it(`should return an error if access token is expired`, async () => {
 //     const userDataJwt = {
@@ -175,7 +167,7 @@
 //       .set("Authorization", `Bearer ${accessJwtToken}`);
 
 //     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include("Unauthorized");
+//     expect(res.body.message).to.include("Internal Server Error");
 //   });
 
 //   it(`should return an error if refresh token is expired`, async () => {
@@ -194,7 +186,7 @@
 //       .set("Authorization", `Bearer ${refreshJwtToken}`);
 
 //     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include("Unauthorized");
+//     expect(res.body.message).to.include("Internal Server Error");
 //   });
 
 //   it(`should return an error if both tokens are expired`, async () => {
@@ -215,7 +207,7 @@
 //       .set("refreshtoken", `Bearer ${refreshJwtToken}`);
 
 //     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include("Unauthorized");
+//     expect(res.body.message).to.include("Internal Server Error");
 //   });
 //   it(`should return an error if no tokens are provided`, async () => {
 //     const id = "6562e22d365a633b118c3b3d";
@@ -223,7 +215,7 @@
 //     const res = await chai.request(app).delete(`/api/blog/${id}`);
 
 //     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include("Unauthorized");
+//     expect(res.body.message).to.include("Internal Server Error");
 //   });
 //   it(`should return an error if another authorized user attempts to delete a blog not owned by them`, async () => {
 //     const authorizedUserId = "655c92eebe63597606646e1f";
@@ -259,9 +251,7 @@
 //       .set("Authorization", `Bearer ${token}`);
 
 //     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include(
-//       "Something went wrong when deleting a Blog"
-//     );
+//     expect(res.body.message).to.include("Internal Server Error");
 //   });
 //   it(`should return an error if no tokens are provided`, async () => {
 //     const id = "6562e22d365a633b118c3b3d";
@@ -269,6 +259,6 @@
 //     const res = await chai.request(app).delete(`/api/blog/${id}`);
 
 //     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include("Unauthorized");
+//     expect(res.body.message).to.include("Internal Server Error");
 //   });
 // });
