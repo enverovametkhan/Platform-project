@@ -35,6 +35,9 @@
 
 //     expect(response).to.have.status(200);
 //     expect(response.body).to.be.an("object");
+//     expect(response.body.processedResponse)
+//       .to.have.property("message")
+//       .that.equals("Email verified successfully");
 //   });
 
 //   it(`should return an error if user is not found`, async () => {

@@ -45,6 +45,9 @@
 
 //     expect(res).to.have.status(200);
 //     expect(res.body).to.be.an("object");
+//     expect(res.body.processedResponse)
+//       .to.have.property("_id")
+//       .that.equals(blogData._id.toString());
 //   });
 
 //   it(`should handle the case when no blog is found`, async () => {

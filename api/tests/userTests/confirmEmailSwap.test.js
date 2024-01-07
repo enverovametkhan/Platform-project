@@ -43,6 +43,10 @@
 //       .send();
 
 //     expect(response).to.have.status(200);
+//     expect(response.body).to.be.an("object");
+//     expect(response.body)
+//       .to.have.property("message")
+//       .that.includes("Swapped email");
 //   });
 
 //   it("should return an error if no user found", async () => {
