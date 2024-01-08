@@ -31,19 +31,21 @@
 //     const token = await createToken(userData, "7d");
 
 //     const deletedBlog = {
-//       _id: "658d03ef94d4b2649d6b3dce",
-//       title: "1",
+//       _id: "659b93706e8ba1e33c8d4224",
+//       title: "123",
 //       content: "Blog Content",
 //       userId,
+//       category: "IT",
 //       views: 0,
 //       likes: 0,
 //       visible: true,
-//       createdAt: Date.now(),
-//       updatedAt: Date.now(),
 //       __v: 0,
 //     };
 
 //     const id = deletedBlog._id;
+
+//     findByIdStub.withArgs(id).resolves(deletedBlog);
+//     deleteOneStub.withArgs({ _id: id }).resolves({ deletedCount: 1 });
 
 //     const res = await chai
 //       .request(app)
@@ -103,8 +105,8 @@
 //       __v: 0,
 //     };
 //     const id = deletedBlog._id;
-//     const BlogId = deletedBlog._id;
-//     findByIdStub.withArgs(BlogId).resolves(deletedBlog);
+
+//     findByIdStub.withArgs(id).resolves(deletedBlog);
 
 //     const res = await chai
 //       .request(app)
@@ -151,6 +153,7 @@
 //     expect(res).to.have.status(500);
 //     expect(res.body.message).to.include("Internal Server Error");
 //   });
+
 //   it(`should return an error if access token is expired`, async () => {
 //     const userDataJwt = {
 //       userId: "655c92eebe63597606646e1f",
@@ -209,6 +212,7 @@
 //     expect(res).to.have.status(500);
 //     expect(res.body.message).to.include("Internal Server Error");
 //   });
+
 //   it(`should return an error if no tokens are provided`, async () => {
 //     const id = "6562e22d365a633b118c3b3d";
 
@@ -217,6 +221,7 @@
 //     expect(res).to.have.status(500);
 //     expect(res.body.message).to.include("Internal Server Error");
 //   });
+
 //   it(`should return an error if another authorized user attempts to delete a blog not owned by them`, async () => {
 //     const authorizedUserId = "655c92eebe63597606646e1f";
 //     const anotherUserId = "differentUserId";
@@ -249,14 +254,6 @@
 //       .request(app)
 //       .delete(`/api/blog/${blogId}`)
 //       .set("Authorization", `Bearer ${token}`);
-
-//     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include("Internal Server Error");
-//   });
-//   it(`should return an error if no tokens are provided`, async () => {
-//     const id = "6562e22d365a633b118c3b3d";
-
-//     const res = await chai.request(app).delete(`/api/blog/${id}`);
 
 //     expect(res).to.have.status(500);
 //     expect(res.body.message).to.include("Internal Server Error");

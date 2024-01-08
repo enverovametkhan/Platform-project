@@ -79,9 +79,7 @@
 //       .send(newBlogData);
 
 //     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include(
-//       "Something went wrong when creating a Blog"
-//     );
+//     expect(res.body.message).to.include("Internal Server Error");
 //   });
 
 //   it(`should return an error if access token is expired`, async () => {
@@ -108,7 +106,7 @@
 //       .send(newBlogData);
 
 //     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include("Unauthorized");
+//     expect(res.body.message).to.include("Internal Server Error");
 //   });
 
 //   it(`should return an error if refresh token is expired`, async () => {
@@ -135,7 +133,7 @@
 //       .send(newBlogData);
 
 //     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include("Unauthorized");
+//     expect(res.body.message).to.include("Internal Server Error");
 //   });
 
 //   it(`should return an error if both tokens are expired`, async () => {
@@ -164,7 +162,7 @@
 //       .send(newBlogData);
 
 //     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include("Unauthorized");
+//     expect(res.body.message).to.include("Internal Server Error");
 //   });
 //   it(`should return an error if no tokens are provided`, async () => {
 //     const newBlogData = {
@@ -178,6 +176,6 @@
 //     const res = await chai.request(app).post("/api/blog").send(newBlogData);
 
 //     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include("Unauthorized");
+//     expect(res.body.message).to.include("Internal Server Error");
 //   });
 // });
