@@ -22,7 +22,7 @@
 //   });
 
 //   it("should update a blog successfully", async () => {
-//     const userId = "6577d5504e1f9dd56aa2628d";
+//     const userId = "655c92eebe63597606646e1f";
 //     const userData = {
 //       userId,
 //       email: "adidas@mail.com",
@@ -30,41 +30,54 @@
 //     };
 //     const token = await createToken(userData, "7d");
 
-//     const id = "658d80a2ae4830199e49747d";
+//     const id = "658d141431d1e1727f48d5ce";
 //     const updatedBlogData = {
-//       title: "Updated Title",
-//       content: "Updated Content",
-//       image: "Updated Image URL",
-//       visible: true,
-//       categories: ["Updated Category"],
+//       title: "11232333331",
+//       content: "0101010110",
+//       img: "updated-image.jpg",
+//       visibility: "private",
+//       category: "IT",
 //     };
 
 //     const blogToUpdate = {
 //       _id: id,
+//       userId: userId,
 //       title: "Original Title",
 //       content: "Original Content",
-//       image: "Original Image URL",
+//       image: "Image URL",
+//       views: 0,
+//       likes: 0,
 //       visible: true,
-//       categories: ["Original Category"],
-//       userId: userId,
+//       category: "IT",
+//       __v: 0,
 //     };
 
-//     findByIdStub.withArgs(id).resolves(blogToUpdate);
+//     findByIdStub.resolves(blogToUpdate);
 
-//     findByIdAndUpdateStub
-//       .withArgs(id, updatedBlogData, { new: true, runValidators: true })
-//       .resolves({ _id: id, ...updatedBlogData, userId: userId });
+//     findByIdAndUpdateStub.resolves({
+//       _id: id,
+//       ...updatedBlogData,
+//       userId: userId,
+//     });
 
 //     const res = await chai
 //       .request(app)
 //       .put(`/api/blog/${id}`)
 //       .set("Authorization", `Bearer ${token}`)
 //       .send(updatedBlogData);
-//     expect(res).to.have.status(200);
-//     expect(res.body).to.have.property("updatedBlogData").that.is.an("object");
-//     expect(res.body.updatedBlogData).to.have.property("_id").that.equals(id);
-//   });
 
+//     expect(res).to.have.status(200);
+//     expect(res.body).to.have.property("processedResponse").that.is.an("object");
+//     expect(res.body.processedResponse)
+//       .to.have.property("message")
+//       .that.includes("Blog post updated successfully");
+//     expect(res.body.processedResponse)
+//       .to.have.property("updatedBlogData")
+//       .that.is.an("object");
+//     expect(res.body.processedResponse.updatedBlogData)
+//       .to.have.property("_id")
+//       .that.equals(id);
+//   });
 //   it(`should return an error if the blog is not found`, async () => {
 //     const userId = "655c92eebe63597606646e1f";
 //     const userData = {
@@ -113,67 +126,11 @@
 //     expect(res).to.have.status(500);
 //     expect(res.body.message).to.include("Internal Server Error");
 //   });
-
-//   it(`should return an error if refresh token is expired`, async () => {
-//     const userDataJwt = {
-//       userId: "655c92eebe63597606646e1f",
-//       email: "1@11",
-//       username: "user12sd22f11",
-//     };
-//     const id = "6562e22d365a633b118c3b3d";
-
-//     const refreshJwtToken = await createToken(userDataJwt, "-1s");
-
-//     const res = await chai
-//       .request(app)
-//       .put(`/api/blog/${id}`)
-//       .set("Authorization", `Bearer ${refreshJwtToken}`)
-//       .send({
-//         title: "Updated Title",
-//         content: "Updated Content",
-//       });
-
-//     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include("Internal Server Error");
-//   });
-
-//   it(`should return an error if both tokens are expired`, async () => {
-//     const userDataJwt = {
-//       userId: "655c92eebe63597606646e1f",
-//       email: "1@11",
-//       username: "user12sd22f11",
-//     };
-//     const id = "6562e22d365a633b118c3b3d";
-
-//     const accessJwtToken = await createToken(userDataJwt, "-1s");
-//     const refreshJwtToken = await createToken(userDataJwt, "-1s");
-
-//     const res = await chai
-//       .request(app)
-//       .put(`/api/blog/${id}`)
-//       .set("Authorization", `Bearer ${accessJwtToken}`)
-//       .set("refreshtoken", `Bearer ${refreshJwtToken}`)
-//       .send({
-//         title: "Updated Title",
-//         content: "Updated Content",
-//       });
-
-//     expect(res).to.have.status(500);
-//     expect(res.body.message).to.include("Internal Server Error");
-//   });
-
 //   it(`should return an error if another authorized user attempts to update a blog not owned by them`, async () => {
-//     const authorizedUserId = "655c92eebe63597606646e1f";
-//     const unauthorizedUserId = "differentUserId";
-
-//     const authorizedUserData = {
-//       userId: authorizedUserId,
-//       email: "1@11",
-//       username: "user12sd22f11",
-//     };
+//     const userId = "differentUserId";
 
 //     const userData = {
-//       userId: unauthorizedUserId,
+//       userId: userId,
 //       email: "another@user.com",
 //       username: "anotherUser",
 //     };
@@ -188,7 +145,7 @@
 //       _id: id,
 //       title: "Original Title",
 //       content: "Original Content",
-//       userId: unauthorizedUserId,
+//       userId: userId,
 //       views: 0,
 //       likes: 0,
 //       visible: true,
@@ -201,7 +158,7 @@
 
 //     const res = await chai
 //       .request(app)
-//       .put(`/api/blog/${id}`)
+//       .put(`/api/blog/${userId}`)
 //       .set("Authorization", `Bearer ${token}`)
 //       .send(updatedBlogData);
 
