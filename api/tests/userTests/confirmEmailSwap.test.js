@@ -46,7 +46,12 @@ describe("CONFIRM EMAIL SWAP", () => {
       .get(`/api/user/confirmEmailSwap/${token}`)
       .send();
 
-    expect(res).to.have.status(200);
+    expect(res.body).to.be.an("object");
+    expect(res.body).to.have.property("processedResponse").that.is.an("object");
+
+    expect(res.body.processedResponse)
+      .to.have.property("message")
+      .to.equal("Swapped email from 1@mail.com to 123@mail.ru");
   });
 
   it("should return an error if no user found", async () => {
