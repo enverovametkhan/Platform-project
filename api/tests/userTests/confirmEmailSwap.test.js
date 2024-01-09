@@ -1,64 +1,64 @@
-// const chai = require("chai");
-// const sinon = require("sinon");
-// const chaiHttp = require("chai-http");
-// const { expect } = chai;
-// const { app } = require("../../app");
-// const { UserModel, SwapEmailHashModel } = require("../../users/users.data");
-// const { createToken, decryptToken } = require("../../utilities/jwt");
+const chai = require("chai");
+const sinon = require("sinon");
+const chaiHttp = require("chai-http");
+const { expect } = chai;
+const { app } = require("../../app");
+const { UserModel, SwapEmailHashModel } = require("../../users/users.data");
+const { createToken, decryptToken } = require("../../utilities/jwt");
 
-// chai.use(chaiHttp);
+chai.use(chaiHttp);
 
-// describe("CONFIRM EMAIL SWAP", () => {
-//   let findOneStub, findByIdAndDeleteStub;
+describe("CONFIRM EMAIL SWAP", () => {
+  let findOneStubUser, findOneStubSwapHash;
 
-//   beforeEach(() => {
-//     findOneStub = sinon.stub(UserModel, "findOne");
-//     findByIdAndDeleteStub = sinon.stub(SwapEmailHashModel, "findByIdAndDelete");
-//   });
+  beforeEach(() => {
+    findOneStubUser = sinon.stub(UserModel, "findOne");
+    findOneStubSwapHash = sinon.stub(SwapEmailHashModel, "findOne");
+  });
 
-//   afterEach(() => {
-//     sinon.restore();
-//   });
+  afterEach(() => {
+    sinon.restore();
+  });
 
-//   it("should confirm email swap successfully", async () => {
-//     const userDataJwt = {
-//       userId: "6577d5504e1f9dd56aa2628d",
-//       email: "adidas@mail.com",
-//       username: "Adidas",
-//     };
+  it("should confirm email swap successfully", async () => {
+    const userDataJwt = {
+      userId: "659cc3b08b2f7ede852dd521",
+      email: "1@mail.com",
+      username: "n1223e233",
+    };
+    const token = await createToken(userDataJwt, "7d");
 
-//     const token = await createToken(userDataJwt, "7d");
+    findOneStubUser.resolves({
+      _id: userDataJwt.userId,
+      email: userDataJwt.email,
+    });
 
-//     findOneStub.resolves({ _id: userDataJwt.userId, email: userDataJwt.email });
+    const swapEmailData = {
+      userId: userDataJwt.userId,
+      newEmail: "123@mail.ru",
+      token,
+    };
 
-//     const swapEmailData = {
-//       userId: userDataJwt.userId,
-//     };
+    findOneStubSwapHash.resolves(swapEmailData);
 
-//     findByIdAndDeleteStub.resolves(swapEmailData);
+    const res = await chai
+      .request(app)
+      .get(`/api/user/confirmEmailSwap/${token}`)
+      .send();
 
-//     const response = await chai
-//       .request(app)
-//       .get(`/api/user/confirmEmailSwap/${token}`)
-//       .send();
+    expect(res).to.have.status(200);
+  });
 
-//     expect(response).to.have.status(200);
-//     expect(response.body).to.be.an("object");
-//     expect(response.body)
-//       .to.have.property("message")
-//       .that.includes("Swapped email");
-//   });
+  it("should return an error if no user found", async () => {
+    const token = await createToken({ userId: "nonexistentUserId" }, "7d");
 
-//   it("should return an error if no user found", async () => {
-//     const token = await createToken({ userId: "nonexistentUserId" }, "7d");
+    findOneStubUser.resolves(null);
 
-//     findOneStub.resolves(null);
+    const response = await chai
+      .request(app)
+      .get(`/api/user/confirmEmailSwap/${token}`)
+      .send();
 
-//     const response = await chai
-//       .request(app)
-//       .get(`/api/user/confirmEmailSwap/${token}`)
-//       .send();
-
-//     expect(response).to.have.status(500);
-//   });
-// });
+    expect(response).to.have.status(500);
+  });
+});
