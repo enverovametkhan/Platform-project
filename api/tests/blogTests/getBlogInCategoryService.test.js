@@ -4,18 +4,27 @@
 // const { expect } = chai;
 // const { BlogModel } = require("../../blogs/blogs.data");
 // const { app } = require("../../app");
+// const { redisClient } = require("../../database/caching");
 
 // chai.use(chaiHttp);
 
 // describe("GET BLOGS IN CATEGORY", () => {
-//   let findStub;
+//   let findStub, redisGetStub, redisSetStub;
 
-//   before(() => {
+//   before(async () => {
+//     (resolve) => {
+//       redisClient.on("connect", resolve);
+//     };
+
 //     findStub = sinon.stub(BlogModel, "find");
+//     redisGetStub = sinon.stub(redisClient, "get");
+//     redisSetStub = sinon.stub(redisClient, "set");
 //   });
 
 //   after(() => {
 //     findStub.restore();
+//     redisGetStub.restore();
+//     redisSetStub.restore();
 //   });
 
 //   it("should successfully retrieve top 10 blogs in a category", async () => {
@@ -37,6 +46,10 @@
 //       },
 //     ];
 
+//     redisGetStub.resolves(null);
+
+//     redisSetStub.resolves("OK");
+
 //     findStub.resolves(blogData);
 //     const res = await chai.request(app).get(`/api/blog/category/${category}`);
 //     expect(res).to.have.status(200);
@@ -46,6 +59,10 @@
 
 //   it(`should handle the case when no blogs are found in the category`, async () => {
 //     const nonExistingCategory = "nonExistingCategory";
+
+//     redisGetStub.resolves(null);
+
+//     redisSetStub.resolves("OK");
 
 //     findStub.resolves(null);
 

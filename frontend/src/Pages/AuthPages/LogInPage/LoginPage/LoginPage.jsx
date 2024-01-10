@@ -1,10 +1,30 @@
-import React, { useState } from "react";
+// Import necessary libraries and modules
+import React, { useState, useEffect } from "react";
 import styles from "./main.module.scss";
 import { Link } from "react-router-dom";
 import { useAuth } from "src/authContext/authContext";
 
-export const LoginPage = () => {
+const GoogleSignIn = () => {
+  useEffect(() => {
+    window.onSignIn = (googleUser) => {
+      const profile = googleUser.getBasicProfile();
+      console.log("ID: " + profile.getId());
+      console.log("Name: " + profile.getName());
+      console.log("Image URL: " + profile.getImageUrl());
+      console.log("Email: " + profile.getEmail());
+    };
+  }, []);
+
+  return (
+    <div>
+      <div className="g-signin2" data-onsuccess="onSignIn"></div>
+    </div>
+  );
+};
+
+const LoginPage = () => {
   const { handleLogin } = useAuth();
+
   const [formData, setFormData] = useState({ email: "", password: "" });
 
   const handleInputChange = (e) => {
@@ -39,6 +59,13 @@ export const LoginPage = () => {
   return (
     <div className={styles.loginPage}>
       <h1 className={styles.logHeader}>Log in</h1>
+
+      <meta
+        name="google-signin-client_id"
+        content="456070408145-hmq6d9tjej1s7eg3ovboem4qd42rd2gt.apps.googleusercontent.com"
+      />
+      <script src="https://apis.google.com/js/platform.js" async defer></script>
+
       <form onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
           <label htmlFor="email" className={styles.myLabel}>
@@ -87,3 +114,5 @@ export const LoginPage = () => {
     </div>
   );
 };
+
+export { GoogleSignIn, LoginPage };

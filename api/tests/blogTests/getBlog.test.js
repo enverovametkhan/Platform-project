@@ -4,20 +4,28 @@
 // const { expect } = chai;
 // const { BlogModel } = require("../../blogs/blogs.data");
 // const { app } = require("../../app");
+// const { redisClient } = require("../../database/caching");
 
 // chai.use(chaiHttp);
 
 // describe("GET BLOG", () => {
-//   let findByIdStub, findStub;
+//   let findByIdStub, findStub, redisGetStub, redisSetStub;
 
 //   before(() => {
+//     (resolve) => {
+//       redisClient.on("connect", resolve);
+//     };
 //     findByIdStub = sinon.stub(BlogModel, "findById");
 //     findStub = sinon.stub(BlogModel, "find");
+//     redisGetStub = sinon.stub(redisClient, "get");
+//     redisSetStub = sinon.stub(redisClient, "set");
 //   });
 
 //   after(() => {
 //     findByIdStub.restore();
 //     findStub.restore();
+//     redisGetStub.restore();
+//     redisSetStub.restore();
 //   });
 
 //   it(`should successfully retrieve a blog when it exists`, async () => {
@@ -37,8 +45,11 @@
 //       __v: 0,
 //       comments: "[]",
 //     };
+//     redisGetStub.resolves(null);
 
+//     redisSetStub.resolves("OK");
 //     findByIdStub.withArgs(blogData._id).resolves(blogData);
+
 //     const res = await chai
 //       .request(app)
 //       .get(`/api/blog/${blogData._id}/user/${blogData.userId}`);
@@ -53,6 +64,10 @@
 //   it(`should handle the case when no blog is found`, async () => {
 //     const nonExistingBlogId = "nonExistingBlogId";
 //     const userId = "6577d5504e1f9dd56aa2628d";
+
+//     redisGetStub.resolves(null);
+
+//     redisSetStub.resolves("OK");
 
 //     findStub.resolves(null);
 

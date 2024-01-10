@@ -17,6 +17,7 @@ import {
   EditBlog,
   MyAccount,
 } from "src/components/LazyLoad/LazyLoads";
+import { GoogleSignIn } from "src/Pages/AuthPages/LogInPage/LoginPage/LoginPage";
 
 import PageNotFound from "src/components/PageNotFound/PageNotFound";
 
@@ -38,6 +39,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/auth/login" element={<LoginPage />} />
+                <Route index element={<GoogleSignIn />} />
                 <Route path="/auth/signup" element={<SignupPage />} />
                 <Route path="/auth/resetpass" element={<ResetPassPage />} />
                 <Route

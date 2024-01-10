@@ -5,18 +5,26 @@
 // const { BlogModel } = require("../../blogs/blogs.data");
 // const { app } = require("../../app");
 // const { createToken } = require("../../utilities/jwt");
+// const { redisClient } = require("../../database/caching");
 
 // chai.use(chaiHttp);
 
 // describe("GET USER BLOGS IN CATEGORY", () => {
-//   let findStub;
+//   let findStub, redisGetStub, redisSetStub;
 
 //   before(() => {
+//     (resolve) => {
+//       redisClient.on("connect", resolve);
+//     };
 //     findStub = sinon.stub(BlogModel, "find");
+//     redisGetStub = sinon.stub(redisClient, "get");
+//     redisSetStub = sinon.stub(redisClient, "set");
 //   });
 
 //   after(() => {
 //     findStub.restore();
+//     redisGetStub.restore();
+//     redisSetStub.restore();
 //   });
 
 //   it(`should successfully retrieve user blogs in a category`, async () => {
@@ -44,7 +52,9 @@
 //       updatedAt: Date.now(),
 //       __v: 0,
 //     };
+//     redisGetStub.resolves(null);
 
+//     redisSetStub.resolves("OK");
 //     findStub.withArgs({ category, userId }).resolves([blogData]);
 
 //     const res = await chai
