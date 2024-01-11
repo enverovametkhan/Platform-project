@@ -10,7 +10,7 @@ const { redisClient } = require("../../database/caching");
 chai.use(chaiHttp);
 
 describe("GET USER BLOGS IN CATEGORY", () => {
-  let findStub, redisGetStub, redisSetStub;
+  let findStub, redisGetStub;
 
   before(() => {
     (resolve) => {
@@ -18,13 +18,11 @@ describe("GET USER BLOGS IN CATEGORY", () => {
     };
     findStub = sinon.stub(BlogModel, "find");
     redisGetStub = sinon.stub(redisClient, "get");
-    redisSetStub = sinon.stub(redisClient, "set");
   });
 
   after(() => {
     findStub.restore();
     redisGetStub.restore();
-    redisSetStub.restore();
   });
 
   it(`should successfully retrieve user blogs in a category`, async () => {
@@ -54,7 +52,6 @@ describe("GET USER BLOGS IN CATEGORY", () => {
     };
     redisGetStub.resolves(null);
 
-    redisSetStub.resolves("OK");
     findStub.withArgs({ category, userId }).resolves([blogData]);
 
     const res = await chai

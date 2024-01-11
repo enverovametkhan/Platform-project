@@ -9,7 +9,7 @@ const { redisClient } = require("../../database/caching");
 chai.use(chaiHttp);
 
 describe("GET BLOGS IN CATEGORY", () => {
-  let findStub, redisGetStub, redisSetStub;
+  let findStub, redisGetStub;
 
   before(async () => {
     (resolve) => {
@@ -18,13 +18,11 @@ describe("GET BLOGS IN CATEGORY", () => {
 
     findStub = sinon.stub(BlogModel, "find");
     redisGetStub = sinon.stub(redisClient, "get");
-    redisSetStub = sinon.stub(redisClient, "set");
   });
 
   after(() => {
     findStub.restore();
     redisGetStub.restore();
-    redisSetStub.restore();
   });
 
   it("should successfully retrieve top 10 blogs in a category", async () => {
@@ -48,8 +46,6 @@ describe("GET BLOGS IN CATEGORY", () => {
 
     redisGetStub.resolves(null);
 
-    redisSetStub.resolves("OK");
-
     findStub.resolves(blogData);
     const res = await chai.request(app).get(`/api/blog/category/${category}`);
     expect(res).to.have.status(200);
@@ -61,8 +57,6 @@ describe("GET BLOGS IN CATEGORY", () => {
     const nonExistingCategory = "nonExistingCategory";
 
     redisGetStub.resolves(null);
-
-    redisSetStub.resolves("OK");
 
     findStub.resolves(null);
 

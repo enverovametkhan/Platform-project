@@ -9,7 +9,7 @@ const { redisClient } = require("../../database/caching");
 chai.use(chaiHttp);
 
 describe("GET BLOG", () => {
-  let findByIdStub, findStub, redisGetStub, redisSetStub;
+  let findByIdStub, findStub, redisGetStub;
 
   before(() => {
     (resolve) => {
@@ -18,14 +18,12 @@ describe("GET BLOG", () => {
     findByIdStub = sinon.stub(BlogModel, "findById");
     findStub = sinon.stub(BlogModel, "find");
     redisGetStub = sinon.stub(redisClient, "get");
-    redisSetStub = sinon.stub(redisClient, "set");
   });
 
   after(() => {
     findByIdStub.restore();
     findStub.restore();
     redisGetStub.restore();
-    redisSetStub.restore();
   });
 
   it(`should successfully retrieve a blog when it exists`, async () => {
