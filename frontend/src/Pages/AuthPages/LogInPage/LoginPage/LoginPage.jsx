@@ -1,26 +1,8 @@
-// Import necessary libraries and modules
 import React, { useState, useEffect } from "react";
 import styles from "./main.module.scss";
 import { Link } from "react-router-dom";
 import { useAuth } from "src/authContext/authContext";
-
-const GoogleSignIn = () => {
-  useEffect(() => {
-    window.onSignIn = (googleUser) => {
-      const profile = googleUser.getBasicProfile();
-      console.log("ID: " + profile.getId());
-      console.log("Name: " + profile.getName());
-      console.log("Image URL: " + profile.getImageUrl());
-      console.log("Email: " + profile.getEmail());
-    };
-  }, []);
-
-  return (
-    <div>
-      <div className="g-signin2" data-onsuccess="onSignIn"></div>
-    </div>
-  );
-};
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 const LoginPage = () => {
   const { handleLogin } = useAuth();
@@ -55,16 +37,17 @@ const LoginPage = () => {
       setFormData({ email: "", password: "" });
     }
   };
+  const handleGoogleLoginSuccess = (credentialResponse) => {
+    console.log("Google Login Success:", credentialResponse);
+  };
+
+  const handleGoogleLoginError = () => {
+    console.log("Google Login Failed");
+  };
 
   return (
     <div className={styles.loginPage}>
       <h1 className={styles.logHeader}>Log in</h1>
-
-      <meta
-        name="google-signin-client_id"
-        content="456070408145-hmq6d9tjej1s7eg3ovboem4qd42rd2gt.apps.googleusercontent.com"
-      />
-      <script src="https://apis.google.com/js/platform.js" async defer></script>
 
       <form onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
@@ -110,9 +93,17 @@ const LoginPage = () => {
             <Link to="/auth/signup">Sign up</Link>
           </div>
         </div>
+        <div className={styles.googleSign}>
+          <GoogleOAuthProvider clientId="456070408145-hmq6d9tjej1s7eg3ovboem4qd42rd2gt.apps.googleusercontent.com">
+            <GoogleLogin
+              onSuccess={handleGoogleLoginSuccess}
+              onError={handleGoogleLoginError}
+            />
+          </GoogleOAuthProvider>
+        </div>
       </form>
     </div>
   );
 };
 
-export { GoogleSignIn, LoginPage };
+export { LoginPage };
