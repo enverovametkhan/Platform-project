@@ -11,6 +11,18 @@ const initialState = {
   clearState: false,
 };
 
+export const googleSignIn = createAsyncThunk(
+  "auth/googleSignIn",
+  async (credential, { rejectWithValue }) => {
+    try {
+      const response = await api.post("auth/googleSignIn", { credential });
+      return response.data.processedResponse;
+    } catch (error) {
+      return rejectWithValue(error.response);
+    }
+  }
+);
+
 export const loginUser = createAsyncThunk(
   "auth/login",
   async (userData, { rejectWithValue }) => {
@@ -72,6 +84,17 @@ export const refreshAccessToken = createAsyncThunk(
 );
 
 const asyncActionHandlers = {
+  [googleSignIn.pending.type]: { status: "loading" },
+  [googleSignIn.fulfilled.type]: (state, action) => {
+    state.isAuthenticated = true;
+    state.accessToken = action.payload.accessToken;
+    state.refreshToken = action.payload.refreshToken;
+    state.status = "success";
+  },
+  [googleSignIn.rejected.type]: (state, action) => {
+    state.status = "failed";
+    state.error = action.error.message;
+  },
   [loginUser.pending.type]: { status: "loading" },
   [loginUser.fulfilled.type]: (state, action) => {
     state.isAuthenticated = true;

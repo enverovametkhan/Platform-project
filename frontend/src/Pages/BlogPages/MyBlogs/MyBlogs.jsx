@@ -9,7 +9,7 @@ export function MyBlogs() {
   const dispatch = useDispatch();
   const { id } = useSelector(selectCurrentUser);
   const [blogs, setBlogs] = useState([]);
-  const [category, setCategory] = useState("nature");
+  const [category, setCategory] = useState("IT");
 
   useEffect(() => {
     const fetchData = async () => {

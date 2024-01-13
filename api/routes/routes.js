@@ -20,6 +20,7 @@ const {
   logoutController,
   refreshAccessTokenController,
   // swapEmailController,
+  googleController,
 } = require("@root/auth/auth.controller");
 
 const {
@@ -56,6 +57,7 @@ module.exports = (app) => {
   app.post("/api/blog", authMiddleware, createBlog);
 
   // User Routes
+  app.post("/api/auth/googleSignIn", googleController);
   app.post("/api/auth/login", loginController);
   app.post("/api/auth/signup", signupController);
   app.get("/api/user/verifyEmail/:token", verifyEmailController);

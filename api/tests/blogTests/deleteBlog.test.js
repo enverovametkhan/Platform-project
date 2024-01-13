@@ -5,20 +5,23 @@ const { expect } = chai;
 const { BlogModel } = require("../../blogs/blogs.data");
 const { app } = require("../../app");
 const { createToken } = require("../../utilities/jwt");
+const { redisClient } = require("../../database/caching");
 
 chai.use(chaiHttp);
 
 describe("DELETE BLOG", () => {
-  let findByIdStub, deleteOneStub;
+  let findByIdStub, deleteOneStub, redisDelStub;
 
   before(() => {
     findByIdStub = sinon.stub(BlogModel, "findById");
     deleteOneStub = sinon.stub(BlogModel, "deleteOne");
+    redisDelStub = sinon.stub(redisClient, "del");
   });
 
   after(() => {
     findByIdStub.restore();
     deleteOneStub.restore();
+    redisDelStub.restore();
   });
 
   it(`should successfully delete a blog`, async () => {
@@ -44,9 +47,11 @@ describe("DELETE BLOG", () => {
 
     const id = deletedBlog._id;
 
-    findByIdStub.withArgs(id).resolves(deletedBlog);
-    deleteOneStub.withArgs({ _id: id }).resolves({ deletedCount: 1 });
+    findByIdStub.resolves(deletedBlog);
 
+    deleteOneStub.resolves({ deletedCount: 1 });
+
+    redisDelStub.resolves(null);
     const res = await chai
       .request(app)
       .delete(`/api/blog/${id}`)
@@ -73,6 +78,7 @@ describe("DELETE BLOG", () => {
     const id = "6562e22d365a633b118c3b3d";
 
     findByIdStub.withArgs(id).resolves(null);
+    redisDelStub.resolves(null);
 
     const res = await chai
       .request(app)
@@ -107,6 +113,7 @@ describe("DELETE BLOG", () => {
     const id = deletedBlog._id;
 
     findByIdStub.withArgs(id).resolves(deletedBlog);
+    redisDelStub.resolves(null);
 
     const res = await chai
       .request(app)
@@ -141,6 +148,7 @@ describe("DELETE BLOG", () => {
     };
 
     findByIdStub.resolves(deletedBlog);
+    redisDelStub.resolves(null);
     deleteOneStub
       .withArgs({ _id: blogId })
       .rejects(new Error("Internal Server Error"));
@@ -247,6 +255,7 @@ describe("DELETE BLOG", () => {
     };
 
     findByIdStub.withArgs(blogId).resolves(blogOwnedByAnotherUser);
+    redisDelStub.resolves(null);
 
     const token = await createToken(userData, "7d");
 

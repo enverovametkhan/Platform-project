@@ -2,11 +2,64 @@ const bcrypt = require("bcrypt");
 const { miniDatabase } = require("@root/database/miniDatabase");
 const { getAccessToUserData } = require("@root/utilities/getUserData");
 const { createToken, decryptToken } = require("@root/utilities/jwt");
-
 const saltRounds = 10;
 const mongoose = require("mongoose");
 const { UserModel } = require("../users/users.data");
 const { customLogger } = require("../pack/mezmo");
+const { verifyGmailToken } = require("../../api/utilities/0Auth2Client");
+
+async function googleSignIn(credential) {
+  const gmailData = await verifyGmailToken(credential);
+
+  let user = await UserModel.findOne({ email: gmailData.email });
+
+  if (!user) {
+    customLogger.consoleInfo("Google Sign-Up successful", {
+      email: gmailData.email,
+      function: "googleSignIn",
+    });
+
+    const newUser = await new UserModel({
+      email: gmailData.email,
+      username: gmailData.username,
+    });
+
+    user = await newUser.save();
+  }
+
+  const userDataJwt = {
+    userId: user._id,
+    email: user.email,
+    username: user.username,
+  };
+
+  const accessJwtToken = await createToken(userDataJwt, "300d");
+  const refreshJwtToken = await createToken(userDataJwt, "500h");
+
+  const updatedTokens = {
+    accessToken: accessJwtToken,
+    refreshToken: refreshJwtToken,
+  };
+
+  await UserModel.findByIdAndUpdate(user._id, updatedTokens, {
+    new: true,
+    runValidators: true,
+  });
+
+  customLogger.consoleInfo("Google Sign-In successful", {
+    email: user.email,
+    function: "googleSignIn",
+  });
+
+  return {
+    message: "Google Sign-In successful",
+    accessToken: accessJwtToken,
+    refreshToken: refreshJwtToken,
+    userId: user.id,
+    email: user.email,
+    username: user.username,
+  };
+}
 
 async function hashPassword(password) {
   return await bcrypt.hash(password, saltRounds);
@@ -222,4 +275,5 @@ module.exports = {
   verifyEmail,
   logout,
   refreshAccessToken,
+  googleSignIn,
 };

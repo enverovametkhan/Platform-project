@@ -5,7 +5,7 @@ import { useAuth } from "src/authContext/authContext";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 const LoginPage = () => {
-  const { handleLogin } = useAuth();
+  const { handleLogin, handleGoogleSignIn } = useAuth();
 
   const [formData, setFormData] = useState({ email: "", password: "" });
 
@@ -36,13 +36,6 @@ const LoginPage = () => {
       console.error("Invalid email or password. Please check your input.");
       setFormData({ email: "", password: "" });
     }
-  };
-  const handleGoogleLoginSuccess = (credentialResponse) => {
-    console.log("Google Login Success:", credentialResponse);
-  };
-
-  const handleGoogleLoginError = () => {
-    console.log("Google Login Failed");
   };
 
   return (
@@ -96,8 +89,11 @@ const LoginPage = () => {
         <div className={styles.googleSign}>
           <GoogleOAuthProvider clientId="456070408145-hmq6d9tjej1s7eg3ovboem4qd42rd2gt.apps.googleusercontent.com">
             <GoogleLogin
-              onSuccess={handleGoogleLoginSuccess}
-              onError={handleGoogleLoginError}
+              onSuccess={async (credentialResponse) => {
+                console.log(credentialResponse);
+                await handleGoogleSignIn(credentialResponse.credential);
+              }}
+              onError={() => console.log("Google Login Failed")}
             />
           </GoogleOAuthProvider>
         </div>

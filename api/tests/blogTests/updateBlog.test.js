@@ -5,20 +5,25 @@ const { expect } = chai;
 const { app } = require("../../app");
 const { createToken } = require("../../utilities/jwt");
 const { BlogModel } = require("../../blogs/blogs.data");
+const { redisClient } = require("../../database/caching");
 
 chai.use(chaiHttp);
 
 describe("UPDATE BLOG", () => {
-  let findByIdStub, findByIdAndUpdateStub;
+  let findByIdStub, findByIdAndUpdateStub, redisDelStub, redisSetStub;
 
   before(() => {
     findByIdStub = sinon.stub(BlogModel, "findById");
     findByIdAndUpdateStub = sinon.stub(BlogModel, "findByIdAndUpdate");
+    redisSetStub = sinon.stub(redisClient, "set");
+    redisDelStub = sinon.stub(redisClient, "del");
   });
 
   after(() => {
     findByIdStub.restore();
     findByIdAndUpdateStub.restore();
+    redisSetStub.restore();
+    redisDelStub.restore();
   });
 
   it("should update a blog successfully", async () => {
@@ -53,6 +58,8 @@ describe("UPDATE BLOG", () => {
     };
 
     findByIdStub.resolves(blogToUpdate);
+    redisSetStub.resolves(null);
+    redisDelStub.resolves(null);
 
     findByIdAndUpdateStub.resolves({
       _id: id,
@@ -94,6 +101,8 @@ describe("UPDATE BLOG", () => {
     };
 
     findByIdStub.withArgs(id).resolves(null);
+    redisSetStub.resolves(null);
+    redisDelStub.resolves(null);
 
     const res = await chai
       .request(app)
@@ -153,6 +162,8 @@ describe("UPDATE BLOG", () => {
       updatedAt: Date.now(),
       __v: 0,
     });
+    redisSetStub.resolves(null);
+    redisDelStub.resolves(null);
 
     const token = await createToken(userData, "7d");
 

@@ -11,7 +11,7 @@ import { selectIsAuthenticated } from "src/redux/slices/auth";
 
 export function LandingPage() {
   const dispatch = useDispatch();
-  const [category, setCategory] = useState("nature");
+  const [category, setCategory] = useState("IT");
   const [blogs, setBlogs] = useState({ blogs: [] });
 
   const isAuthenticated = useSelector(selectIsAuthenticated);

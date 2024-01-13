@@ -4,7 +4,26 @@ const {
   verifyEmail,
   logout,
   refreshAccessToken,
+  googleSignIn,
 } = require("./auth.service");
+
+async function googleController(req, res, next) {
+  try {
+    const { credential } = req.body;
+    const response = await googleSignIn(credential);
+    res.apiResponse = response;
+
+    next();
+  } catch (error) {
+    const errorMessage = {
+      error: error.message,
+      function: "googleController",
+      errorMessage: `Something went wrong during login`,
+    };
+
+    next(errorMessage);
+  }
+}
 
 async function loginController(req, res, next) {
   try {
@@ -96,4 +115,5 @@ module.exports = {
   verifyEmailController,
   logoutController,
   refreshAccessTokenController,
+  googleController,
 };

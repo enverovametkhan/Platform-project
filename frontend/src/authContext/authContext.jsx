@@ -1,7 +1,12 @@
 import { createContext, useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router";
-import { loginUser, logoutUser, signupUser } from "src/redux/slices/auth";
+import {
+  googleSignIn,
+  loginUser,
+  logoutUser,
+  signupUser,
+} from "src/redux/slices/auth";
 import { setCurrentUser } from "src/redux/slices/users";
 import { selectIsAuthenticated } from "src/redux/slices/auth";
 import { selectForcedLogout } from "src/redux/slices/auth";
@@ -44,6 +49,24 @@ export const AuthProvider = ({ children }) => {
       email: "",
       password: "",
     });
+  };
+
+  const handleGoogleSignIn = async (credential) => {
+    try {
+      console.log(credential);
+      const response = await dispatch(googleSignIn(credential));
+      console.log(response);
+      const userData = {
+        id: response.payload.userId,
+        email: response.payload.email,
+        username: response.payload.username,
+      };
+
+      await dispatch(setCurrentUser(userData));
+      navigate("/dashboard", { replace: true });
+    } catch (error) {
+      console.error("googleSignIn Error:", error);
+    }
   };
 
   const handleSignUp = async (formData, setFormData) => {
@@ -117,7 +140,9 @@ export const AuthProvider = ({ children }) => {
   }, [forcedLogout]);
 
   return (
-    <AuthContext.Provider value={{ handleLogin, handleSignUp, handleLogout }}>
+    <AuthContext.Provider
+      value={{ handleLogin, handleSignUp, handleLogout, handleGoogleSignIn }}
+    >
       {children}
     </AuthContext.Provider>
   );
