@@ -15,6 +15,7 @@ async function googleController(req, res, next) {
 
     next();
   } catch (error) {
+    console.log(error);
     const errorMessage = {
       error: error.message,
       function: "googleController",

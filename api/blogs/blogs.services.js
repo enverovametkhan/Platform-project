@@ -39,18 +39,18 @@ const { deleteBlogCache } = require("../comments/comments.services");
 //   return thisBlog;
 // }
 
-async function getBlogService(id, userId) {
+async function getBlogService(id) {
   const key = `blog:${id}`;
-  let userLiked = false;
-  const isPublicUser = userId === "public";
+  // let userLiked = false;
+  // const isPublicUser = userId === "public";
 
-  if (!isPublicUser) {
-    const userLikedBlog = await BlogLikesModel.find({ blogId: id, userId });
+  // if (!isPublicUser) {
+  //   const userLikedBlog = await BlogLikesModel.find({ blogId: id, userId });
 
-    if (userLikedBlog) {
-      userLiked = true;
-    }
-  }
+  //   if (userLikedBlog) {
+  //     userLiked = true;
+  //   }
+  // }
 
   const cacheResults = await redisClient.get(key);
 

@@ -16,7 +16,7 @@ async function verifyGmailToken(credential) {
   console.log(payload);
   return {
     email: payload.email,
-    username: payload.username,
+    username: payload.name,
   };
 }
 
