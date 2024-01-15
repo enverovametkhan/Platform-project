@@ -2,7 +2,7 @@ const { OAuth2Client } = require("google-auth-library");
 
 const client = new OAuth2Client(
   "456070408145-hmq6d9tjej1s7eg3ovboem4qd42rd2gt.apps.googleusercontent.com",
-  "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"
+  process.env.GOOGLE_KEY
 );
 
 async function verifyGmailToken(credential) {

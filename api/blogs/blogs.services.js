@@ -41,16 +41,6 @@ const { deleteBlogCache } = require("../comments/comments.services");
 
 async function getBlogService(id) {
   const key = `blog:${id}`;
-  // let userLiked = false;
-  // const isPublicUser = userId === "public";
-
-  // if (!isPublicUser) {
-  //   const userLikedBlog = await BlogLikesModel.find({ blogId: id, userId });
-
-  //   if (userLikedBlog) {
-  //     userLiked = true;
-  //   }
-  // }
 
   const cacheResults = await redisClient.get(key);
 
@@ -61,6 +51,7 @@ async function getBlogService(id) {
   }
 
   const blog = await BlogModel.findById(id);
+  console.log(blog);
   const comments = await BlogCommentModel.find({ blogId: id });
   if (!blog) {
     customLogger.consoleError("No blog found", { function: "getBlogService" });
@@ -80,7 +71,7 @@ async function getBlogService(id) {
     userId: blog.userId,
     views: blog.views,
     likes: totalLikes,
-    userLiked: userLiked,
+    // userLiked: userLiked,
     visible: true,
     createdAt: blog.createdAt,
     updatedAt: blog.updatedAt,
@@ -224,14 +215,14 @@ async function getUserBlogInCategoryService(userId, category) {
 
   let blogs = await BlogModel.find({ category, userId });
 
-  if (!blogs || blogs.length === 0) {
-    customLogger.consoleError("No blogs found", {
-      userId,
-      category,
-      function: "getUserBlogInCategoryService",
-    });
-    throw new Error("No blogs found");
-  }
+  // if (!blogs || blogs.length === 0) {
+  //   customLogger.consoleError("No blogs found", {
+  //     userId,
+  //     category,
+  //     function: "getUserBlogInCategoryService",
+  //   });
+  //   throw new Error("No blogs found");
+  // }
 
   await redisClient.set(key, JSON.stringify(blogs), "EX", 86400);
 
@@ -420,10 +411,7 @@ async function createBlogService(newBlog) {
     userData,
   });
 
-  return {
-    message: "Blog created successfully",
-    response,
-  };
+  return response;
 }
 
 // async function deleteUsersBlogs(userId) {

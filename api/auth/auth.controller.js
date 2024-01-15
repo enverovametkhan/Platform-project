@@ -51,6 +51,7 @@ async function signupController(req, res, next) {
     res.apiResponse = response;
     next();
   } catch (error) {
+    console.log(error);
     const errorMessage = {
       error: error.message,
       function: "signupController",

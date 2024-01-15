@@ -6,6 +6,8 @@ const { getAccessToUserData } = require("@root/utilities/getUserData");
 const mongoose = require("mongoose");
 const { UserModel, SwapEmailHashModel } = require("./users.data");
 const { customLogger } = require("../pack/mezmo");
+const { GoogleTemplate } = require("../pack/sendEmail");
+const { googleEmailer } = require("../pack/sendEmail");
 
 const saltRounds = 10;
 
@@ -156,6 +158,16 @@ async function swapEmail(newEmail) {
   });
 
   await swapEmailData.save();
+
+  const payload = {
+    swapEmailData: {
+      oldEmail: user.email,
+      newEmail,
+    },
+    url: `http://localhost:3000/swapemail/${token}`,
+  };
+
+  await googleEmailer.sendEmail(user.email, GoogleTemplate.EMAIL_SWAP, payload);
 
   customLogger.consoleInfo("Email swap initiated successfully", {
     userId: user._id,

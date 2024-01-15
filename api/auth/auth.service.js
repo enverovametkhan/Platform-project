@@ -8,6 +8,7 @@ const { UserModel } = require("../users/users.data");
 const { customLogger } = require("../pack/mezmo");
 const { verifyGmailToken } = require("../../api/utilities/0Auth2Client");
 const { googleEmailer } = require("../pack/sendEmail");
+const { GoogleTemplate } = require("../pack/sendEmail");
 
 async function googleSignIn(credential) {
   const gmailData = await verifyGmailToken(credential);
@@ -162,8 +163,9 @@ async function signup(username, email, password, confirmedPassword) {
   await newUser.save();
   customLogger.consoleInfo("Signup successful", { newUser });
 
-  const content = `http://localhost:3000/confirmemail/${token}`;
-  await googleEmailer.sendEmail(email, content);
+  const payload = { url: `http://localhost:3000/confirmemail/${token}` };
+  await googleEmailer.sendEmail(email, GoogleTemplate.SIGNUP, payload);
+
   return {
     message: "Signup successful",
     newUser,

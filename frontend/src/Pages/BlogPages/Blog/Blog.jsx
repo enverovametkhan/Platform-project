@@ -15,15 +15,17 @@ export function Blog() {
     const fetchData = async () => {
       try {
         const response = await dispatch(getBlog(id));
+        console.log(response);
+        console.log(response.payload);
         console.log("Successful response data:", response.payload);
         setBlog(response.payload);
       } catch (e) {
-        console.log(e);
+        console.log("Error:", e);
       }
     };
 
     fetchData();
-  }, [id, dispatch]);
+  }, [dispatch, id]);
 
   return (
     <div>

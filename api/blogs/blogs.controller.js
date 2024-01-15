@@ -20,6 +20,7 @@ async function getBlog(req, res, next) {
 
     next();
   } catch (error) {
+    console.log(error);
     const { id } = req.params;
     const errorMessage = {
       error: error.message,

@@ -4,6 +4,8 @@ const { createToken, decryptToken } = require("@root/utilities/jwt");
 const { UserModel } = require("../users/users.data");
 const { ResetPasswordHashModel } = require("./resetPass.data");
 const { customLogger } = require("../pack/mezmo");
+const { GoogleTemplate } = require("../pack/sendEmail");
+const { googleEmailer } = require("../pack/sendEmail");
 
 const saltRounds = 10;
 
@@ -32,22 +34,26 @@ async function resetPasswordReq(email) {
   }
 
   const token = await createToken({ userId: userData.id }, "5d");
-  const resetPasswordHash = {
+  const resetPasswordHash = new ResetPasswordHashModel({
     userId: userData.id,
     token: token,
     expiresAt: new Date(),
     createdAt: new Date(),
     updatedAt: new Date(),
+  });
+
+  await resetPasswordHash.save();
+
+  const payload = {
+    url: `http://localhost:3000/resetpassword/${token}`,
   };
 
-  await ResetPasswordHashModel.findByIdAndUpdate(
-    userData.id,
-    resetPasswordHash,
-    {
-      new: true,
-      runValidators: true,
-    }
+  await googleEmailer.sendEmail(
+    userData.email,
+    GoogleTemplate.RESET_PASSWORD,
+    payload
   );
+
   customLogger.consoleInfo("Password reset link sent successfully", {
     email,
     emailVerificationLink: `localhost:3000/resetpassword/${token}`,

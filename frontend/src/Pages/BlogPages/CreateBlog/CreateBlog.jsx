@@ -34,7 +34,10 @@ export function CreateBlog() {
       const response = await dispatch(createBlog(newBlog));
 
       console.log("Blog created:", response);
-      navigate(`/blog/${response.payload.id}`);
+
+      console.log("Payload:", response.payload);
+
+      navigate(`/blog/${response.payload._id}`);
     } catch (error) {
       console.error("Create Blog Error:", error);
     }
