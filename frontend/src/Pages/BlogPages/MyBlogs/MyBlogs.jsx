@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styles from "./main.module.scss";
-import ImageGallery from "src/Pages/LandingPage/ImageGallery/ImageGallery";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserBlogsInCategory } from "src/redux/slices/blogs";
 import { selectCurrentUser } from "src/redux/slices/users";
+import { Link } from "react-router-dom";
 
 export function MyBlogs() {
   const dispatch = useDispatch();
@@ -59,21 +59,27 @@ export function MyBlogs() {
 
         <div className={styles.imageGalleryContainer}>
           {blogs.map((eachBlog) => (
-            <div key={eachBlog.id}>
-              <ImageGallery
-                key={eachBlog.id}
-                id={eachBlog.id}
-                title={eachBlog.title}
-                likes={eachBlog.likes}
-                image={eachBlog.image}
-              />
+            <div key={eachBlog._id} className={styles.imageGallery}>
+              <div className={styles.imageContainer}>
+                <Link to={`/blog/${eachBlog._id}`} className={styles.linkStyle}>
+                  <img
+                    className={styles.image}
+                    src={eachBlog.image}
+                    alt={`Image ${eachBlog._id}`}
+                  />
+                  <div className={styles.blogComp}>
+                    <h1>{eachBlog.title}</h1>
+                    <p>{eachBlog.likes}</p>
+                  </div>
+                </Link>
+              </div>
             </div>
           ))}
         </div>
 
         {blogs.length === 0 && (
           <div>
-            <h1>No blogs found</h1>
+            <h1 className={styles.noClass}>No blogs found</h1>
           </div>
         )}
       </div>

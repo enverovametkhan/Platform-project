@@ -8,12 +8,6 @@
   flex-direction: column;
 }
 
-.imageGalleryContainer {
-  display: flex;
-  overflow-x: auto;
-  margin-top: 20px;
-}
-
 .yourClass {
   font-size: 50px;
   color: #666;
@@ -34,4 +28,58 @@
   color: #666;
   font-family: Junge;
   font-size: 25px;
+}
+
+.noClass {
+  font-size: 30px;
+  color: #666;
+  font-family: Junge;
+}
+
+.imageGalleryContainer {
+  display: flex;
+  overflow-x: auto;
+  margin-top: 50px;
+  margin-left: 50px;
+
+  .imageContainer {
+    margin: 0 10px;
+
+    .image {
+      width: 257.44px;
+      height: 395.001px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .linkStyle {
+      text-decoration: none;
+      color: #0077cc;
+      transition: color 0.3s ease;
+    }
+
+    .imageText {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      transform: translate(-50%, 50%);
+      width: 100%;
+      color: black;
+      padding: 5px;
+      font-size: 32px;
+      text-align: center;
+      font-family: "Junge", serif;
+    }
+
+    .blogComp {
+      color: #545f71;
+      font-family: Junge;
+      font-size: 10px;
+      text-decoration: none;
+
+      p {
+        font-size: 15px;
+      }
+    }
+  }
 }

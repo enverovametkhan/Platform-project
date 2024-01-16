@@ -126,13 +126,13 @@ async function getBlogInCategoryService(category) {
 
   const blogs = await BlogModel.find({ category, visible: true });
 
-  if (!blogs || blogs.length === 0) {
-    customLogger.consoleError("No blogs found in the category", {
-      category,
-      function: "getBlogInCategoryService",
-    });
-    throw new Error("No blogs found in the category");
-  }
+  // if (!blogs || blogs.length === 0) {
+  //   customLogger.consoleError("No blogs found in the category", {
+  //     category,
+  //     function: "getBlogInCategoryService",
+  //   });
+  //   throw new Error("No blogs found in the category");
+  // }
 
   const top10Blogs = blogs.sort((a, b) => b.likes - a.likes).slice(0, 10);
 
@@ -405,6 +405,8 @@ async function createBlogService(newBlog) {
   const response = {
     _id: savedBlog._id,
   };
+  const userBlogsCacheKey = `user:${userData.userId}:category:${newBlog.category}`;
+  await redisClient.del(userBlogsCacheKey);
 
   customLogger.consoleInfo("Blog created successfully", {
     blogId: savedBlog._id,

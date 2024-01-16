@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import max from "src/Assets/max.avif";
 import styles from "./main.module.scss";
-import ImageGallery from "src/Pages/LandingPage/ImageGallery/ImageGallery";
 import AuthButtons from "src/components/AuthButtons/AuthButtons";
 import Footer from "src/Pages/LandingPage/Footer/Footer";
 import { getBlogsInCategory } from "src/redux/slices/blogs";
@@ -11,17 +10,19 @@ import { selectIsAuthenticated } from "src/redux/slices/auth";
 
 export function LandingPage() {
   const dispatch = useDispatch();
-  const [category, setCategory] = useState("technology");
-  const [blogs, setBlogs] = useState({ blogs: [] });
+  const [category, setCategory] = useState("nature");
+  const [blogs, setBlogs] = useState([]);
 
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(getBlogsInCategory(category));
-        console.log("Successful response data:", response.payload);
-        setBlogs(response.payload);
+        const blogs = await dispatch(getBlogsInCategory(category));
+        console.log("Successful response data:", blogs.payload);
+        if (Array.isArray(blogs.payload)) {
+          setBlogs(blogs.payload);
+        }
       } catch (e) {
         console.log(e);
       }
@@ -29,8 +30,6 @@ export function LandingPage() {
 
     fetchData();
   }, [category]);
-
-  useEffect(() => {}, [blogs]);
 
   return (
     <div className={styles.landingPage}>
@@ -56,17 +55,24 @@ export function LandingPage() {
           Life
         </button>
       </div>
-      <div className={styles.blogImg}>
-        {Array.isArray(blogs.blogs) &&
-          blogs.blogs.map((eachBlog) => (
-            <ImageGallery
-              key={eachBlog.id}
-              id={eachBlog.id}
-              title={eachBlog.title}
-              likes={eachBlog.likes}
-              image={eachBlog.image}
-            />
-          ))}
+      <div className={styles.imageGalleryContainer}>
+        {blogs.map((eachBlog) => (
+          <div key={eachBlog._id} className={styles.imageGallery}>
+            <div className={styles.imageContainer}>
+              <Link to={`/blog/${eachBlog._id}`} className={styles.linkStyle}>
+                <img
+                  className={styles.image}
+                  src={eachBlog.image}
+                  alt={`Image ${eachBlog._id}`}
+                />
+                <div className={styles.blogComp}>
+                  <h1>{eachBlog.title}</h1>
+                  <p>{eachBlog.likes}</p>
+                </div>
+              </Link>
+            </div>
+          </div>
+        ))}
       </div>
       {isAuthenticated && (
         <Link to="/dashboard/myaccount">
@@ -77,3 +83,5 @@ export function LandingPage() {
     </div>
   );
 }
+
+export default LandingPage;

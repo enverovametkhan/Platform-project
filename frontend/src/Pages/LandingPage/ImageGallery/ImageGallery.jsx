@@ -14,7 +14,6 @@ const ImageGallery = ({ id, title, likes, image }) => {
             <p>{likes}</p>
           </div>
         </Link>
-        {/* <div className={styles.imageText}>the happy blog</div> */}
       </div>
     </div>
   );

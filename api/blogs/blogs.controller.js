@@ -41,6 +41,7 @@ async function getBlogsInCategory(req, res, next) {
     res.apiResponse = response;
     next();
   } catch (error) {
+    console.log(error);
     const { category } = req.params;
     const errorMessage = {
       error: error.message,
@@ -61,6 +62,7 @@ async function getUserBlogsInCategory(req, res, next) {
     res.apiResponse = response;
     next();
   } catch (error) {
+    console.log(error);
     const { userId, category } = req.params;
     const errorMessage = {
       error: error.message,
@@ -91,6 +93,7 @@ async function updateBlog(req, res, next) {
     res.apiResponse = response;
     next();
   } catch (error) {
+    console.log(error);
     const errorMessage = {
       function: "updateBlog",
       errorMessage: `Something went wrong when updating a Blog`,
@@ -107,6 +110,7 @@ async function deleteBlog(req, res, next) {
     res.apiResponse = response;
     next();
   } catch (error) {
+    console.log(error);
     const errorMessage = {
       error: error.message,
       function: "deleteBlog",
@@ -133,6 +137,7 @@ async function createBlog(req, res, next) {
     res.apiResponse = response;
     next();
   } catch (error) {
+    console.log(error);
     const errorMessage = {
       error: error.message,
       function: "createBlog",
