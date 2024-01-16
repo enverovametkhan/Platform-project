@@ -26,7 +26,7 @@ export function ImageUploader({ formData, setFormData }) {
 
   const isFileValid = (file) => {
     const allowedTypes = ["image/jpeg", "image/png"];
-    const maxSize = 5 * 2000 * 2000; // 5MB
+    const maxSize = 5 * 1024 * 1024; // 5MB
 
     if (!allowedTypes.includes(file.type)) {
       // Invalid file type

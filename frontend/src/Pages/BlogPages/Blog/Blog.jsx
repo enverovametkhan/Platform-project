@@ -14,11 +14,15 @@ export function Blog() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(getBlog(id));
-        console.log(response);
-        console.log(response.payload);
-        console.log("Successful response data:", response.payload);
-        setBlog(response.payload);
+        if (id) {
+          const response = await dispatch(getBlog(id));
+          console.log(response);
+          console.log(response.payload);
+          console.log("Successful response data:", response.payload);
+          setBlog(response.payload);
+        } else {
+          console.log("Error: Blog ID is undefined");
+        }
       } catch (e) {
         console.log("Error:", e);
       }

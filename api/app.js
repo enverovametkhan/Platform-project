@@ -17,7 +17,7 @@ function contextMiddleware(req, res, next) {
     next();
   });
 }
-
+app.use(cors());
 app.use(contextMiddleware);
 app.use(bodyParser.json());
 app.use(cors());
