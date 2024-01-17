@@ -13,6 +13,7 @@
   margin-left: 20px;
   align-self: flex-start;
 }
+
 .myTitle {
   color: #666;
   font-family: Junge;
@@ -64,4 +65,38 @@
   color: #545f71;
   font-family: Junge;
   font-size: 20px;
+}
+
+.centerLoader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 310px;
+}
+
+.compButton {
+  background: linear-gradient(30deg, #e0e1e5, #babcc5);
+  width: 150px;
+  height: 50px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 300ms ease;
+  margin-left: 350px;
+  margin-bottom: 50px;
+  i {
+    font-size: 24px;
+    color: #545f71;
+    margin-right: 15px;
+  }
+
+  &:hover {
+    background: linear-gradient(30deg, #32a3fb, #1455ec);
+
+    i {
+      color: #ffffff;
+    }
+  }
 }

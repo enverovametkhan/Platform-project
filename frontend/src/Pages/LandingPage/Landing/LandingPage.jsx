@@ -7,29 +7,34 @@ import AuthButtons from "src/components/AuthButtons/AuthButtons";
 import Footer from "src/Pages/LandingPage/Footer/Footer";
 import { getBlogsInCategory } from "src/redux/slices/blogs";
 import { selectIsAuthenticated } from "src/redux/slices/auth";
+import { DotLoader } from "react-spinners";
 
 export function LandingPage() {
   const dispatch = useDispatch();
   const [category, setCategory] = useState("nature");
   const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const blogs = await dispatch(getBlogsInCategory(category));
-        console.log("Successful response data:", blogs.payload);
-        if (Array.isArray(blogs.payload)) {
-          setBlogs(blogs.payload);
+        setLoading(true);
+        const response = await dispatch(getBlogsInCategory(category));
+        console.log("Successful response data:", response.payload);
+        if (Array.isArray(response.payload)) {
+          setBlogs(response.payload);
         }
       } catch (e) {
         console.log(e);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
-  }, [category]);
+  }, [category, dispatch]);
 
   return (
     <div className={styles.landingPage}>
@@ -56,23 +61,33 @@ export function LandingPage() {
         </button>
       </div>
       <div className={styles.imageGalleryContainer}>
-        {blogs.map((eachBlog) => (
-          <div key={eachBlog._id} className={styles.imageGallery}>
-            <div className={styles.imageContainer}>
-              <Link to={`/blog/${eachBlog._id}`} className={styles.linkStyle}>
-                <img
-                  className={styles.image}
-                  src={eachBlog.image}
-                  alt={`Image ${eachBlog._id}`}
-                />
-                <div className={styles.blogComp}>
-                  <h1>{eachBlog.title}</h1>
-                  <p>{eachBlog.likes}</p>
-                </div>
-              </Link>
+        {loading ? (
+          <DotLoader color={"#545f71"} loading={loading} size={50} />
+        ) : (
+          blogs.map((eachBlog) => (
+            <div key={eachBlog._id} className={styles.imageGallery}>
+              <div className={styles.imageContainer}>
+                <Link to={`/blog/${eachBlog._id}`} className={styles.linkStyle}>
+                  {eachBlog.image && (
+                    <img
+                      className={styles.image}
+                      src={eachBlog.image}
+                      alt={`Image ${eachBlog._id}`}
+                    />
+                  )}
+                  <div className={styles.blogComp}>
+                    {eachBlog.title && (
+                      <>
+                        <h1>{eachBlog.title}</h1>
+                        <p>{eachBlog.likes}</p>
+                      </>
+                    )}
+                  </div>
+                </Link>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
       {isAuthenticated && (
         <Link to="/dashboard/myaccount">

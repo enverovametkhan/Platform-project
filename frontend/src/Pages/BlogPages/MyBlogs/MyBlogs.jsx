@@ -4,18 +4,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserBlogsInCategory } from "src/redux/slices/blogs";
 import { selectCurrentUser } from "src/redux/slices/users";
 import { Link } from "react-router-dom";
+import { BeatLoader } from "react-spinners";
 
 export function MyBlogs() {
   const dispatch = useDispatch();
   const { id } = useSelector(selectCurrentUser);
   const [blogs, setBlogs] = useState([]);
   const [category, setCategory] = useState("life");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log(id);
-
+        setLoading(true);
         const blogs = await dispatch(
           getUserBlogsInCategory({ userId: id, category })
         );
@@ -25,11 +26,13 @@ export function MyBlogs() {
         }
       } catch (error) {
         console.error("Error fetching user blogs:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
-  }, [category]);
+  }, [category, id]);
 
   return (
     <div>
@@ -57,30 +60,41 @@ export function MyBlogs() {
           </button>
         </div>
 
-        <div className={styles.imageGalleryContainer}>
-          {blogs.map((eachBlog) => (
-            <div key={eachBlog._id} className={styles.imageGallery}>
-              <div className={styles.imageContainer}>
-                <Link to={`/blog/${eachBlog._id}`} className={styles.linkStyle}>
-                  <img
-                    className={styles.image}
-                    src={eachBlog.image}
-                    alt={`Image ${eachBlog._id}`}
-                  />
-                  <div className={styles.blogComp}>
-                    <h1>{eachBlog.title}</h1>
-                    <p>{eachBlog.likes}</p>
-                  </div>
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {blogs.length === 0 && (
-          <div>
-            <h1 className={styles.noClass}>No blogs found</h1>
+        {loading ? (
+          <div className={styles.loaderContainer}>
+            <BeatLoader color="#666" size={20} />
           </div>
+        ) : (
+          <>
+            <div className={styles.imageGalleryContainer}>
+              {blogs.map((eachBlog) => (
+                <div key={eachBlog._id} className={styles.imageGallery}>
+                  <div className={styles.imageContainer}>
+                    <Link
+                      to={`/blog/${eachBlog._id}`}
+                      className={styles.linkStyle}
+                    >
+                      <img
+                        className={styles.image}
+                        src={eachBlog.image}
+                        alt={`Image ${eachBlog._id}`}
+                      />
+                      <div className={styles.blogComp}>
+                        <h1>{eachBlog.title}</h1>
+                        <p>{eachBlog.likes}</p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {blogs.length === 0 && (
+              <div>
+                <h1 className={styles.noClass}>No blogs found</h1>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
