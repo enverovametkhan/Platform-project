@@ -1,5 +1,6 @@
 const moduleAlias = require("module-alias");
 moduleAlias.addAlias("@root", __dirname);
+require("dotenv").config({ path: "./env" });
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 4000;
@@ -8,8 +9,6 @@ const { createNamespace } = require("cls-hooked");
 const namespace = createNamespace("req");
 
 const cors = require("cors");
-
-require("dotenv").config();
 
 function contextMiddleware(req, res, next) {
   namespace.run(() => {
@@ -21,7 +20,15 @@ app.use(cors());
 app.use(contextMiddleware);
 app.use(bodyParser.json());
 app.use(cors());
-app.use(express.json({ limit: "5mb" }));
+// app.use(express.json({ limit: "100mb" }));
+app.use(express.json({ limit: "500mb" }));
+app.use(
+  express.urlencoded({
+    limit: "500mb",
+    extended: true,
+    parameterLimit: 550000000,
+  })
+);
 
 require("./interceptors/interceptorIn")(app);
 require("./routes/routes")(app);

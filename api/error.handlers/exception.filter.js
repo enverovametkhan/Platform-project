@@ -27,6 +27,7 @@
 const { customLogger } = require("../pack/mezmo");
 module.exports = (app) => {
   app.use((err, req, res, next) => {
+    console.log(err);
     try {
       const timeTaken = (Date.now() - req.timeStarted) / 1000;
 

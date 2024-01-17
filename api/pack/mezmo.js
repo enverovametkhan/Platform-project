@@ -9,8 +9,8 @@ class CustomLogger {
     };
     const ingestionKey = process.env.MEZMO_KEY;
     this.logger = logdna.createLogger(ingestionKey, options);
-    this.isLocalEnv = process.env.IS_LOCAL;
-    console.log(process.env.IS_LOCAL);
+    this.isLocalEnv = process.env.CURRENT_ENV === "local" ? true : false;
+    console.log(process.env.CURRENT_ENV);
   }
 
   localMiddleware(message, metadata, type) {
