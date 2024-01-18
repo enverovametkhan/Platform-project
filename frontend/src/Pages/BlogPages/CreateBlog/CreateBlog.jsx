@@ -4,6 +4,12 @@ import { createBlog } from "src/redux/slices/blogs";
 import { useNavigate } from "react-router-dom";
 import styles from "./main.module.scss";
 import { ImageUploader } from "src/components/ImageUploader/ImageUploader";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+
+import "react-notifications/lib/notifications.css";
 
 export function CreateBlog() {
   const navigate = useNavigate();
@@ -29,17 +35,29 @@ export function CreateBlog() {
       alert("Title and Content are required. Please fill them in.");
       return;
     }
-
     try {
       const response = await dispatch(createBlog(newBlog));
 
       console.log("Blog created:", response);
-
       console.log("Payload:", response.payload);
+
+      if (response.error) {
+        NotificationManager.error(
+          `Error creating blog: ${response.error.message}`,
+          "Error",
+          5000
+        );
+        return;
+      }
 
       navigate(`/blog/${response.payload._id}`);
     } catch (error) {
       console.error("Create Blog Error:", error);
+      NotificationManager.error(
+        `Error creating blog: ${error.message}`,
+        "Error",
+        5000
+      );
     }
   };
 
@@ -120,6 +138,7 @@ export function CreateBlog() {
           </button>
         </div>
       </form>
+      <NotificationContainer />
     </div>
   );
 }

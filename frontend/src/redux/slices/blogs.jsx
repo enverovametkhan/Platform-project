@@ -84,6 +84,7 @@ export const blogLikeService = createAsyncThunk(
   "blogs/blogLike",
   async ({ blogId, userId }, { rejectWithValue }) => {
     try {
+      console.log(blogId, userId);
       const response = await api.post(`blog/bloglike/${blogId}/${userId}`);
       return response.data.processedResponse;
     } catch (error) {
@@ -148,7 +149,7 @@ const asyncActionHandlers = {
   },
   [blogLikeService.pending.type]: { status: "loading" },
   [blogLikeService.fulfilled.type]: (state, action) => {
-    state.userBlogs = action.payload;
+    state.blog = action.payload;
     state.status = "success";
   },
   [blogLikeService.rejected.type]: (state, action) => {

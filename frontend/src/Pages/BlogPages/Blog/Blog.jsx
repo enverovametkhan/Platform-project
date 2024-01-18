@@ -5,15 +5,20 @@ import { getBlog, blogLikeService } from "src/redux/slices/blogs";
 import { selectIsAuthenticated } from "src/redux/slices/auth";
 import { RingLoader } from "react-spinners";
 import styles from "./main.module.scss";
+import { selectCurrentUser } from "src/redux/slices/users";
 
 export function Blog() {
-  const { id, blogId } = useParams();
+  const { id } = useParams();
+
   const [blog, setBlog] = useState(null);
+  const currentUser = useSelector(selectCurrentUser);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
   useEffect(() => {
+    console.log(id);
+    console.log(currentUser.id);
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -38,8 +43,12 @@ export function Blog() {
 
   const handleLike = async () => {
     try {
-      const response = await dispatch(blogLikeService({ blogId, userId: id }));
-      console.log(response.message);
+      console.log("here");
+      const response = await dispatch(
+        blogLikeService({ blogId: id, userId: currentUser.id })
+      );
+
+      console.log(response);
     } catch (error) {
       console.error("Error while handling like:", error.message);
     }

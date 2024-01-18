@@ -483,9 +483,8 @@ async function blogLikeService(blogId, userId) {
   if (!userData) {
     throw new Error("Unauthorized access to user data");
   }
-  const blogLike = await BlogLikesModel.find({ blogId, userId });
-
-  if (!blogLike) {
+  const existingBlogLike = await BlogLikesModel.findOne({ blogId, userId });
+  if (!existingBlogLike) {
     const newLike = new BlogLikesModel({ blogId, userId });
     await newLike.save();
     await deleteBlogCache(newLike.blogId);
@@ -498,16 +497,15 @@ async function blogLikeService(blogId, userId) {
     return { message: "Blog liked successfully" };
   }
 
-  await BlogLikesModel.findOneAndDelete({ blogId, userId });
-
-  await deleteBlogCache(blogId);
-
-  customLogger.consoleInfo("Blog unliked successfully", {
-    blogId,
-    userId,
-  });
-
-  return { message: "Blog unliked successfully" };
+  if (existingBlogLike) {
+    await BlogLikesModel.findOneAndDelete({ blogId, userId });
+    await deleteBlogCache(blogId);
+    customLogger.consoleInfo("Blog unliked successfully", {
+      blogId,
+      userId,
+    });
+    return { message: "Blog unliked successfully" };
+  }
 }
 
 async function blogViewsService(blogId) {
