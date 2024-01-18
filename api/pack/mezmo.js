@@ -14,7 +14,7 @@ class CustomLogger {
   }
 
   localMiddleware(message, metadata, type) {
-    if (this.isLocalEnv === "local") {
+    if (this.isLocalEnv) {
       const greenColor = "\x1b[32m";
       const yellowColor = "\x1b[33m";
 
@@ -70,7 +70,7 @@ class CustomLogger {
   }
 
   localInfo(message, metadata) {
-    if (this.isLocalEnv === "local") {
+    if (this.isLocalEnv) {
       const greenColor = "\x1b[32m";
       console.log(
         `[${greenColor}Local Info${"\x1b[0m"}]: ${message}`,
@@ -100,7 +100,7 @@ class CustomLogger {
   }
 
   localError(message, metadata) {
-    if (this.isLocalEnv === "local") {
+    if (this.isLocalEnv) {
       const redColor = "\x1b[31m";
       console.error(
         `[${redColor}Local Error${"\x1b[0m"}]: ${message}`,

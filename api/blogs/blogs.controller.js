@@ -150,9 +150,7 @@ async function createBlog(req, res, next) {
 async function blogLike(req, res, next) {
   try {
     const { blogId, userId } = req.params;
-    console.log("hey");
     const response = await blogLikeService(blogId, userId);
-    console.log("finished");
     res.apiResponse = response;
     console.log(response);
     next();

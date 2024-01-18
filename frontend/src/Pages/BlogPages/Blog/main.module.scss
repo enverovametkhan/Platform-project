@@ -86,6 +86,7 @@
   transition: all 300ms ease;
   margin-left: 350px;
   margin-bottom: 50px;
+
   i {
     font-size: 24px;
     color: #545f71;
@@ -94,9 +95,17 @@
 
   &:hover {
     background: linear-gradient(30deg, #32a3fb, #1455ec);
-
     i {
       color: #ffffff;
     }
+  }
+  &.liked {
+    background: linear-gradient(30deg, blue, darkblue);
+    i {
+      color: white;
+    }
+  }
+  .isLiked {
+    background: linear-gradient(30deg, blue, darkblue);
   }
 }

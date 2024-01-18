@@ -17,18 +17,13 @@ export function Blog() {
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
   useEffect(() => {
-    console.log(id);
-    console.log(currentUser.id);
     const fetchData = async () => {
       try {
         setLoading(true);
         if (id) {
-          setTimeout(async () => {
-            const response = await dispatch(getBlog(id));
-            console.log("Successful response data:", response.payload);
-            setBlog(response.payload);
-            setLoading(false);
-          }, 2000);
+          const response = await dispatch(getBlog(id));
+          setBlog(response.payload);
+          setLoading(false);
         } else {
           console.log("Error: Blog ID is undefined");
         }
@@ -43,7 +38,6 @@ export function Blog() {
 
   const handleLike = async () => {
     try {
-      console.log("here");
       const response = await dispatch(
         blogLikeService({ blogId: id, userId: currentUser.id })
       );
