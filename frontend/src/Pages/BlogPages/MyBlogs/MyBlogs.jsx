@@ -10,7 +10,7 @@ export function MyBlogs() {
   const dispatch = useDispatch();
   const { id } = useSelector(selectCurrentUser);
   const [blogs, setBlogs] = useState([]);
-  const [category, setCategory] = useState("life");
+  const [category, setCategory] = useState("nature");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
