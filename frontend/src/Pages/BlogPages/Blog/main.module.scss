@@ -99,13 +99,19 @@
       color: #ffffff;
     }
   }
+
   &.liked {
-    background: linear-gradient(30deg, blue, darkblue);
+    background: linear-gradient(30deg, #32a3fb, #1455ec);
+
     i {
-      color: white;
+      color: #ffffff;
     }
-  }
-  .isLiked {
-    background: linear-gradient(30deg, blue, darkblue);
+
+    &:hover {
+      background: linear-gradient(30deg, #32a3fb, #1455ec);
+      i {
+        color: #ffffff;
+      }
+    }
   }
 }

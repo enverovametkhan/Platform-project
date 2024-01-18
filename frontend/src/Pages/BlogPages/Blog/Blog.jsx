@@ -15,6 +15,7 @@ export function Blog() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,6 +37,11 @@ export function Blog() {
     fetchData();
   }, [dispatch, id]);
 
+  useEffect(() => {
+    const likedStatus = localStorage.getItem(`liked_${id}`);
+    setIsLiked(likedStatus === "true");
+  }, [id]);
+
   const handleLike = async () => {
     try {
       const response = await dispatch(
@@ -43,6 +49,13 @@ export function Blog() {
       );
 
       console.log(response);
+
+      localStorage.setItem(
+        `liked_${id}`,
+        response.payload.message === "Blog liked successfully"
+      );
+
+      setIsLiked(response.payload.message === "Blog liked successfully");
     } catch (error) {
       console.error("Error while handling like:", error.message);
     }
@@ -77,11 +90,14 @@ export function Blog() {
                 <p>Views: {blog.views}</p>
                 {isAuthenticated && (
                   <button
-                    className={`${styles.compButton} }`}
+                    className={`${styles.compButton} ${
+                      isLiked ? styles.liked : ""
+                    }`}
                     type="button"
                     onClick={handleLike}
                   >
-                    <i className="fas fa-thumbs-up"></i> Like
+                    <i className="fas fa-thumbs-up"></i>{" "}
+                    {isLiked ? "Liked" : "Like"}
                   </button>
                 )}
               </div>
