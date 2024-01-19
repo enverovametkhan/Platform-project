@@ -61,7 +61,8 @@ async function getBlogService(id) {
   }
   if (userId !== "public") {
     const likedBlog = await BlogLikesModel.findOne({ blogId: id, userId });
-    hasUserLikedBlog = !!likedBlog;
+    if (likedBlog) hasUserLikedBlog = true;
+    // hasUserLikedBlog = !!likedBlog;
   }
 
   const allLikes = await BlogLikesModel.find({ blogId: id });

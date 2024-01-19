@@ -8,6 +8,7 @@ import Footer from "src/Pages/LandingPage/Footer/Footer";
 import { getBlogsInCategory } from "src/redux/slices/blogs";
 import { selectIsAuthenticated } from "src/redux/slices/auth";
 import { DotLoader } from "react-spinners";
+import Tooltip from "react-tooltip";
 
 export function LandingPage() {
   const dispatch = useDispatch();
@@ -91,7 +92,16 @@ export function LandingPage() {
       </div>
       {isAuthenticated && (
         <Link to="/dashboard/myaccount">
-          <img className={styles.img} src={max} alt="Image" />
+          <Tooltip id="dashboardTooltip" effect="solid">
+            <span style={{ fontFamily: "Junge, serif" }}>Dashboard</span>
+          </Tooltip>
+          <img
+            className={styles.img}
+            src={max}
+            alt="Image"
+            data-tip
+            data-for="dashboardTooltip"
+          />
         </Link>
       )}
       <Footer />

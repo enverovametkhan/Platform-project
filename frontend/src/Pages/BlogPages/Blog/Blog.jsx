@@ -9,7 +9,6 @@ import { selectCurrentUser } from "src/redux/slices/users";
 
 export function Blog() {
   const { id } = useParams();
-
   const [blog, setBlog] = useState(null);
   const currentUser = useSelector(selectCurrentUser);
   const [loading, setLoading] = useState(true);
