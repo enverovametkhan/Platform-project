@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { authMiddleware } = require("@root/middleware/auth.middleware");
+const { getBlogMiddleware } = require("@root/middleware/getBlog.middleware");
 
 const {
   getBlog,
@@ -45,7 +46,7 @@ const {
 
 module.exports = (app) => {
   // Blog Routes
-  app.get("/api/blog/:id", getBlog);
+  app.get("/api/blog/:id", getBlogMiddleware, getBlog);
   app.get("/api/blog/category/:category", getBlogsInCategory);
   app.get(
     "/api/blog/user/:userId/category/:category",

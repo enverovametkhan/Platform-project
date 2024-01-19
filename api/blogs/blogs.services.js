@@ -41,6 +41,8 @@ const { deleteBlogCache } = require("../comments/comments.services");
 
 async function getBlogService(id) {
   const key = `blog:${id}`;
+  const { userId } = await getAccessToUserData();
+  let hasUserLikedBlog = false;
 
   const cacheResults = await redisClient.get(key);
 
@@ -51,11 +53,15 @@ async function getBlogService(id) {
   }
 
   const blog = await BlogModel.findById(id);
-  console.log(blog);
+
   const comments = await BlogCommentModel.find({ blogId: id });
   if (!blog) {
     customLogger.consoleError("No blog found", { function: "getBlogService" });
     throw new Error("No blog found");
+  }
+  if (userId !== "public") {
+    const likedBlog = await BlogLikesModel.findOne({ blogId: id, userId });
+    hasUserLikedBlog = !!likedBlog;
   }
 
   const allLikes = await BlogLikesModel.find({ blogId: id });
@@ -71,11 +77,10 @@ async function getBlogService(id) {
     userId: blog.userId,
     views: blog.views,
     likes: totalLikes,
-    // userLiked: userLiked,
     visible: true,
     createdAt: blog.createdAt,
     updatedAt: blog.updatedAt,
-    __v: blog.__v,
+    hasUserLikedBlog,
   };
 
   await redisClient.set(key, JSON.stringify(thisBlog), "EX", 86400);
