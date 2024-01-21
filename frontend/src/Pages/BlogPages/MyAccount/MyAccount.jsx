@@ -49,11 +49,22 @@ export function MyAccount() {
     try {
       const response = await dispatch(deleteUser());
       console.log(response);
+
+      NotificationManager.success(
+        "Your account has been deleted",
+        "Account Deleted"
+      );
+
       await dispatch(logoutUser());
       await dispatch(setCurrentUser(""));
       navigate("/");
     } catch (e) {
       console.error("Error", e);
+
+      NotificationManager.error(
+        "Error occurred during account deletion. Please try again.",
+        "Account Deletion Error"
+      );
     }
   };
 
@@ -71,8 +82,25 @@ export function MyAccount() {
     try {
       const response = await dispatch(updateUser(formData));
       console.log(response);
+
+      if (email !== formData.email) {
+        NotificationManager.success(
+          "An email change link has been sent to your email",
+          "Email Change"
+        );
+      } else {
+        NotificationManager.success(
+          "User information updated successfully",
+          "User Update"
+        );
+      }
     } catch (e) {
       console.error("Error", e);
+
+      NotificationManager.error(
+        "Error occurred during user update. Please try again.",
+        "User Update Error"
+      );
     }
   };
 
@@ -165,7 +193,7 @@ export function MyAccount() {
           Delete
         </button>
       </div>
-      <NotificationContainer />{" "}
+      <NotificationContainer />
     </div>
   );
 }
