@@ -7,7 +7,7 @@ const { customLogger } = require("../pack/mezmo");
 const { GoogleTemplate } = require("../pack/sendEmail");
 const { googleEmailer } = require("../pack/sendEmail");
 
-const saltRounds = 10;
+const saltRounds = 5;
 
 async function hashPassword(password) {
   return await bcrypt.hash(password, saltRounds);

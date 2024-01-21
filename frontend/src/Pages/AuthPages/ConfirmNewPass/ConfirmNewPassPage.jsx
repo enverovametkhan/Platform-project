@@ -62,6 +62,7 @@ export const ConfirmNewPassPage = () => {
           },
           token,
         };
+        console.log(payload);
         const response = await dispatch(resetPassword(payload));
         console.log(response.payload);
         if (response.payload.status === 200) {

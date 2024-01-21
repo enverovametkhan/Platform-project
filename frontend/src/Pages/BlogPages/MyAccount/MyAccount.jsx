@@ -11,6 +11,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { resetPasswordReq } from "src/redux/slices/resetPass";
 import { logoutUser } from "src/redux/slices/auth";
 import { setCurrentUser } from "src/redux/slices/users";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+
+import "react-notifications/lib/notifications.css";
 
 export function MyAccount() {
   const dispatch = useDispatch();
@@ -74,8 +80,18 @@ export function MyAccount() {
     try {
       let response = await dispatch(resetPasswordReq(email));
       console.log("Password reset request successful. Response:", response);
+
+      NotificationManager.success(
+        "A password reset link has been sent to your email",
+        "Password Reset"
+      );
     } catch (error) {
       console.error("Error occurred during password reset:", error);
+
+      NotificationManager.error(
+        "Error occurred during password reset. Please try again.",
+        "Password Reset Error"
+      );
     }
   };
 
@@ -149,6 +165,7 @@ export function MyAccount() {
           Delete
         </button>
       </div>
+      <NotificationContainer />{" "}
     </div>
   );
 }
