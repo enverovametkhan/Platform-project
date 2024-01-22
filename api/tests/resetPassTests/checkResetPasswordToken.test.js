@@ -21,9 +21,9 @@ describe("checkResetPasswordToken", () => {
 
   it("should validate reset password token successfully", async () => {
     const userDataJwt = {
-      userId: "655c92eebe63597606646e1f",
-      email: "1@11",
-      username: "user12sd22f11",
+      userId: "65acd363172eafa7f453f2f2",
+      email: "123@11",
+      username: "u1se3r12sd22f11",
     };
 
     const token = await createToken(userDataJwt, "7d");

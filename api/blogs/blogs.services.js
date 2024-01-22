@@ -54,7 +54,7 @@ async function getBlogService(id) {
 
   const blog = await BlogModel.findById(id);
 
-  const comments = await BlogCommentModel.find({ blogId: id });
+  // const comments = await BlogCommentModel.find({ blogId: id });
   if (!blog) {
     customLogger.consoleError("No blog found", { function: "getBlogService" });
     throw new Error("No blog found");
@@ -62,7 +62,6 @@ async function getBlogService(id) {
   if (userId !== "public") {
     const likedBlog = await BlogLikesModel.findOne({ blogId: id, userId });
     if (likedBlog) hasUserLikedBlog = true;
-    // hasUserLikedBlog = !!likedBlog;
   }
 
   const allLikes = await BlogLikesModel.find({ blogId: id });
@@ -70,7 +69,7 @@ async function getBlogService(id) {
 
   const thisBlog = {
     title: blog.title,
-    comments: comments,
+    comments: blog.comments,
     _id: blog._id,
     content: blog.content,
     image: blog.image,
@@ -132,13 +131,13 @@ async function getBlogInCategoryService(category) {
 
   const blogs = await BlogModel.find({ category, visible: true });
 
-  // if (!blogs || blogs.length === 0) {
-  //   customLogger.consoleError("No blogs found in the category", {
-  //     category,
-  //     function: "getBlogInCategoryService",
-  //   });
-  //   throw new Error("No blogs found in the category");
-  // }
+  if (!blogs || blogs.length === 0) {
+    customLogger.consoleError("No blogs found in the category", {
+      category,
+      function: "getBlogInCategoryService",
+    });
+    throw new Error("No blogs found in the category");
+  }
 
   const top10Blogs = blogs.sort((a, b) => b.likes - a.likes).slice(0, 10);
 

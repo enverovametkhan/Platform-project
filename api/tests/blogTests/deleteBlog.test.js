@@ -86,7 +86,7 @@ describe("DELETE BLOG", () => {
       .set("Authorization", `Bearer ${token}`);
 
     expect(res).to.have.status(500);
-    expect(res.body.message).to.include("Internal Server Error");
+    expect(res.body.message).to.include("No blogs found for deletion");
   });
 
   it(`should return an error if unauthorized deletion attempt`, async () => {
@@ -121,7 +121,7 @@ describe("DELETE BLOG", () => {
       .set("Authorization", `Bearer ${token}`);
 
     expect(res).to.have.status(500);
-    expect(res.body.message).to.include("Internal Server Error");
+    expect(res.body.message).to.include("Unauthorized deletion attempt");
   });
 
   it(`should return an error if an error occurs during deletion`, async () => {
@@ -227,7 +227,7 @@ describe("DELETE BLOG", () => {
     const res = await chai.request(app).delete(`/api/blog/${id}`);
 
     expect(res).to.have.status(500);
-    expect(res.body.message).to.include("Internal Server Error");
+    expect(res.body.message).to.include("Unauthorized");
   });
 
   it(`should return an error if another authorized user attempts to delete a blog not owned by them`, async () => {
@@ -265,6 +265,6 @@ describe("DELETE BLOG", () => {
       .set("Authorization", `Bearer ${token}`);
 
     expect(res).to.have.status(500);
-    expect(res.body.message).to.include("Internal Server Error");
+    expect(res.body.message).to.include("Unauthorized deletion attempt");
   });
 });

@@ -42,7 +42,7 @@ async function resetPasswordController(req, res, next) {
   try {
     const { token } = req.params;
 
-    let { password, confirmedPassword } = req.body.passwordData;
+    let { password, confirmedPassword } = req.body?.passwordData;
     const response = await resetPassword(token, password, confirmedPassword);
     res.apiResponse = response;
     next();

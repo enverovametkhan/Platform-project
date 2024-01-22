@@ -28,7 +28,7 @@ describe("resetPasswordReq", () => {
 
   it("should send a reset password link successfully", async () => {
     const userDataJwt = {
-      email: "1@11",
+      email: "123@11",
     };
 
     const email = userDataJwt.email;

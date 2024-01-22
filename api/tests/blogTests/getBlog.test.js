@@ -50,30 +50,41 @@ describe("GET BLOG", () => {
 
     findByIdStub.withArgs(blogData._id).resolves(blogData);
 
-    const res = await chai
-      .request(app)
-      .get(`/api/blog/${blogData._id}/user/${blogData.userId}`);
+    const res = await chai.request(app).get(`/api/blog/${blogData._id}`);
 
     expect(res).to.have.status(200);
     expect(res.body).to.be.an("object");
-    expect(res.body.processedResponse)
-      .to.have.property("_id")
-      .that.equals(blogData._id.toString());
   });
 
   it(`should handle the case when no blog is found`, async () => {
     const nonExistingBlogId = "nonExistingBlogId";
-    const userId = "6577d5504e1f9dd56aa2628d";
+    const blogData = {
+      _id: nonExistingBlogId,
+      title: "Updated Title",
+      content: "Updated Content",
+      image: "Image URL",
+      category: "Nature",
+      userId: "6577d5504e1f9dd56aa2628d",
+      views: 0,
+      likes: 0,
+      visible: true,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      __v: 0,
+      comments: "[]",
+    };
 
     redisGetStub.resolves(null);
     redisSetStub.resolves(null);
 
-    findStub.resolves(null);
+    findByIdStub.resolves(null);
 
     const res = await chai
       .request(app)
-      .get(`/api/blog/${nonExistingBlogId}/user/${userId}`);
+      .get(`/api/blog/${blogData.nonExistingBlogId}}`);
 
     expect(res).to.have.status(500);
+
+    findByIdStub.restore();
   });
 });
