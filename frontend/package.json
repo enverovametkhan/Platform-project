@@ -24,6 +24,7 @@
     "react-toastify": "^10.0.3",
     "react-tooltip": "^4.2.21",
     "redux": "^4.2.1",
+    "redux-persist": "^6.0.0",
     "sass": "^1.66.1",
     "web-vitals": "^2.1.4"
   },

@@ -1,0 +1,26 @@
+
+FROM node:16.18.0 as react-build
+
+
+WORKDIR /app
+
+
+COPY ./package.json /app/
+
+COPY ./package-lock.json /app/
+
+RUN npm install
+
+
+COPY . /app/
+
+RUN npm run build
+
+
+
+
+
+EXPOSE 3000
+
+
+CMD ["npm", "start"]
