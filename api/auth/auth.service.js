@@ -6,7 +6,7 @@ const saltRounds = 10;
 const mongoose = require("mongoose");
 const { UserModel } = require("../users/users.data");
 const { customLogger } = require("../pack/mezmo");
-const { verifyGmailToken } = require("../../api/utilities/0Auth2Client");
+const { verifyGmailToken } = require("../utilities/0Auth2Client");
 const { googleEmailer } = require("../pack/sendEmail");
 const { GoogleTemplate } = require("../pack/sendEmail");
 

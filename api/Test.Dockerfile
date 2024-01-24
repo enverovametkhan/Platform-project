@@ -15,4 +15,4 @@ COPY . /app/
 
 EXPOSE 4000
 
-CMD ["npm", "start"]
+CMD ["npm", "test"]
