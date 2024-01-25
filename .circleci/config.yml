@@ -1,5 +1,7 @@
 version: 2.1
 
+setup: true
+
 orbs:
   path-filtering: circleci/path-filtering@1.0.0
 
@@ -8,7 +10,7 @@ workflows:
     jobs:
       - path-filtering/filter:
           name: Updates
-          base-revision: main
+          base-revision: << pipeline.git.branch >>
           config-path: .circleci/continue-config.yml
           mapping: |
             backend/.* backend-job true

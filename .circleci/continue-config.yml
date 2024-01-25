@@ -1,0 +1,9 @@
+version: 2.1
+
+parameters:
+  backend_image:
+     type: boolean
+    default: false
+  frontend_image:
+     type: boolean
+    default: false
