@@ -7,3 +7,6 @@ parameters:
   frontend_image:
      type: boolean
     default: false
+
+
+    
