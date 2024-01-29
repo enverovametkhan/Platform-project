@@ -15,9 +15,9 @@ workflows:
           mapping: |
             api/.* api-service-job true
             frontend/.* frontend-service-job true
-      filters: 
-        branches:
-          only:
-            - dev
-            - release
-            - main
+          filters:
+            branches:
+              only:
+                - dev
+                - release
+                - main
