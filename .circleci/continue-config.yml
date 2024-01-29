@@ -37,7 +37,7 @@ commands:
       - run:
           name: Docker build BlogApp api
           command: |
-            cd bacapikend
+            cd api
             docker build -f ./Dockerfile --platform linux/amd64 -t gcr.io/capable-reserve-410215/api/$CIRCLE_BRANCH .
       - run:
           name: Push BlogApp api image to gcr
