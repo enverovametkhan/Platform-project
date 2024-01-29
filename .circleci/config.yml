@@ -13,8 +13,8 @@ workflows:
           base-revision: << pipeline.git.branch >>
           config-path: .circleci/continue-config.yml
           mapping: |
-            backend/.* backend-job true
-            frontend/.* frontend-job true
+            api/.* api-service-job true
+            frontend/.* frontend-service-job true
       filters: 
         branches:
           only:
