@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: blogapp-frontend
+  namespace: main
+  labels:
+    app: blogapp-frontend
+  annotations:
+    keel.sh/policy: force
+spec:
+  selector:
+    app: blogapp-frontend
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: 4000
+      name: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blogapp-frontend
+  namespace: main
+  labels:
+    app: blogapp-frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: blogapp-frontend
+  template:
+    metadata:
+      labels:
+        app: blogapp-frontend
+    spec:
+      containers:
+        - name: blogapp-frontend
+          image: gcr.io/capable-reserve-410215/frontend/main

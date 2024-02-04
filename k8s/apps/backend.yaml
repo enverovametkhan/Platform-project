@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: blogapp-backend
+  namespace: main
+  labels:
+    app: blogapp-backend
+  annotations:
+    keel.sh/policy: force
+spec:
+  selector:
+    app: blogapp-backend
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: 4000
+      name: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blogapp-backend
+  namespace: main
+  labels:
+    app: blogapp-backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: blogapp-backend
+  template:
+    metadata:
+      labels:
+        app: blogapp-backend
+    spec:
+      containers:
+        - name: blogapp-backend
+          image: gcr.io/capable-reserve-410215/api/main
