@@ -1,0 +1,42 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: main
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50mb"
+    nginx.org/client-max-body-size: "50mb"
+
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - 123myblog.work
+      secretName: tls-cert
+    - hosts:
+        - api.123myblog.work
+      secretName: tls-cert
+  rules:
+    - host: 123myblog.work
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: blogapp-frontend
+                port:
+                  number: 3000
+    - host: api.123myblog.work
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: blogapp-backend
+                port:
+                  number: 4000
