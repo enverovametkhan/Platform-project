@@ -3,7 +3,7 @@ import { store } from "src/redux/store";
 import { updateTokens, setForcedLogout } from "src/redux/slices/auth";
 
 export const api = axios.create({
-  baseURL: "http://localhost:4000/api",
+  baseURL: "http://api.123myblog.work",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
