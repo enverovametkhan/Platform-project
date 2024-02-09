@@ -113,6 +113,7 @@ class CustomLogger {
 }
 
 const customLogger = new CustomLogger();
+// const customLogger = new CustomLogger();
 
 module.exports = {
   customLogger,
