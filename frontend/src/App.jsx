@@ -34,7 +34,7 @@ function App() {
       <div className="app">
         <AuthProvider>
           <ErrorBoundary>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense>
               <Routes>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/auth/login" element={<LoginPage />} />
