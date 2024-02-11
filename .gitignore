@@ -18,3 +18,20 @@ env
 
 **/k8s/utils/cloudfare-secret.yaml
 
+
+**/dev-k8s/accounts/key.json
+
+**/dev-k8s/accounts/key.yaml
+
+**/dev-k8s/configMaps/backend.yaml
+
+**/dev-k8s/utils/cloudfare-secret.yaml
+
+
+**/release-k8s/accounts/key.json
+
+**/release-k8saccounts/key.yaml
+
+**/release-k8s/configMaps/backend.yaml
+
+**/release-k8s/utils/cloudfare-secret.yaml
