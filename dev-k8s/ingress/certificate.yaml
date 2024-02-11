@@ -2,12 +2,12 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: tls-cert
-  namespace: main
+  namespace: release
 spec:
   secretName: tls-cert
   issuerRef:
     name: tls-cert-issuer-high
     kind: ClusterIssuer
   dnsNames:
-    - 123myblog.work
-    - api.123myblog.work
+    - release.123myblog.work
+    - release-api.123myblog.work

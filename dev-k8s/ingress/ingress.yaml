@@ -14,13 +14,13 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - 123myblog.work
+        - release.123myblog.work
       secretName: tls-cert
     - hosts:
-        - api.123myblog.work
+        - release-api.123myblog.work
       secretName: tls-cert
   rules:
-    - host: 123myblog.work
+    - host: release.123myblog.work
       http:
         paths:
           - pathType: Prefix
@@ -30,7 +30,7 @@ spec:
                 name: blogapp-frontend
                 port:
                   number: 3000
-    - host: api.123myblog.work
+    - host: release-api.123myblog.work
       http:
         paths:
           - pathType: Prefix

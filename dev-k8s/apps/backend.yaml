@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: blogapp-backend
-  namespace: main
+  namespace: release
   labels:
     k8s-app: blogapp-backend
 spec:
@@ -18,7 +18,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: main
+  namespace: release
   annotations:
     keel.sh/pollSchedule: "@every 1m"
     # keel.sh/notify: SLACK_CHANNEL

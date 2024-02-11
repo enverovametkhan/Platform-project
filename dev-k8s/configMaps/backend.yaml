@@ -2,10 +2,10 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: backend-configmap
-  namespace: main
+  namespace: release
 data:
   PORT: "4000"
-  CURRENT_ENV: "main"
+  CURRENT_ENV: "release"
   MEZMO_KEY: "ab22ce064572f627811acf44ccb78dba"
   GOOGLE_EMAIL: "oselqtwinalkjvui"
   GOOGLE_KEY: "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"
