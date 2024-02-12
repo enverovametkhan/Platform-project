@@ -10,13 +10,13 @@ node_modules/
 env/
 env
 
-**/k8s/accounts/key.json
+**/main-k8s/accounts/key.json
 
-**/k8s/accounts/key.yaml
+**/main-k8s/accounts/key.yaml
 
-**/k8s/configMaps/backend.yaml
+**/main-k8s/configMaps/backend.yaml
 
-**/k8s/utils/cloudfare-secret.yaml
+**/main-k8s/utils/cloudfare-secret.yaml
 
 
 **/dev-k8s/accounts/key.json
@@ -30,7 +30,7 @@ env
 
 **/release-k8s/accounts/key.json
 
-**/release-k8saccounts/key.yaml
+**/release-k8s/accounts/key.yaml
 
 **/release-k8s/configMaps/backend.yaml
 
