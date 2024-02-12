@@ -3,11 +3,15 @@ FROM node:16.18.0 as react-build
 
 WORKDIR /app
 
+ARG REACT_APP_BASE_URL=$REACT_APP_BASE_URL
+
 ENV PATH /app/node_modules/.bin:$PATH
 
 COPY ./package.json /app/
 
 COPY ./package-lock.json /app/
+
+COPY ./nginx/default.conf /app/
 
 RUN npm install
 
