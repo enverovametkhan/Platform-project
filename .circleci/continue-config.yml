@@ -123,7 +123,7 @@ workflows:
           context:
             - BlogApp
           sourcemap: false
-          url: dev-api.123myblog.work
+          url: https://dev-api.123myblog.work
           filters:
             branches:
               only:
