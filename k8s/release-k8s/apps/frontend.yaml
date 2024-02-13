@@ -53,7 +53,7 @@ spec:
       name: blogapp-frontend
     spec:
       containers:
-        - image: gcr.io/capable-reserve-410215/frontend/main
+        - image: gcr.io/capable-reserve-410215/frontend/release
           imagePullPolicy: Always
           name: blogapp-frontend
           # resources:
