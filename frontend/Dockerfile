@@ -3,7 +3,9 @@ FROM node:16.18.0 as react-build
 
 WORKDIR /app
 
-ARG REACT_APP_BASE_URL=$REACT_APP_BASE_URL
+ARG REACT_APP_BASE_URL=default
+
+ENV REACT_APP_BASE_URL=$REACT_APP_BASE_URL
 
 ENV PATH /app/node_modules/.bin:$PATH
 
