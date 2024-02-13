@@ -54,7 +54,7 @@ spec:
       name: blogapp-backend
     spec:
       containers:
-        - image: gcr.io/capable-reserve-410215/api/main
+        - image: gcr.io/capable-reserve-410215/api/release
           imagePullPolicy: Always
           name: blogapp-backend
           envFrom:
