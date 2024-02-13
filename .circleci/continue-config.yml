@@ -69,7 +69,7 @@ commands:
             cd frontend
             docker build \
             --build-arg REACT_APP_NODE_ENV=$CIRCLE_BRANCH \
-            --build-arg REACT_APP_BASE_URL=<< parameters.url >> \
+            --build-arg REACT_APP_BASE_URL=/$CIRCLE_BRANCH \
             --build-arg GENERATE_SOURCEMAP=<< parameters.sourcemap >> \
             --platform linux/amd64 \
             -f ./Dockerfile -t gcr.io/capable-reserve-410215/frontend/$CIRCLE_BRANCH .
