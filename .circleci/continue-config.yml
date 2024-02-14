@@ -51,7 +51,7 @@ commands:
         default: false
       url:
         type: string
-        default: dev-api.123myblog.work
+        default: https://dev-api.123myblog.work
     steps:
       - checkout
       - setup_remote_docker:
@@ -99,10 +99,11 @@ jobs:
         default: false
       url:
         type: string
-        default: dev-api.123myblog.work
+        default: https://dev-api.123myblog.work
     steps:
       - build-and-push-frontend-docker:
           sourcemap: << parameters.sourcemap >>
+          url: << parameters.url >>
 
 workflows:
   version: 2
@@ -123,7 +124,7 @@ workflows:
           context:
             - BlogApp
           sourcemap: false
-          url: dev-api.123myblog.work
+          url: https://dev-api.123myblog.work
           filters:
             branches:
               only:
@@ -135,7 +136,7 @@ workflows:
           context:
             - BlogApp
           sourcemap: false
-          url: release-api.123myblog.work
+          url: https://release-api.123myblog.work
           filters:
             branches:
               only:
@@ -148,7 +149,7 @@ workflows:
           context:
             - BlogApp
           sourcemap: false
-          url: api.123myblog.work
+          url: https://api.123myblog.work
           filters:
             branches:
               only:
