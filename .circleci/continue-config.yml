@@ -103,6 +103,7 @@ jobs:
     steps:
       - build-and-push-frontend-docker:
           sourcemap: << parameters.sourcemap >>
+          url: << parameters.url >>
 
 workflows:
   version: 2
