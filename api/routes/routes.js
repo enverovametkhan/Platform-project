@@ -37,12 +37,12 @@ const {
   resetPasswordController,
 } = require("@root/resetPass/resetPass.controller");
 
-const {
-  getComments,
-  createComment,
-  updateComment,
-  deleteComment,
-} = require("@root/comments/comments.controller");
+// const {
+//   getComments,
+//   createComment,
+//   updateComment,
+//   deleteComment,
+// } = require("@root/comments/comments.controller");
 
 module.exports = (app) => {
   // Blog Routes
@@ -79,10 +79,10 @@ module.exports = (app) => {
   app.put("/api/user/resetPassword/:token", resetPasswordController);
   // app.post("/api/user/swapEmail/", swapEmailController);
   app.get("/api/user/confirmEmailSwap/:token", confirmEmailSwapController);
-  app.get("/api/comments/:id", getComments);
-  app.post("/api/comments", authMiddleware, createComment);
-  app.put("/api/comments/:id", authMiddleware, updateComment);
-  app.delete("/api/comments/:id", authMiddleware, deleteComment);
+  // app.get("/api/comments/:id", getComments);
+  // app.post("/api/comments", authMiddleware, createComment);
+  // app.put("/api/comments/:id", authMiddleware, updateComment);
+  // app.delete("/api/comments/:id", authMiddleware, deleteComment);
   app.post("/api/blog/bloglike/:blogId/:userId", authMiddleware, blogLike);
   // app.post("/api/blog/:blogId/blogview/", blogView);
 };
