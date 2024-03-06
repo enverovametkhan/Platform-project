@@ -149,8 +149,8 @@ async function createBlog(req, res, next) {
 
 async function blogLike(req, res, next) {
   try {
-    const { blogId, userId } = req.params;
-    const response = await blogLikeService(blogId, userId);
+    const { blogId } = req.params;
+    const response = await blogLikeService(blogId);
     res.apiResponse = response;
     console.log(response);
     next();
@@ -180,6 +180,7 @@ async function blogView(req, res, next) {
     next(errorMessage);
   }
 }
+
 module.exports = {
   getBlog,
   getBlogsInCategory,

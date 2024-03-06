@@ -482,35 +482,39 @@ async function createBlogService(newBlog) {
 //   return { message: "Blog unliked successfully" };
 // }
 
-async function blogLikeService(blogId, userId) {
+async function blogLikeService(blogId) {
   const userData = await getAccessToUserData();
 
   if (!userData) {
     throw new Error("Unauthorized access to user data");
   }
-  const existingBlogLike = await BlogLikesModel.findOne({ blogId, userId });
+
+  const existingBlogLike = await BlogLikesModel.findOne({
+    blogId,
+    userId: userData.userId,
+  });
+
   if (!existingBlogLike) {
-    const newLike = new BlogLikesModel({ blogId, userId });
+    const newLike = new BlogLikesModel({ blogId, userId: userData.userId });
     await newLike.save();
-    await deleteBlogCache(newLike.blogId);
+    await deleteBlogCache(blogId);
 
     customLogger.consoleInfo("Blog liked successfully", {
       blogId,
-      userId,
+      userId: userData.userId,
     });
 
     return { message: "Blog liked successfully" };
   }
 
-  if (existingBlogLike) {
-    await BlogLikesModel.findOneAndDelete({ blogId, userId });
-    await deleteBlogCache(blogId);
-    customLogger.consoleInfo("Blog unliked successfully", {
-      blogId,
-      userId,
-    });
-    return { message: "Blog unliked successfully" };
-  }
+  await BlogLikesModel.findOneAndDelete({ blogId, userId: userData.userId });
+  await deleteBlogCache(blogId);
+  customLogger.consoleInfo("Blog unliked successfully", {
+    blogId,
+    userId: userData.userId,
+  });
+
+  return { message: "Blog unliked successfully" };
 }
 
 async function blogViewsService(blogId) {
