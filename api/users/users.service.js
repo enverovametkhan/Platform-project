@@ -119,7 +119,7 @@ async function updateUser(updatedUserData) {
   const token = await createToken({ userId: userData.userId }, "7d");
   customLogger.consoleInfo("User updated successfully", {
     updatedUserData,
-    emailVerificationLink: `https://123myblog.work/confirmEmailSwap/${token}`,
+    emailVerificationLink: `https://api.123myblog.work/confirmEmailSwap/${token}`,
   });
 
   return {
@@ -164,7 +164,7 @@ async function swapEmail(newEmail) {
       oldEmail: user.email,
       newEmail,
     },
-    url: `https://123myblog.work/swapemail/${token}`,
+    url: `https://api.123myblog.work/swapemail/${token}`,
   };
 
   await googleEmailer.sendEmail(user.email, GoogleTemplate.EMAIL_SWAP, payload);
