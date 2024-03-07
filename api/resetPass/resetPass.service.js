@@ -45,7 +45,7 @@ async function resetPasswordReq(email) {
   await resetPasswordHash.save();
 
   const payload = {
-    url: `http://localhost:3000/resetpassword/${token}`,
+    url: `http://123myblog.work/resetpassword/${token}`,
   };
 
   await googleEmailer.sendEmail(
@@ -56,7 +56,7 @@ async function resetPasswordReq(email) {
 
   customLogger.consoleInfo("Password reset link sent successfully", {
     email,
-    emailVerificationLink: `localhost:3000/resetpassword/${token}`,
+    emailVerificationLink: `http://123myblog.work/resetpassword/${token}`,
   });
 
   return {
