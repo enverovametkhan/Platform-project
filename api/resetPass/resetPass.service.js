@@ -56,7 +56,7 @@ async function resetPasswordReq(email) {
 
   customLogger.consoleInfo("Password reset link sent successfully", {
     email,
-    emailVerificationLink: `https://123myblog.work/auth/resetpassword/${token}`,
+    emailVerificationLink: `https://localhost:3000/auth/resetpassword/${token}`,
   });
 
   return {
