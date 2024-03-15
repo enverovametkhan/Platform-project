@@ -26,7 +26,6 @@ export const ResetPassPage = () => {
       {finishedResetPass ? (
         <div>
           <h1 className={styles.resHead}>Reset Password</h1>
-
           <div className={styles.formGroup}>
             <label htmlFor="email" className={styles.myLabel}>
               Email
