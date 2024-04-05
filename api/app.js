@@ -3,7 +3,7 @@ moduleAlias.addAlias("@root", __dirname);
 require("dotenv").config({ path: "./env" });
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 4004;
 const bodyParser = require("body-parser");
 const { createNamespace } = require("cls-hooked");
 const namespace = createNamespace("req");

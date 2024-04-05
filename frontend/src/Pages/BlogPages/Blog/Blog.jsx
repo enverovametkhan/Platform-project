@@ -38,7 +38,10 @@ export function Blog() {
 
   const handleLike = async () => {
     try {
-      await dispatch(blogLikeService({ blogId: id, userId: currentUser.id }));
+      let response = await dispatch(
+        blogLikeService({ blogId: id, userId: currentUser.id })
+      );
+      console.log(response);
       setBlog((prevBlog) => ({
         ...prevBlog,
         hasUserLikedBlog: !prevBlog.hasUserLikedBlog,

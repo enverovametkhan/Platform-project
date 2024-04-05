@@ -162,8 +162,9 @@ async function signup(username, email, password, confirmedPassword) {
 
   await newUser.save();
   customLogger.consoleInfo("Signup successful", { newUser });
+  console.log(`http://localhost:3003/confirmemail/${token}`);
 
-  const payload = { url: `http://localhost:3000/confirmemail/${token}` };
+  const payload = { url: `http://localhost:3003/confirmemail/${token}` };
   await googleEmailer.sendEmail(email, GoogleTemplate.SIGNUP, payload);
 
   return {

@@ -4,7 +4,7 @@ import { updateTokens, setForcedLogout } from "src/redux/slices/auth";
 
 export const api = axios.create({
   baseURL:
-    `${process.env.REACT_APP_BASE_URL}/api` || "http://localhost:4000/api",
+    `${process.env.REACT_APP_BASE_URL}/api` || "http://localhost:4004/api",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
