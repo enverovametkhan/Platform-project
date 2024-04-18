@@ -71,6 +71,18 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
+export const refreshAccessToken = createAsyncThunk(
+  "auth/refreshAccessToken",
+  async (token, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/user/refreshAccessToken/${token}`);
+      return response.data.processedResponse;
+    } catch (error) {
+      return rejectWithValue(error.response);
+    }
+  }
+);
+
 const asyncActionHandlers = {
   [googleSignIn.pending.type]: { status: "loading" },
   [googleSignIn.fulfilled.type]: (state, action) => {
