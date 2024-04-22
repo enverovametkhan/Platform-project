@@ -73,11 +73,3 @@ spec:
           terminationMessagePolicy: File
           ports:
             - containerPort: 4000
-
-      imagePullSecrets:
-        - name: gcr-access-account
-      dnsPolicy: ClusterFirst
-      restartPolicy: Always
-      schedulerName: default-scheduler
-      terminationGracePeriodSeconds: 30
-status: {}
