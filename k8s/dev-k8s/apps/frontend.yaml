@@ -15,4 +15,64 @@ spec:
   selector:
     k8s-app: blogapp-frontend
 ---
-
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: dev
+  annotations:
+    keel.sh/pollSchedule: "@every 1m"
+    # keel.sh/notify: SLACK_CHANNEL
+    deployment.kubernetes.io/revision: "1"
+    description: blogapp-frontend
+  labels:
+    keel.sh/policy: force # update policy (available: patch, minor, major, all, force)
+    keel.sh/trigger: poll # enable active repository checking (webhooks and GCR would still work)
+    keel.sh/approvals: "0" # required approvals to update
+    keel.sh/match-tag: "true" #
+    # keel.sh/notify: SLACK_CHANNEL
+    k8s-app: blogapp-frontend
+  name: blogapp-frontend
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      k8s-app: blogapp-frontend
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        description: blogapp-frontend
+      labels:
+        k8s-app: blogapp-frontend
+      name: blogapp-frontend
+    spec:
+      containers:
+        - image: gcr.io/capable-reserve-410215/frontend/dev
+          imagePullPolicy: Always
+          name: blogapp-frontend
+          # resources:
+          #   limits:
+          #     memory: 200Mi
+          #     cpu: 100m
+          #   requests:
+          #     memory: 200Mi
+          #     cpu: 100m
+          securityContext:
+            privileged: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          ports:
+            - containerPort: 3000
+      imagePullSecrets:
+        - name: gcr-access-account
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30
+status: {}
