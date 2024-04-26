@@ -3,3 +3,11 @@ kind: Certificate
 metadata:
   name: tls-cert
   namespace: release
+spec:
+  secretName: tls-cert
+  issuerRef:
+    name: tls-cert-issuer-low
+    kind: ClusterIssuer
+  dnsNames:
+    - release.123myblog.work
+    - release-api.123myblog.work
