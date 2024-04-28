@@ -9,34 +9,3 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: "50mb"
     nginx.org/client-max-body-size: "50mb"
-
-spec:
-  ingressClassName: nginx
-  tls:
-    - hosts:
-        - release.123myblog.work
-      secretName: tls-cert
-    - hosts:
-        - release-api.123myblog.work
-      secretName: tls-cert
-  rules:
-    - host: release.123myblog.work
-      http:
-        paths:
-          - pathType: Prefix
-            path: "/"
-            backend:
-              service:
-                name: blogapp-frontend
-                port:
-                  number: 3000
-    - host: release-api.123myblog.work
-      http:
-        paths:
-          - pathType: Prefix
-            path: "/"
-            backend:
-              service:
-                name: blogapp-backend
-                port:
-                  number: 4000
