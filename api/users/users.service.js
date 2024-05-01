@@ -180,6 +180,51 @@ async function swapEmail(newEmail) {
   };
 }
 
+async function confirmEmailSwap(token) {
+  const userData = await decryptToken(token);
+  const user = await UserModel.findById(userData.userId);
+
+  if (!user) {
+    customLogger.consoleError("No user found", {
+      function: "confirmEmailSwap",
+    });
+    throw new Error("No user found");
+  }
+
+  const checkEmailSwap = await SwapEmailHashModel.findOne({ userId: user._id });
+
+  if (!checkEmailSwap) {
+    customLogger.consoleError(
+      "Something went wrong when trying to swap emails",
+      {
+        function: "confirmEmailSwap",
+      }
+    );
+    throw new Error("Something went wrong when trying to swap emails");
+  }
+
+  const message = `Swapped email from ${user.email} to ${checkEmailSwap.newEmail}`;
+  customLogger.consoleInfo("Email swap confirmed successfully", {
+    userId: user._id,
+    newEmail: checkEmailSwap.newEmail,
+  });
+  console.log(message);
+  const updateEmail = {
+    email: checkEmailSwap.newEmail,
+  };
+  await UserModel.findByIdAndUpdate(user._id, updateEmail, {
+    new: true,
+    runValidators: true,
+  });
+
+  await SwapEmailHashModel.findByIdAndDelete(checkEmailSwap._id);
+
+  return {
+    status: 200,
+    message,
+  };
+}
+
 module.exports = {
   getUser,
   deleteUser,
