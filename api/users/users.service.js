@@ -15,6 +15,32 @@ const saltRounds = 10;
 //   return await bcrypt.hash(password, saltRounds);
 // }
 
+async function getUser() {
+  const userData = await getAccessToUserData();
+  console.log(userData);
+  const user = await UserModel.findOne({ _id: userData.userId });
+
+  if (!user) {
+    customLogger.consoleError("User has not been found", {
+      function: "getUser",
+    });
+    throw new Error("User has not been found");
+  }
+
+  customLogger.consoleInfo("User data retrieved successfully", {
+    userData,
+    userId: user._id,
+    username: user.username,
+    email: user.email,
+  });
+
+  return {
+    id: user._id,
+    username: user.username,
+    email: user.email,
+  };
+}
+
 async function deleteUser() {
   const userData = await getAccessToUserData();
   const user = await UserModel.findById(userData.userId);
