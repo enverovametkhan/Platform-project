@@ -67,23 +67,6 @@ async function updateUserController(req, res, next) {
 //   }
 // }
 
-async function confirmEmailSwapController(req, res, next) {
-  try {
-    const { token } = req.params;
-    const response = await confirmEmailSwap(token);
-    res.apiResponse = response;
-    next();
-  } catch (error) {
-    const errorMessage = {
-      error: error.message,
-      function: "confirmEmailSwapController",
-      errorMessage: `Something went wrong when to confirm email swap`,
-    };
-
-    next(errorMessage);
-  }
-}
-
 module.exports = {
   getUserController,
   deleteUserController,
