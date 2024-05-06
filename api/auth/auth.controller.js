@@ -95,6 +95,22 @@ async function logoutController(req, res, next) {
   }
 }
 
+async function refreshAccessTokenController(req, res, next) {
+  try {
+    const { token } = req.params;
+    const response = await refreshAccessToken(token);
+    res.apiResponse = response;
+    next();
+  } catch (error) {
+    const errorMessage = {
+      error: error.message,
+      function: "refreshAccessTokenController",
+      errorMessage: `Something went wrong when trying to refresh access token`,
+    };
+    next(errorMessage);
+  }
+}
+
 module.exports = {
   loginController,
   signupController,
