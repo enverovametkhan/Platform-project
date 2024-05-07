@@ -62,23 +62,6 @@ async function signupController(req, res, next) {
   }
 }
 
-async function verifyEmailController(req, res, next) {
-  try {
-    const { token } = req.params;
-    const response = await verifyEmail(token);
-    res.apiResponse = response;
-    next();
-  } catch (error) {
-    const errorMessage = {
-      error: error.message,
-      function: "verifyEmailController",
-      errorMessage: `Something went wrong during email verification`,
-    };
-
-    next(errorMessage);
-  }
-}
-
 async function logoutController(req, res, next) {
   try {
     const response = await logout();
