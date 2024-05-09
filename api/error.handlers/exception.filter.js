@@ -37,24 +37,6 @@ module.exports = (app) => {
         "jwt expired",
       ];
 
-      const processErrorMessage = (originalErrorMessage) =>
-        sensitiveErrors.some((error) => originalErrorMessage.includes(error))
-          ? "Internal Server Error"
-          : originalErrorMessage;
-
-      let proccessedErrorMessage = processErrorMessage(err.error);
-      console.log(proccessedErrorMessage);
-      customLogger.consoleError(
-        "[EXCEPTION FILTER] (OUT) | Oops something went wrong, sending an Exception Filter Error",
-        {
-          message: proccessedErrorMessage,
-          timeTaken: `Time taken to process the request: ${timeTaken} seconds`,
-          requestedUrl: req.originalUrl,
-          method: req.method,
-          // ...err,
-        }
-      );
-
       res
         .status(500)
         .send({ message: proccessedErrorMessage || "Internal Server Error" });
