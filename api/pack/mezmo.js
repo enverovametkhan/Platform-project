@@ -13,6 +13,27 @@ class CustomLogger {
     console.log(process.env.CURRENT_ENV);
   }
 
+  localMiddleware(message, metadata, type) {
+    if (this.isLocalEnv) {
+      const greenColor = "\x1b[32m";
+      const yellowColor = "\x1b[33m";
+
+      if (type === "IN") {
+        console.log(
+          `[${greenColor}INTERCEPTOR${"\x1b[0m"}]: ${message}`,
+          metadata
+        );
+      } else {
+        console.log(
+          `[${yellowColor}INTERCEPTOR${"\x1b[0m"}]: ${message}`,
+          metadata
+        );
+        return true;
+      }
+      return false;
+    }
+  }
+
   consoleMiddleware(message, metadata, type) {
     try {
       this.localMiddleware(message, metadata, type);
