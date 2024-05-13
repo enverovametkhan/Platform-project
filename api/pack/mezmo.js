@@ -34,6 +34,41 @@ class CustomLogger {
     }
   }
 
+  consoleMiddleware(message, metadata, type) {
+    try {
+      this.localMiddleware(message, metadata, type);
+      const logObject = {
+        message,
+        indexMeta: true,
+        _meta: {
+          message: message,
+          ...metadata,
+        },
+      };
+      this.logger.info(logObject);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  consoleInfo(message, metadata) {
+    try {
+      const isLocal = this.localInfo(message, metadata);
+      if (isLocal) return;
+      const logObject = {
+        message,
+        indexMeta: true,
+        _meta: {
+          message: message,
+          ...metadata,
+        },
+      };
+      this.logger.info(logObject);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   localInfo(message, metadata) {
     if (this.isLocalEnv) {
       const greenColor = "\x1b[32m";
