@@ -22,30 +22,6 @@
 //     this.transporter = transporter;
 //   }
 
-//   async sendEmail(send, type, payload) {
-//     const template = await generateTemplate(
-//       type,
-//       payload.url,
-//       payload?.swapEmailData
-//     );
-
-//     const mailOptions = {
-//       from: "enverov.ametkhan@gmail.com",
-//       to: send,
-//       subject: template.subject,
-//       html: template.html,
-//     };
-
-//     this.transporter.sendMail(mailOptions, (error, info) => {
-//       if (error) {
-//         console.error("Error sending email: ", error);
-//       } else {
-//         console.log("Email sent: ", info.response);
-//       }
-//     });
-//   }
-// }
-
 // const googleEmailer = new GoogleEmail();
 
 // module.exports = {
