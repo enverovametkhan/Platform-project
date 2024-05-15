@@ -38,6 +38,23 @@ async function checkResetPasswordTokenController(req, res, next) {
   }
 }
 
+async function resetPasswordController(req, res, next) {
+  try {
+    const { token } = req.params;
+    let { password, confirmedPassword } = req.body?.passwordData;
+    const response = await resetPassword(token, password, confirmedPassword);
+    res.apiResponse = response;
+    next();
+  } catch (error) {
+    const errorMessage = {
+      error: error.message,
+      function: "resetPasswordController",
+      errorMessage: `Something went wrong when trying to change password`,
+    };
+    next(errorMessage);
+  }
+}
+
 module.exports = {
   resetPasswordReqController,
   checkResetPasswordTokenController,
